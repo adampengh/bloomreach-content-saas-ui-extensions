@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 
@@ -14,11 +14,14 @@ import {
 } from '@mui/material';
 
 // Contexts
+import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 // Icons
+import HomeIcon from '@mui/icons-material/Home';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import PlagiarismIcon from '@mui/icons-material/Plagiarism';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 
@@ -165,33 +168,24 @@ const SubMenuWrapper = styled(Box)(
 );
 
 function SidebarMenu() {
+  const [menuItemsEnabled, setMenuItemsEnabled] = useState(false)
   const { closeSidebar } = useContext(SidebarContext);
   const router = useRouter();
   const currentRoute = router.pathname;
 
+  const {
+    appConfiguration
+  } = useContext(ConfigurationContext)
+
+  useEffect(() => {
+    const hasMissingConfigProperties = !!Object.entries(appConfiguration).filter(([,value]) => value === '').length
+    console.log('hasMissingConfigProperties', hasMissingConfigProperties)
+    setMenuItemsEnabled(!hasMissingConfigProperties)
+  }, [appConfiguration])
+
   return (
     <>
       <MenuWrapper>
-        <List component="div">
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/" passHref>
-                  <Button
-                    className={currentRoute === '/' ? 'active' : ''}
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<SettingsIcon />}
-                  >
-                    Overview
-                  </Button>
-                </NextLink>
-              </ListItem>
-            </List>
-          </SubMenuWrapper>
-        </List>
-
         <List component="div">
           <SubMenuWrapper>
             <List component="div">
@@ -212,63 +206,67 @@ function SidebarMenu() {
           </SubMenuWrapper>
         </List>
 
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Site Management
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/channels" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/channels' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<FormatListBulletedIcon />}
-                  >
-                    Channels
-                  </Button>
-                </NextLink>
-              </ListItem>
+        { menuItemsEnabled &&
+          <>
+            <List
+              component="div"
+              subheader={
+                <ListSubheader component="div" disableSticky>
+                  Site Management
+                </ListSubheader>
+              }
+            >
+              <SubMenuWrapper>
+                <List component="div">
+                  <ListItem component="div">
+                    <NextLink href="/channels" passHref>
+                      <Button
+                        className={
+                          currentRoute === '/channels' ? 'active' : ''
+                        }
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<FormatListBulletedIcon />}
+                      >
+                        Channels
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                </List>
+              </SubMenuWrapper>
             </List>
-          </SubMenuWrapper>
-        </List>
 
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Content Management
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
-              <ListItem component="div">
-                <NextLink href="/pages" passHref>
-                  <Button
-                    className={
-                      currentRoute === '/pages' ? 'active' : ''
-                    }
-                    disableRipple
-                    component="a"
-                    onClick={closeSidebar}
-                    startIcon={<FileCopyIcon />}
-                  >
-                    Pages
-                  </Button>
-                </NextLink>
-              </ListItem>
+            <List
+              component="div"
+              subheader={
+                <ListSubheader component="div" disableSticky>
+                  Content Management
+                </ListSubheader>
+              }
+            >
+              <SubMenuWrapper>
+                <List component="div">
+                  <ListItem component="div">
+                    <NextLink href="/pages" passHref>
+                      <Button
+                        className={
+                          currentRoute === '/pages' ? 'active' : ''
+                        }
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<PlagiarismIcon />}
+                      >
+                        Pages
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                </List>
+              </SubMenuWrapper>
             </List>
-          </SubMenuWrapper>
-        </List>
+          </>
+        }
       </MenuWrapper>
     </>
   );

@@ -1,70 +1,131 @@
-import Head from 'next/head';
+import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axios'
 import NextLink from 'next/link';
 
+// Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
-import PageHeader from 'src/content/Channels/PageHeader';
+// Components
+import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid, List, ListItem, ListItemText, ListItemAvatar, ListItemButton, Avatar, Button } from '@mui/material';
-import Footer from 'src/components/Footer';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  ListItemButton,
+} from '@mui/material';
 
-import AccountBalance from 'src/content/Dashboards/Crypto/AccountBalance';
-import Wallets from 'src/content/Dashboards/Crypto/Wallets';
-import AccountSecurity from 'src/content/Dashboards/Crypto/AccountSecurity';
-import WatchList from 'src/content/Dashboards/Crypto/WatchList';
+// Contexts
+import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
-import BeachAccessIcon from '@mui/icons-material/BeachAccess';
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
+
+const ChannelIcon = ({ icon }) => {
+  const style = {
+    backgroundImage: `url(${icon})`,
+    backgroundSize: '36px',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    width: '36px',
+    height: '36px',
+  }
+  return <div style={style} />;
+}
+
 
 function Channels() {
+  const [error, setError] = useState(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [channels, setChannels] = useState([])
+  const [projects, setProjects] = useState([])
+
+  const {
+    appConfiguration
+  } = useContext(ConfigurationContext)
+
+  const {
+    environment,
+    xAuthToken,
+    projectId,
+  } = appConfiguration
+
+  useEffect(() => {
+    if (environment && xAuthToken) {
+      axios(`https://${environment}.bloomreach.io/management/site/v1/channels`, {
+        headers: {
+          'x-auth-token': xAuthToken
+        }
+      })
+        .then((response) => {
+          let data = response.data;
+          if (projectId) {
+            data = response.data.filter(channel => channel.branch === projectId)
+          }
+          setProjects(Array.from(new Set(data.map(channel => channel.projectName))))
+          setChannels(data)
+          setIsLoaded(true)
+          setError(null)
+        })
+        .catch((error) => {
+          setError(error.message)
+          setIsLoaded(true)
+        })
+    }
+  }, [appConfiguration])
+
+
   return (
     <>
-      <Head>
-        <title>Crypto Dashboard</title>
-      </Head>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageTitle
+          heading="Channels"
+        />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           direction="row"
           justifyContent="center"
           alignItems="stretch"
           spacing={4}
+          rowSpacing={4}
         >
-          <Grid item xs={12}>
-            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-              <ListItem component="div">
-                <ListItemButton>
-                  <NextLink href="/" passHref>
-                    <ListItemText primary="Shared English" secondary="Secondary Text" />
-                  </NextLink>
-                </ListItemButton>
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <WorkIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Aruba English" secondary="Jan 7, 2014" />
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <BeachAccessIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Aruba English Mobile" secondary="July 20, 2014" />
-              </ListItem>
-            </List>
-          </Grid>
+          {projects.map((project) => (
+            <Grid item xs={12} key={project}>
+              <Card>
+                <CardHeader title={project} />
+                <Divider />
+                <CardContent>
+                  <List>
+                    { channels
+                      .filter(channel => channel.projectName === project)
+                      .map((channel) => {
+                        return (
+                          <ListItem key={channel.id} component="div">
+                            <NextLink href="/" passHref>
+                              <ListItemButton>
+                                <ListItemAvatar>
+                                  <ChannelIcon icon={channel.icon} />
+                                </ListItemAvatar>
+                                <ListItemText primary={channel.name} secondary={channel.id} />
+                              </ListItemButton>
+                            </NextLink>
+                          </ListItem>
+                        )
+                    })}
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
+            ))}
         </Grid>
       </Container>
-      <Footer />
     </>
   );
 }

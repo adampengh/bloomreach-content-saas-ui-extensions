@@ -399,8 +399,8 @@ export const PureLightTheme = createTheme({
           '--swiper-theme-color': colors.primary.main
         },
         code: {
-          background: colors.info.lighter,
-          color: colors.info.dark,
+          // background: colors.info.lighter,
+          // color: colors.info.dark,
           borderRadius: 4,
           padding: 4
         },

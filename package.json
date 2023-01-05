@@ -19,6 +19,7 @@
     "@mui/material": "5.8.2",
     "@mui/styles": "5.8.0",
     "apexcharts": "3.35.3",
+    "axios": "^1.2.2",
     "clsx": "1.1.1",
     "context-api": "0.0.2",
     "date-fns": "2.28.0",
@@ -28,6 +29,7 @@
     "numeral": "2.0.6",
     "react": "17.0.2",
     "react-apexcharts": "1.4.0",
+    "react-code-blocks": "*",
     "react-custom-scrollbars-2": "4.4.0",
     "react-dom": "17.0.2"
   },
