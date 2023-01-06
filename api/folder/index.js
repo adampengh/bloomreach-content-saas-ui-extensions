@@ -28,7 +28,7 @@ export const getFolder = async (environment, xAuthToken, folderPath, depth = '5'
  * @param {string} folderPath
  * @returns
  */
-export const createOrUpdateFolder = async (environment, xAuthToken, folderPath, displayname) => {
+export const createOrUpdateFolder = async (environment, xAuthToken, channel, folderPath, displayname) => {
     const response = await axios(`https://${environment}.bloomreach.io/${FOLDER_API_PATH}/${folderPath}`, {
         method: 'PUT',
         headers: {
@@ -36,12 +36,16 @@ export const createOrUpdateFolder = async (environment, xAuthToken, folderPath, 
             'Content-Type': 'application/json'
         },
         data: {
-            "type": "folder",
+            "type": "pageFolder",
             "path": folderPath,
             "displayName": displayname,
-            "locale": "en",
-            "allowedDocumentTypes": [],
-            "allowedFolderTypes": []
+            "channel": channel,
+            "allowedDocumentTypes": [
+                "ALL_DOCUMENTS"
+            ],
+            "allowedFolderTypes": [
+                "FOLDER"
+            ]
         }
     })
 

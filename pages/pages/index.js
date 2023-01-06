@@ -138,6 +138,8 @@ function Pages() {
     console.log('Copy Individual Page')
     const path = page.relativePagePath
 
+    await createFoldersRecursively(path)
+
     // Get Page from Source Channel
     const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path)
       .then(response => response.data)
@@ -155,17 +157,13 @@ function Pages() {
     }
   }
 
-  // This is not technically possible at the moment because the Folders API doesn't
-  // allow for creating folders inside the Pages folder
   const createFoldersRecursively = async (path) => {
     let segments = path.split('/')
     segments.pop()
 
     let folderPath = targetChannel.contentRootPath;
     for await (const segment of segments) {
-      console.log('segment', segment)
       folderPath += '/' + segment
-      console.log('folderPath', folderPath)
       await getFolder(environment, xAuthToken, folderPath)
         .then(response => {
           console.log(response)
@@ -173,7 +171,7 @@ function Pages() {
         .catch(async (error) => {
           console.error(error.response.status)
           if (error.response.status === 404) {
-            await createOrUpdateFolder(environment, xAuthToken, folderPath, segment)
+            await createOrUpdateFolder(environment, xAuthToken, targetChannel.branchOf, folderPath, segment)
           }
         })
     }

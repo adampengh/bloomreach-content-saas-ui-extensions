@@ -33,9 +33,7 @@ export const getPage = async (environment, xAuthToken, channel, path, projectId 
  * @returns
  */
 export const putPage = async (environment, xAuthToken, projectId, channel, path, pageData) => {
-    console.log('pageData', pageData)
     const url = `https://${environment}.bloomreach.io/${CONTENT_API_PATH}/project/${projectId}/channel/${channel}/page/${path}`
-    console.log('url', url)
     const response = await axios(url, {
         method: 'PUT',
         headers: {
