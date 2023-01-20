@@ -18,6 +18,7 @@
     "@mui/lab": "5.0.0-alpha.84",
     "@mui/material": "5.8.2",
     "@mui/styles": "5.8.0",
+    "@mui/x-data-grid": "^5.17.20",
     "apexcharts": "3.35.3",
     "axios": "^1.2.2",
     "clsx": "1.1.1",

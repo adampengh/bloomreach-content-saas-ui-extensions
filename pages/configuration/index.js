@@ -27,7 +27,7 @@ function Configuration() {
   } = useContext(ConfigurationContext)
 
   const [sourceConfig, setSourceConfig] = useState(appConfiguration.source)
-  const [targetConfig, setTargetConfig] = useState({})
+  const [targetConfig, setTargetConfig] = useState(appConfiguration.target)
 
   useEffect(() => {
     setSourceConfig(appConfiguration.source)

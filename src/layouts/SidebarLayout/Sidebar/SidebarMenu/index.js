@@ -18,8 +18,7 @@ import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 // Icons
-import HomeIcon from '@mui/icons-material/Home';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PlagiarismIcon from '@mui/icons-material/Plagiarism';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -260,6 +259,35 @@ function SidebarMenu() {
                         startIcon={<PlagiarismIcon />}
                       >
                         Pages
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                </List>
+              </SubMenuWrapper>
+            </List>
+
+            <List
+              component="div"
+              subheader={
+                <ListSubheader component="div" disableSticky>
+                  Content Types
+                </ListSubheader>
+              }
+            >
+              <SubMenuWrapper>
+                <List component="div">
+                  <ListItem component="div">
+                    <NextLink href="/content-types" passHref>
+                      <Button
+                        className={
+                          currentRoute === '/content-types' ? 'active' : ''
+                        }
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<AssignmentIcon />}
+                      >
+                        Content Types
                       </Button>
                     </NextLink>
                   </ListItem>
