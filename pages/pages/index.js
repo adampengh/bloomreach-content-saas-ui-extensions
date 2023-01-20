@@ -64,7 +64,7 @@ function Pages() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration
+  } = appConfiguration.source
 
 
   const handleToggle = (value) => () => {
@@ -138,13 +138,14 @@ function Pages() {
     console.log('Copy Individual Page')
     const path = page.relativePagePath
 
+    // Recursively create folder structure
     await createFoldersRecursively(path)
 
     // Get Page from Source Channel
     const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path)
       .then(response => response.data)
       .catch((err) => {
-        console.error('get page error', err);
+        console.error('Get page error', err);
       })
 
     // Put Page into Target Channel
@@ -171,7 +172,7 @@ function Pages() {
         .catch(async (error) => {
           console.error(error.response.status)
           if (error.response.status === 404) {
-            await createOrUpdateFolder(environment, xAuthToken, targetChannel.branchOf, folderPath, segment)
+            await createOrUpdateFolder(environment, xAuthToken, "pageFolder", targetChannel.branchOf, folderPath, segment)
           }
         })
     }

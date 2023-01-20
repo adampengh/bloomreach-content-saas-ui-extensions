@@ -40,13 +40,18 @@
     "export": "next export",
     "lint": "next lint",
     "lint-fix": "next lint --fix",
-    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc"
+    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc",
+    "test": "jest"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^12.1.5",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.0.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
     "next-transpile-modules": "9.0.0",
     "prettier": "2.6.2"
   }

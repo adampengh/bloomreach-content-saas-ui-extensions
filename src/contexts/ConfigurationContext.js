@@ -4,23 +4,38 @@ export const ConfigurationContext = createContext({});
 
 export function ConfigurationProvider({ children }) {
   const [appConfiguration, setAppConfiguration] = useState({
-    environment: "",
-    xAuthToken: "",
-    projectId: "",
+    // source: {
+    //   environment: 'profserv02',
+    //   xAuthToken: 'b6d9883f-3682-4e66-b51d-2f771903d5de',
+    //   projectId: 'vhACu',
+    // },
+    source: {
+      environment: '',
+      xAuthToken: '',
+      projectId: '',
+    },
+    target: {
+      environment: '',
+      xAuthToken: '',
+      projectId: '',
+    }
   });
 
   useEffect(() => {
-    setAppConfiguration(JSON.parse(localStorage.getItem('appConfiguration')));
+    if (localStorage.getItem('appConfiguration')) {
+      setAppConfiguration(JSON.parse(localStorage.getItem('appConfiguration')));
+    }
   }, [])
 
-  const setApplicationConfiguration = ({...props}) => {
+  const storeApplicationConfiguration = ({...props}) => {
+    console.log('storeApplicationConfiguration', JSON.stringify({...props}));
     localStorage.setItem('appConfiguration', JSON.stringify({...props}))
     setAppConfiguration({...props})
   }
 
   return (
     <ConfigurationContext.Provider
-      value={{ appConfiguration, setApplicationConfiguration }}
+      value={{ appConfiguration, setAppConfiguration, storeApplicationConfiguration }}
     >
       {children}
     </ConfigurationContext.Provider>

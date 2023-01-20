@@ -24,7 +24,7 @@ function UIExtensionApp(props) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Pricesmart UI Extension</title>
+        <title>Bloomreach SaaS UI Extension</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"

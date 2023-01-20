@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import NextLink from 'next/link';
 
+// APIs
+import { getAllChannels } from 'api/site/channels';
+
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
@@ -12,6 +15,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Container,
   Divider,
   Grid,
@@ -53,15 +57,11 @@ function Channels() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration
+  } = appConfiguration.source
 
   useEffect(() => {
     if (environment && xAuthToken) {
-      axios(`https://${environment}.bloomreach.io/management/site/v1/channels`, {
-        headers: {
-          'x-auth-token': xAuthToken
-        }
-      })
+      getAllChannels(environment, xAuthToken)
         .then((response) => {
           let data = response.data;
           if (projectId) {
@@ -79,7 +79,6 @@ function Channels() {
     }
   }, [appConfiguration])
 
-
   return (
     <>
       <PageTitleWrapper>
@@ -93,37 +92,61 @@ function Channels() {
           direction="row"
           justifyContent="center"
           alignItems="stretch"
-          spacing={4}
-          rowSpacing={4}
+          alignContent="stretch"
+          sx={{
+            '& .MuiGrid-item': {
+              textAlign: 'center'
+            },
+            '& .MuiCircularProgress-root': {
+              margin: '24px'
+            }
+          }}
         >
-          {projects.map((project) => (
-            <Grid item xs={12} key={project}>
+        { !isLoaded
+          ?
+            <Grid
+              item
+              xs={12}
+              justifyContent="center"
+              alignItems="stretch"
+              alignContent="stretch"
+            >
               <Card>
-                <CardHeader title={project} />
-                <Divider />
-                <CardContent>
-                  <List>
-                    { channels
-                      .filter(channel => channel.projectName === project)
-                      .map((channel) => {
-                        return (
-                          <ListItem key={channel.id} component="div">
-                            <NextLink href="/" passHref>
-                              <ListItemButton>
-                                <ListItemAvatar>
-                                  <ChannelIcon icon={channel.icon} />
-                                </ListItemAvatar>
-                                <ListItemText primary={channel.name} secondary={channel.id} />
-                              </ListItemButton>
-                            </NextLink>
-                          </ListItem>
-                        )
-                    })}
-                  </List>
-                </CardContent>
+                <CircularProgress />
               </Card>
             </Grid>
-            ))}
+          :
+            <>
+              {projects.map((project) => (
+                <Grid item xs={12} key={project}>
+                  <Card>
+                    <CardHeader title={project} />
+                    <Divider />
+                    <CardContent>
+                      <List>
+                        { channels
+                          .filter(channel => channel.projectName === project)
+                          .map((channel) => {
+                            return (
+                              <ListItem key={channel.id} component="div">
+                                <NextLink href="/" passHref>
+                                  <ListItemButton>
+                                    <ListItemAvatar>
+                                      <ChannelIcon icon={channel.icon} />
+                                    </ListItemAvatar>
+                                    <ListItemText primary={channel.name} secondary={channel.id} />
+                                  </ListItemButton>
+                                </NextLink>
+                              </ListItem>
+                            )
+                        })}
+                      </List>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </>
+          }
         </Grid>
       </Container>
     </>

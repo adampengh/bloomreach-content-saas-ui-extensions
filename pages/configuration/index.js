@@ -7,10 +7,12 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
   Box,
   Button,
-  Container,
-  Grid,
   Card,
   CardContent,
+  CardHeader,
+  Divider,
+  Container,
+  Grid,
   TextField
 } from '@mui/material';
 
@@ -21,37 +23,30 @@ import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 function Configuration() {
   const {
     appConfiguration,
-    setApplicationConfiguration
+    storeApplicationConfiguration,
   } = useContext(ConfigurationContext)
 
-  const [environment, setEnvironment] = useState(appConfiguration?.environment)
-  const [xAuthToken, setXAuthToken] = useState(appConfiguration?.xAuthToken)
-  const [projectId, setProjectId] = useState(appConfiguration?.projectId)
+  const [sourceConfig, setSourceConfig] = useState(appConfiguration.source)
+  const [targetConfig, setTargetConfig] = useState({})
 
   useEffect(() => {
-    if (appConfiguration?.environment) {
-      setEnvironment(appConfiguration.environment)
-    }
-    if (appConfiguration?.xAuthToken) {
-      setXAuthToken(appConfiguration.xAuthToken)
-    }
-    if (appConfiguration?.projectId) {
-      setProjectId(appConfiguration.projectId)
-    }
+    setSourceConfig(appConfiguration.source)
+    setTargetConfig(appConfiguration.target)
+  }, [appConfiguration])
 
-    setApplicationConfiguration({
-      environment,
-      xAuthToken,
-      projectId
-    })
-  }, [])
-
-  const handleSubmit = (event) => {
+  const handleSubmitSourceChannel = (event) => {
     event.preventDefault();
-    setApplicationConfiguration({
-      environment,
-      xAuthToken,
-      projectId,
+    storeApplicationConfiguration({
+      source: sourceConfig,
+      target: appConfiguration.target,
+    })
+  }
+
+  const handleSubmitTargetChannel = (event) => {
+    event.preventDefault();
+    storeApplicationConfiguration({
+      source: appConfiguration.source,
+      target: targetConfig,
     })
   }
 
@@ -71,17 +66,19 @@ function Configuration() {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Card>
+              <CardHeader title="Source Environment" />
+              <Divider />
               <CardContent>
                 <Box
                   component="form"
                   sx={{
-                    '& .MuiTextField-root': { m: 2, width: '100ch' }
+                    '& .MuiTextField-root': { m: 1, width: '90%' }
                   }}
                   noValidate
                   autoComplete="off"
-                  onSubmit={handleSubmit}
+                  onSubmit={handleSubmitSourceChannel}
                 >
                   <div>
                     <TextField
@@ -90,24 +87,73 @@ function Configuration() {
                       name="environment"
                       label="Environment"
                       helperText="https://<environment>.bloomreach.io"
-                      value={environment}
-                      onChange={(e) => setEnvironment(e.target.value)}
+                      value={sourceConfig?.environment || ''}
+                      onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
                     />
                     <TextField
                       required
                       id="xAuthToken"
                       name="xAuthToken"
                       label="X-Auth-Token"
-                      value={xAuthToken}
-                      onInput={(e) => setXAuthToken(e.target.value)}
+                      value={sourceConfig?.xAuthToken || ''}
+                      onChange={(e) => setSourceConfig({...sourceConfig, xAuthToken: e.target.value})}
                     />
                     <TextField
                       required
                       id="projectId"
                       name="projectId"
                       label="Project ID"
-                      value={projectId}
-                      onInput={(e) => setProjectId(e.target.value)}
+                      value={sourceConfig?.projectId || ''}
+                      onChange={(e) => setSourceConfig({...sourceConfig, projectId: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <Button
+                      sx={{ margin: 1 }}
+                      variant="contained"
+                      type="submit"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Card>
+              <CardHeader title="Target Environment" />
+              <Divider />
+              <CardContent>
+                <Box
+                  component="form"
+                  sx={{
+                    '& .MuiTextField-root': { m: 1, width: '90%' }
+                  }}
+                  noValidate
+                  autoComplete="off"
+                  onSubmit={handleSubmitTargetChannel}
+                >
+                  <div>
+                    <TextField
+                      name="environment"
+                      label="Environment"
+                      helperText="https://<environment>.bloomreach.io"
+                      value={targetConfig?.environment || ''}
+                      onChange={(e) => setTargetConfig({...targetConfig, environment: e.target.value})}
+                    />
+                    <TextField
+                      name="xAuthToken"
+                      label="X-Auth-Token"
+                      value={targetConfig?.xAuthToken || ''}
+                      onChange={(e) => setTargetConfig({...targetConfig, xAuthToken: e.target.value})}
+                    />
+                    <TextField
+                      name="projectId"
+                      label="Project ID"
+                      value={targetConfig?.projectId || ''}
+                      onChange={(e) => setTargetConfig({...targetConfig, projectId: e.target.value})}
                     />
                   </div>
                   <div>

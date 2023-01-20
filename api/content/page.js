@@ -11,7 +11,7 @@ const CONTENT_API_PATH = 'management/content/v1'
  * @param {string} projectId
  * @returns
  */
-export const getPage = async (environment, xAuthToken, channel, path, projectId = 'core',) => {
+export const getPage = async (environment, xAuthToken, channel, path, projectId = 'core') => {
     const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_API_PATH}/project/${projectId}/channel/${channel}/page/${path}`, {
         method: 'GET',
         headers: {
@@ -20,6 +20,73 @@ export const getPage = async (environment, xAuthToken, channel, path, projectId 
       })
 
     return response
+}
+
+export const fakePage = () => {
+    return {
+        "name": "test-page",
+        "displayName": "Test Page",
+        "layout": "one-column",
+        "document": {
+            "contentType": "referencespa:page",
+            "fields": [
+                {
+                    "name": "title",
+                    "value": [
+                        ""
+                    ]
+                },
+                {
+                    "name": "description",
+                    "value": [
+                        ""
+                    ]
+                },
+                {
+                    "name": "ogCompound",
+                    "value": [
+                        {
+                            "fields": {
+                                "image": [
+                                    "/"
+                                ],
+                                "description": [
+                                    ""
+                                ],
+                                "type": [
+                                    "website"
+                                ],
+                                "locale": [
+                                    "en"
+                                ],
+                                "url": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "preventIndexing",
+                    "value": [
+                        false
+                    ]
+                }
+            ]
+        },
+        "containers": [
+            {
+                "path": "main",
+                "components": []
+            }
+        ],
+        "system": {
+            "createdBy": "adam.pengh+profserv02@gmail.com",
+            "createdAt": "2023-01-05T19:36:02.154+01:00",
+            "updatedBy": "adam.pengh+profserv02@gmail.com",
+            "updatedAt": "2023-01-05T19:36:04.396+01:00"
+        }
+    }
 }
 
 /**
