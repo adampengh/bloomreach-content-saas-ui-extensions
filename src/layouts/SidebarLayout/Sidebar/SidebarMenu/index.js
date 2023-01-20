@@ -22,6 +22,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PlagiarismIcon from '@mui/icons-material/Plagiarism';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ImportExportIcon from '@mui/icons-material/ImportExport';
 
 
 const MenuWrapper = styled(Box)(
@@ -259,6 +260,21 @@ function SidebarMenu() {
                         startIcon={<PlagiarismIcon />}
                       >
                         Pages
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                  <ListItem component="div">
+                    <NextLink href="/export-import" passHref>
+                      <Button
+                          className={
+                            currentRoute === '/export-import' ? 'active' : ''
+                          }
+                          disableRipple
+                          component="a"
+                          onClick={closeSidebar}
+                          startIcon={<ImportExportIcon />}
+                      >
+                        Export & Import
                       </Button>
                     </NextLink>
                   </ListItem>
