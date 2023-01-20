@@ -28,6 +28,7 @@ function ContentTypes() {
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [contentTypes, setContentTypes] = useState([])
+  const [pageSize, setPageSize] = React.useState(10);
 
   const {
     appConfiguration
@@ -73,6 +74,9 @@ function ContentTypes() {
       field: 'id',
       headerName: 'Name',
       width: 360,
+      renderCell: (params) => {
+        return <NextLink href={`/content-types/${params.row.id}`}>{params.row.id}</NextLink>
+      }
     },
     {
       field: 'displayName',
@@ -135,10 +139,20 @@ function ContentTypes() {
                     <DataGrid
                       rows={contentTypes}
                       columns={columns}
-                      pageSize={10}
-                      rowsPerPageOptions={[10]}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                      rowsPerPageOptions={[10, 20, 30, contentTypes?.length]}
+                      pagination
                       checkboxSelection
                       disableSelectionOnClick
+                      initialState={{
+                        sorting: {
+                          sortModel: [{
+                            field: 'id',
+                            sort: 'asc'
+                          }]
+                        }
+                      }}
                     />
                   </Box>
                 </CardContent>
