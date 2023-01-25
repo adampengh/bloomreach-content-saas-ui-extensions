@@ -3,7 +3,7 @@ import axios from 'axios'
 import NextLink from 'next/link';
 
 // APIs
-import { getAllChannels } from 'api';
+import { getAllProjects } from 'api';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
@@ -29,6 +29,9 @@ import {
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
+// Icons
+import LanguageIcon from '@mui/icons-material/Language';
+
 
 const ChannelIcon = ({ icon }) => {
   const style = {
@@ -43,10 +46,10 @@ const ChannelIcon = ({ icon }) => {
 }
 
 
-function Channels() {
+function Projects() {
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [channels, setChannels] = useState([])
+  // const [channels, setChannels] = useState([])
   const [projects, setProjects] = useState([])
 
   const {
@@ -61,14 +64,9 @@ function Channels() {
 
   useEffect(() => {
     if (environment && xAuthToken) {
-      getAllChannels(environment, xAuthToken)
+      getAllProjects(environment, xAuthToken)
         .then((response) => {
-          let data = response.data;
-          if (projectId) {
-            data = response.data.filter(channel => channel.branch === projectId)
-          }
-          setProjects(Array.from(new Set(data.map(channel => channel.projectName))))
-          setChannels(data)
+          setProjects(response.data)
           setIsLoaded(true)
           setError(null)
         })
@@ -83,7 +81,7 @@ function Channels() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Channels"
+          heading="Projects"
         />
       </PageTitleWrapper>
       <Container maxWidth="xl">
@@ -94,9 +92,6 @@ function Channels() {
           alignItems="stretch"
           alignContent="stretch"
           sx={{
-            '& .MuiGrid-item': {
-              textAlign: 'center'
-            },
             '& .MuiCircularProgress-root': {
               margin: '24px'
             }
@@ -116,36 +111,31 @@ function Channels() {
               </Card>
             </Grid>
           :
-            <>
-              {projects.map((project) => (
-                <Grid item xs={12} key={project}>
-                  <Card>
-                    <CardHeader title={project} />
-                    <Divider />
-                    <CardContent>
-                      <List>
-                        { channels
-                          .filter(channel => channel.projectName === project)
-                          .map((channel) => {
-                            return (
-                              <ListItem key={channel.id} component="div">
-                                <NextLink href="/" passHref>
-                                  <ListItemButton>
-                                    <ListItemAvatar>
-                                      <ChannelIcon icon={channel.icon} />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={channel.name} secondary={channel.id} />
-                                  </ListItemButton>
-                                </NextLink>
-                              </ListItem>
-                            )
-                        })}
-                      </List>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </>
+            <Grid item xs={12} >
+              <Card>
+                <CardHeader title='List of Projects' />
+                <Divider />
+                <CardContent>
+                  <List>
+                    { projects.map((project) => {
+                      return (
+                        <ListItem key={project.id} component="div">
+                          <NextLink href={`/projects/${project.id}`} passHref>
+                            <ListItemButton>
+                              <ListItemAvatar>
+                                <LanguageIcon />
+                              </ListItemAvatar>
+                              <ListItemText primary={project.name} secondary={project.id} />
+                              <ListItemText primary={project.state.status} />
+                            </ListItemButton>
+                          </NextLink>
+                        </ListItem>
+                      )
+                    })}
+                  </List>
+                </CardContent>
+              </Card>
+            </Grid>
           }
         </Grid>
       </Container>
@@ -153,6 +143,6 @@ function Channels() {
   );
 }
 
-Channels.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+Projects.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default Channels;
+export default Projects;

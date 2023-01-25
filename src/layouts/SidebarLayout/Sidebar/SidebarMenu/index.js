@@ -213,6 +213,35 @@ function SidebarMenu() {
               component="div"
               subheader={
                 <ListSubheader component="div" disableSticky>
+                  Project Management
+                </ListSubheader>
+              }
+            >
+              <SubMenuWrapper>
+                <List component="div">
+                  <ListItem component="div">
+                    <NextLink href="/projects" passHref>
+                      <Button
+                        className={
+                          currentRoute === '/projects' ? 'active' : ''
+                        }
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<AssignmentIcon />}
+                      >
+                        Projects
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                </List>
+              </SubMenuWrapper>
+            </List>
+
+            <List
+              component="div"
+              subheader={
+                <ListSubheader component="div" disableSticky>
                   Site Management
                 </ListSubheader>
               }
@@ -231,6 +260,21 @@ function SidebarMenu() {
                         startIcon={<FormatListBulletedIcon />}
                       >
                         Channels
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                  <ListItem component="div">
+                    <NextLink href="/components" passHref>
+                      <Button
+                        className={
+                          currentRoute === '/components' ? 'active' : ''
+                        }
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<FormatListBulletedIcon />}
+                      >
+                        Components
                       </Button>
                     </NextLink>
                   </ListItem>

@@ -13,7 +13,7 @@ import {
 import Head from 'next/head';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 
-import BaseLayout from 'src/layouts/BaseLayout';
+import SidebarLayout from 'src/layouts/SidebarLayout';
 
 const MainContent = styled(Box)(
   () => `
@@ -107,5 +107,5 @@ function Status404() {
 export default Status404;
 
 Status404.getLayout = function getLayout(page) {
-  return <BaseLayout>{page}</BaseLayout>;
+  return <SidebarLayout>{page}</SidebarLayout>;
 };
