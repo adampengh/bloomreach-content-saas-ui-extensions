@@ -74,11 +74,6 @@ function Status500() {
           >
             <Container maxWidth="sm">
               <Box textAlign="center">
-                <img
-                  alt="500"
-                  height={260}
-                  src="/static/images/status/500.svg"
-                />
                 <Typography variant="h2" sx={{ my: 2 }}>
                   There was an error, please try again later
                 </Typography>

@@ -132,11 +132,6 @@ function StatusComingSoon() {
                   launch!
                 </Typography>
               </Container>
-              <img
-                alt="Coming Soon"
-                height={200}
-                src="/static/images/status/coming-soon.svg"
-              />
             </Box>
 
             <Box display="flex" justifyContent="center">

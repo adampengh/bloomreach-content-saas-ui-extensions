@@ -64,7 +64,6 @@ function WatchList() {
             p: 3
           }}
         >
-          <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
 
           <Typography
             align="center"

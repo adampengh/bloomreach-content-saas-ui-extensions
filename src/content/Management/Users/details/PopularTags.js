@@ -122,10 +122,7 @@ function PopularTags() {
         <Divider />
         <ListItem button>
           <ListItemAvatar>
-            <Avatar
-              sx={{ width: 38, height: 38 }}
-              src="/static/images/logo/google.svg"
-            />
+
           </ListItemAvatar>
           <ListItemText
             primaryTypographyProps={{
