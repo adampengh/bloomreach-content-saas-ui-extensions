@@ -13,6 +13,15 @@ export function ConfigurationProvider({ children }) {
       environment: '',
       xAuthToken: '',
       projectId: 'core',
+    },
+    pages: {
+      components: {
+        selections: {
+          projectId: '',
+          channelId: '',
+          componentGroup: '',
+        }
+      }
     }
   });
 

@@ -23,6 +23,9 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
@@ -42,6 +45,10 @@ function Configuration() {
   const [sourceDeveloperProjects, setSourceDeveloperProjects] = useState([])
   const [targetDeveloperProjects, setTargetDeveloperProjects] = useState([])
 
+  const [snackPack, setSnackPack] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [messageInfo, setMessageInfo] = React.useState(undefined);
+
   useEffect(() => {
     setSourceConfig(appConfiguration.source)
     setTargetConfig(appConfiguration.target)
@@ -60,6 +67,18 @@ function Configuration() {
         })
     }
   }, [appConfiguration])
+
+  useEffect(() => {
+    if (snackPack.length && !messageInfo) {
+      // Set a new snack when we don't have an active one
+      setMessageInfo({ ...snackPack[0] });
+      setSnackPack((prev) => prev.slice(1));
+      setOpen(true);
+    } else if (snackPack.length && messageInfo && open) {
+      // Close an active snack when a new one is added
+      setOpen(false);
+    }
+  }, [snackPack, messageInfo, open])
 
   const handleSourceProjectIdClick = () => {
     if (appConfiguration?.source?.environment && appConfiguration?.source?.xAuthToken) {
@@ -82,18 +101,35 @@ function Configuration() {
   const handleSubmitSourceChannel = (event) => {
     event.preventDefault();
     storeApplicationConfiguration({
+      ...appConfiguration,
       source: sourceConfig,
-      target: appConfiguration.target,
     })
+
+    const message = 'Source Configuration Saved'
+    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   }
 
   const handleSubmitTargetChannel = (event) => {
     event.preventDefault();
     storeApplicationConfiguration({
-      source: appConfiguration.source,
+      ...appConfiguration,
       target: targetConfig,
     })
+
+    const message = 'Target Configuration Saved'
+    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  const handleExited = () => {
+    setMessageInfo(undefined);
+  };
 
   return (
     <>
@@ -302,6 +338,29 @@ function Configuration() {
           xAuthToken={sourceConfig?.xAuthToken}
         />
       }
+
+      <Snackbar
+        key={messageInfo ? messageInfo.key : undefined}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={open}
+        autoHideDuration={4000}
+        onClose={handleClose}
+        TransitionProps={{ onExited: handleExited }}
+        message={messageInfo ? messageInfo.message : undefined}
+        sx={{ zIndex: 1000 }}
+        action={
+          <React.Fragment>
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              sx={{ p: 0.5 }}
+              onClick={handleClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </>
   );
 }

@@ -4,9 +4,10 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 // API
 import {
   downloadExportedFiles,
+  getAllProjects,
   getOperationDetails,
   requestAnExport
-} from 'api/batch-export';
+} from 'api';
 
 // Components
 import PageTitle from 'src/components/PageTitle';
@@ -17,10 +18,15 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Divider,
+  Checkbox,
   Container,
+  Divider,
+  FormControl,
   Grid,
+  InputLabel,
+  ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from '@mui/material';
@@ -28,6 +34,23 @@ import {
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
+const ITEM_HEIGHT = 36;
+const ITEM_PADDING_TOP = 0;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const DATA_TYPES = [
+  'resourcebundle',
+  'page',
+  'document',
+  'folder',
+];
 
 function ExportImport() {
   const {
@@ -40,23 +63,70 @@ function ExportImport() {
     projectId,
   } = appConfiguration.source
 
-  const [dataTypes, setDataTypes] = useState(["resourcebundle", "page", "document", "folder"])
+  const [dataTypes, setDataTypes] = useState(DATA_TYPES)
   const [sourcePath, setSourcePath] = useState("")
   const [skippedExportItems, setSkippedExportItems] = useState(0)
   const [elapsedExportTime, setElapsedExportTime] = useState(0)
-  const [exportProjectId, setExportProjectId] = useState("")
   const [exportOperationId, setExportOperationId] = useState(null)
   const [exportJobStatus, setExportJobStatus] = useState("")
   const [exportJobRunning, setExportJobRunning] = useState(false)
   const [downloadReady, setDownloadReady] = useState(false)
 
+  const [projectsList, setProjectsList] = useState([])
+  const [selectedProject, setSelectedProject] = useState(null)
+
   useEffect(() => {
-    setExportProjectId(projectId)
+    setSelectedProject(projectId)
+
+    // Get source projects list
+    if (environment && xAuthToken) {
+      getAllProjects(environment, xAuthToken)
+        .then((response) => {
+          console.log(response)
+          let projects = response.data
+          if (projectId) {
+            projects.find(project => project.id === projectId)
+          }
+          console.log('projects', projects)
+          setProjectsList(response.data)
+          setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
+        })
+    }
+
+    // Get target projects list
+    if (appConfiguration.target.environment && appConfiguration.target.xAuthToken) {
+      getAllProjects(appConfiguration.target.environment, appConfiguration.target.xAuthToken)
+        .then((response) => {
+          console.log(response)
+          let projects = response.data
+          if (projectId) {
+            projects.find(project => project.id === projectId)
+          }
+          console.log('projects', projects)
+          setProjectsList(response.data)
+          setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
+        })
+    }
   }, [appConfiguration])
+
+  const handleDataTypesChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setDataTypes(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  const handleProjectChange = (e) => {
+    e.preventDefault()
+    setSelectedProject(projectsList.find(project => project.id === e.target.value))
+  }
 
   const handleSubmitExport = (event) => {
     event.preventDefault();
-    requestAnExport(environment, xAuthToken, exportProjectId, dataTypes, sourcePath)
+    requestAnExport(environment, xAuthToken, selectedProject.id, dataTypes, sourcePath)
       .then(resp => {
         if(resp.data.status === "STARTING") {
           setExportOperationId(resp.data.operationId)
@@ -140,15 +210,27 @@ function ExportImport() {
                   onSubmit={handleSubmitExport}
                 >
                   <div>
-                    <TextField
-                      required
-                      id="dataTypes"
-                      name="dataTypes"
-                      label="Data types"
-                      helperText="resourcebundle, page, resourcebundle, folder"
-                      value={dataTypes || ''}
-                      onChange={(e) => setDataTypes(e.target.value.split(","))}
-                    />
+                    <FormControl required sx={{ m: 1, width: 300 }}>
+                      <InputLabel id="demo-multiple-checkbox-label">Data Types</InputLabel>
+                      <Select
+                        label="Data Types"
+                        labelId="demo-multiple-checkbox-label"
+                        id="demo-multiple-checkbox"
+                        multiple
+                        value={dataTypes}
+                        onChange={handleDataTypesChange}
+                        input={<OutlinedInput label="Data Types" />}
+                        renderValue={(selected) => selected.join(', ')}
+                        MenuProps={MenuProps}
+                      >
+                        {DATA_TYPES.map((dataType) => (
+                          <MenuItem key={dataType} value={dataType}>
+                            <Checkbox checked={dataTypes.indexOf(dataType) > -1} />
+                            <ListItemText primary={dataType} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                     <TextField
                       required
                       id="sourcePath"
@@ -158,14 +240,25 @@ function ExportImport() {
                       value={sourcePath || ''}
                       onChange={(e) => setSourcePath(e.target.value)}
                     />
-                    <TextField
-                      required
-                      id="projectId"
-                      name="projectId"
-                      label="Project ID"
-                      value={ projectId || ''}
-                      onChange={(e) => setExportProjectId(e.target.value)}
-                    />
+                    <FormControl
+                      variant="outlined"
+                      sx={{ m: 1, minWidth: 240, marginTop: 2 }}
+                    >
+                      <InputLabel id="channel">Project</InputLabel>
+                      <Select
+                        id="projectId"
+                        labelId="projectId"
+                        label="Project ID"
+                        value={selectedProject?.id || ''}
+                        onChange={(e) => handleProjectChange(e)}
+                      >
+                        {projectsList.map(project => (
+                          <MenuItem key={project.id} value={project.id}>
+                            {project.name} ({project.id})
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
                   </div>
                   <div>
                     <Button
@@ -206,6 +299,31 @@ function ExportImport() {
                   autoComplete="off"
                   onSubmit={handleSubmitImport}>
                   <div>
+                    <FormControl
+                      variant="outlined"
+                      sx={{ m: 1, minWidth: '90%', marginTop: 2 }}
+                    >
+                      <InputLabel id="channel">Project</InputLabel>
+                      <Select
+                        id="projectId"
+                        labelId="projectId"
+                        label="Project ID"
+                        value={selectedProject?.id || ''}
+                        onChange={(e) => handleProjectChange(e)}
+                      >
+                        {projectsList.map(project => (
+                          <MenuItem key={project.id} value={project.id}>
+                            {project.name} ({project.id})
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      required
+                      type="file"
+                      id="sourcePath"
+                      name="sourcePath"
+                    />
                     <Button
                       sx={{ margin: 1 }}
                       variant="contained"
