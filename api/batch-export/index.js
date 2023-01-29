@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const EXPORT_API_PATH = 'management/content-export/v1'
 
-export const requestAnExport = async (environment, xAuthToken, projectId, dataTypes = ["resourcebundle", "page", "resourcebundle", "folder"], sourcePath) => {
+export const requestAnExport = async (environment, xAuthToken, projectId = 'core', dataTypes = ["resourcebundle", "page", "resourcebundle", "folder"], sourcePath) => {
     console.log(dataTypes)
     console.log(sourcePath)
 
@@ -14,7 +14,7 @@ export const requestAnExport = async (environment, xAuthToken, projectId, dataTy
         data: {
             "dataTypes": dataTypes,
             "sourcePath": `/content/documents/${sourcePath}`,
-            "branch": "core",
+            "branch": projectId,
         }
     })
 

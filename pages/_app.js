@@ -4,17 +4,14 @@ import nProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import ThemeProvider from 'src/theme/ThemeProvider';
 import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider } from '@emotion/react';
-import createEmotionCache from 'src/createEmotionCache';
 import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-const clientSideEmotionCache = createEmotionCache();
 
-function UIExtensionApp(props) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+function App(props) {
+  const { Component, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
 
   Router.events.on('routeChangeStart', nProgress.start);
@@ -22,7 +19,7 @@ function UIExtensionApp(props) {
   Router.events.on('routeChangeComplete', nProgress.done);
 
   return (
-    <CacheProvider value={emotionCache}>
+    <>
       <Head>
         <title>Bloomreach SaaS UI Extension</title>
         <meta
@@ -40,9 +37,8 @@ function UIExtensionApp(props) {
           </ThemeProvider>
         </SidebarProvider>
       </ConfigurationProvider>
-
-    </CacheProvider>
+    </>
   );
 }
 
-export default UIExtensionApp;
+export default App;

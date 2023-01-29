@@ -34,10 +34,25 @@ import { DataGrid } from '@mui/x-data-grid';
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
+
 function ContentTypes() {
+  // CONTEXT
+  const {
+    appConfiguration,
+    storeApplicationConfiguration,
+  } = useContext(ConfigurationContext)
+
+  const {
+    environment,
+    xAuthToken,
+    projectId,
+  } = appConfiguration.source
+
+  // STATE
   const [pageSize, setPageSize] = React.useState(10);
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [selections, setSelections] = useState(appConfiguration?.pages?.components?.selections)
 
   // Projects
   const [projectsList, setProjectsList] = useState([])
@@ -53,18 +68,10 @@ function ContentTypes() {
 
   const [components, setComponents] = useState([])
 
-  const {
-    appConfiguration
-  } = useContext(ConfigurationContext)
-
-  const {
-    environment,
-    xAuthToken,
-    projectId,
-  } = appConfiguration.source
 
   useEffect(async () => {
-    console.log('USE EFFECT')
+    setSelections(appConfiguration?.pages?.components?.selections)
+
     if (environment && xAuthToken) {
       await getAllProjects(environment, xAuthToken)
         .then(async (response) => {
@@ -76,36 +83,24 @@ function ContentTypes() {
           console.log('projects', projects)
           await setProjectsList(response.data)
           await setSelectedProject(projects)
-
         })
 
-
       // Get all channels filtered by projectId
-      if (projectId) {
+      if (selections.projectId) {
         await getAllChannels(environment, xAuthToken)
           .then(async (response) => {
             let channels = response.data;
-            console.log('All Channels', channels)
-            channels = channels.filter(channel => channel.branch === projectId)
-            console.log('Channels for Project ID', channels)
-            console.log('Initial Channel', channels[1])
+            channels = channels.filter(channel => channel.branch === selections.projectId)
             await setChannels(channels)
-            await setSelectedChannel(channels[1])
-            console.log('selectedChannel', selectedChannel)
-
-            await getAllComponentGroups(environment, xAuthToken, channels[1].id)
+            await setSelectedChannel(selections.channelId)
+            await getAllComponentGroups(environment, xAuthToken, selections.channelId)
               .then(async (response) => {
                 let nonBaseGroups = await response.data.filter(group => !group.system)
-                console.log('nonBaseGroups', nonBaseGroups)
                 await setComponentGroups(nonBaseGroups)
                 await setSelectedComponentGroup(nonBaseGroups[0])
-
-                console.log('selectedComponentGroup', selectedComponentGroup)
                 await getAllComponents(environment, xAuthToken, channels[1].id, nonBaseGroups[0].name)
                   .then(response => {
-                    console.log('getAllComponents', response)
                     const columns = response.data.map(item => {
-                      // console.log('component', item)
                       return {
                         id: item.id,
                         ctype: item.ctype,
@@ -120,47 +115,69 @@ function ContentTypes() {
               })
             })
       }
-
-
       setIsLoaded(true)
     } else {
       setIsLoaded(true)
     }
-  }, [appConfiguration])
+  }, [appConfiguration.pages.components.selections.projectId])
+
 
   const handleProjectChange = async (e) => {
     e.preventDefault()
-    console.log(e.target.value)
-    console.log('projectsList', projectsList)
+    setSelections({
+      ...selections,
+      projectId: e.target.value,
+    })
+    storeApplicationConfiguration({
+      ...appConfiguration,
+      pages: {
+        components: {
+          selections: {
+            ...selections,
+            projectId: e.target.value,
+          },
+        }
+      }
+    })
     const newProject = await projectsList.find(project => project.id === e.target.value)
-    console.log('newProject', newProject)
     await setSelectedProject(newProject)
-    console.log('selectedProject', selectedProject)
+    await getAllChannels(environment, xAuthToken)
+      .then(async (response) => {
+        let channels = response.data;
+        channels = channels.filter(channel => channel.branch === e.target.value)
+        await setChannels(channels)
+        await setSelectedChannel(channels[1])
+      })
   }
+
 
   const handleChannelChange = async (e) => {
     e.preventDefault()
-    console.log('channel changed', e.target.value)
-    console.log('channels', channels)
-
+    setSelections({
+      ...selections,
+      channelId: e.target.value,
+    })
+    storeApplicationConfiguration({
+      ...appConfiguration,
+      pages: {
+        components: {
+          selections: {
+            ...selections,
+            channelId: e.target.value,
+          },
+        }
+      }
+    })
     const newChannel = await channels.find(channel => channel.id === e.target.value)
-    console.log('new channel', newChannel)
     await setSelectedChannel(newChannel)
-
-    console.log('Get All Component Groups')
     await getAllComponentGroups(environment, xAuthToken, newChannel.id)
       .then(async (response) => {
-        console.log('getAllComponentGroups', response.data)
-
         const nonBaseGroups = response.data.filter(group => !group.system)
         await setComponentGroups(nonBaseGroups)
         await setSelectedComponentGroup(nonBaseGroups[0])
-
         await getAllComponents(environment, xAuthToken, newChannel.id, nonBaseGroups[0].name)
           .then(response => {
-            console.log('getAllComponents', response)
             const columns = response.data.map(item => {
-              console.log('component', item)
               return {
                 id: item.id,
                 ctype: item.ctype,
@@ -172,20 +189,29 @@ function ContentTypes() {
       })
   }
 
+
   const handleComponentGroupChange = async (e) => {
     e.preventDefault()
-    console.log('component group changed', e.target.value)
-    console.log('componentGroups', componentGroups)
+    setSelections({
+      ...selections,
+      componentGroup: e.target.value,
+    })
+    storeApplicationConfiguration({
+      ...appConfiguration,
+      pages: {
+        components: {
+          selections: {
+            ...selections,
+            componentGroup: e.target.value,
+          },
+        }
+      }
+    })
     const newComponentGroup = await componentGroups.find(componentGroup => componentGroup.name === e.target.value)
-    console.log('newComponentGroup', newComponentGroup)
     await setSelectedComponentGroup(newComponentGroup)
-
-    console.log('Get All Components')
-    await getAllComponents(environment, xAuthToken, selectedChannel.id, newComponentGroup.name)
+    await getAllComponents(environment, xAuthToken, selections.channelId, e.target.value)
       .then(response => {
-        console.log('getAllComponents', response)
         const columns = response.data.map(item => {
-          console.log('component', item)
           return {
             id: item.id,
             ctype: item.ctype,
@@ -251,6 +277,7 @@ function ContentTypes() {
             </Grid>
           :
             <>
+              <code>{ JSON.stringify(selections, null, 4) }</code>
               <Grid item xs={12}>
                 <Card>
                   <CardContent>
@@ -263,7 +290,7 @@ function ContentTypes() {
                         id="project"
                         labelId="project"
                         label="Project"
-                        value={selectedProject?.id || ''}
+                        value={selections?.projectId || ''}
                         onChange={(e) => handleProjectChange(e)}
                       >
                         {projectsList.map(project => (
@@ -274,7 +301,7 @@ function ContentTypes() {
                       </Select>
                     </FormControl>
 
-                    { selectedProject &&
+                    { selections?.channelId &&
                       <FormControl
                         variant="outlined"
                         sx={{ m: 1, minWidth: 240, marginTop: 2 }}
@@ -284,7 +311,7 @@ function ContentTypes() {
                           id="channel"
                           labelId="channel"
                           label="Channel"
-                          value={selectedChannel?.id || ''}
+                          value={selections?.channelId || ''}
                           onChange={(e) => handleChannelChange(e)}
                         >
                           {channels.map(channel => (
@@ -296,7 +323,7 @@ function ContentTypes() {
                       </FormControl>
                     }
 
-                    { selectedChannel &&
+                    { selections?.channelId &&
                       <FormControl
                         variant="outlined"
                         sx={{ m: 1, minWidth: 240, marginTop: 2 }}
