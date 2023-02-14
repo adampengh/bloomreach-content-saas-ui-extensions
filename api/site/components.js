@@ -21,6 +21,7 @@ export const getAllComponents = async (environment, xAuthToken, channelId, compo
 }
 
 export const getComponent = async (environment, xAuthToken, channelId, componentGroup, componentName) => {
+    console.log('GET COMPONENT')
     const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/component_groups/${componentGroup}/components/${componentName}`, {
         method: 'GET',
         headers: {

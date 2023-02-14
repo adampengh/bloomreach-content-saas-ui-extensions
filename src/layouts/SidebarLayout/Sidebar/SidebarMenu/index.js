@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 
+import { validateToken } from 'api'
+
 // Components
 import {
   ListSubheader,
@@ -187,6 +189,28 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
+        {process.env.NODE_ENV === 'development' &&
+          <List component="div">
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/TEMPLATES" passHref>
+                    <Button
+                      className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<SettingsIcon />}
+                    >
+                      TEMPLATES
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+        }
+
         <List component="div">
           <SubMenuWrapper>
             <List component="div">

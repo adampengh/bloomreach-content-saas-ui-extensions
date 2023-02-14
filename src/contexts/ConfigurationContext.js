@@ -26,6 +26,7 @@ export function ConfigurationProvider({ children }) {
   });
 
   useEffect(() => {
+    console.log('ConfigurationContext useEffect')
     if (localStorage.getItem('appConfiguration')) {
       setAppConfiguration(JSON.parse(localStorage.getItem('appConfiguration')));
     }

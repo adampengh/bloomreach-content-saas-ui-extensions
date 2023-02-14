@@ -2,13 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // API
-import { getAllProjects } from 'api'
+import {
+  validateToken,
+  getAllProjects
+} from 'api'
 
 // Components
-import CreateProjectModal from './CreateProjectModal';
+import CreateProjectModal from 'src/components/CreateProjectModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -17,9 +21,9 @@ import {
   Container,
   Divider,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
-  Grid,
   Select,
   TextField,
 } from '@mui/material';
@@ -47,16 +51,31 @@ function Configuration() {
 
   const [snackPack, setSnackPack] = useState([]);
   const [open, setOpen] = useState(false);
-  const [messageInfo, setMessageInfo] = React.useState(undefined);
+  const [messageInfo, setMessageInfo] = useState(undefined);
+  const [messageSeverity, setMessageSeverity] = useState('success')
 
   useEffect(() => {
     setSourceConfig(appConfiguration.source)
     setTargetConfig(appConfiguration.target)
 
     if (appConfiguration.source?.environment && appConfiguration.source?.xAuthToken) {
+      validateToken(appConfiguration.source?.environment, appConfiguration?.source?.xAuthToken)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log('error', error)
+        })
+
       getAllProjects(appConfiguration.source?.environment, appConfiguration?.source?.xAuthToken)
         .then(response => {
           setSourceDeveloperProjects(response.data)
+        })
+        .catch((error) => {
+          // console.error('Error fetching source projects:', error)
+          const message = error.message
+          setMessageSeverity('error')
+          setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
         })
     }
 
@@ -64,6 +83,12 @@ function Configuration() {
       getAllProjects(appConfiguration.target?.environment, appConfiguration?.target?.xAuthToken)
         .then(response => {
           setTargetDeveloperProjects(response.data)
+        })
+        .catch((error) => {
+          // console.error('Error fetching target projects:', error.toJSON())
+          const message = error.message
+          setMessageSeverity('error')
+          setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
         })
     }
   }, [appConfiguration])
@@ -86,6 +111,10 @@ function Configuration() {
         .then(response => {
           setSourceDeveloperProjects(response.data)
         })
+        .catch((error) => {
+          setMessageSeverity('error')
+          setMessageInfo(error.message)
+        })
     }
   }
 
@@ -94,6 +123,10 @@ function Configuration() {
       getAllProjects(appConfiguration.target.environment, appConfiguration?.target?.xAuthToken)
         .then(response => {
           setTargetDeveloperProjects(response.data)
+        })
+        .catch((error) => {
+          setMessageSeverity('error')
+          setMessageInfo(error.message)
         })
     }
   }
@@ -106,6 +139,7 @@ function Configuration() {
     })
 
     const message = 'Source Configuration Saved'
+    setMessageSeverity('success')
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   }
 
@@ -117,6 +151,7 @@ function Configuration() {
     })
 
     const message = 'Target Configuration Saved'
+    setMessageSeverity('success')
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   }
 
@@ -346,21 +381,17 @@ function Configuration() {
         autoHideDuration={4000}
         onClose={handleClose}
         TransitionProps={{ onExited: handleExited }}
-        message={messageInfo ? messageInfo.message : undefined}
         sx={{ zIndex: 1000 }}
-        action={
-          <React.Fragment>
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              sx={{ p: 0.5 }}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
+      >
+        <Alert
+          onClose={handleClose}
+          variant="filled"
+          severity={messageSeverity}
+          sx={{ width: '100%', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
+        >
+          {messageInfo?.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

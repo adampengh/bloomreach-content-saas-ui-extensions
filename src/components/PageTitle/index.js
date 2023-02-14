@@ -11,7 +11,7 @@ const PageTitle = ({ heading = '', subHeading = '', docs = '', ...rest }) => {
       {...rest}
     >
       <Grid item>
-        <Typography variant="h3" component="h3" gutterBottom>
+        <Typography variant="h1" component="h1">
           {heading}
         </Typography>
         <Typography variant="subtitle2">{subHeading}</Typography>

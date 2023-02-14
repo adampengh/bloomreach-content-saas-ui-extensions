@@ -11,10 +11,14 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 // Components
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import CreateProjectModal from 'src/components/CreateProjectModal';
+import StatusIndicator from './StatusIndicator';
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
+  Chip,
   CircularProgress,
   Container,
   Divider,
@@ -24,12 +28,14 @@ import {
   ListItemText,
   ListItemAvatar,
   ListItemButton,
+  Typography,
 } from '@mui/material';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
 // Icons
+import AddIcon from '@mui/icons-material/Add';
 import LanguageIcon from '@mui/icons-material/Language';
 
 
@@ -50,7 +56,8 @@ function Projects() {
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   // const [channels, setChannels] = useState([])
-  const [projects, setProjects] = useState([])
+  const [sourceProjects, setSourceProjects] = useState([])
+  const [targetProjects, setTargetProjects] = useState([])
 
   const {
     appConfiguration
@@ -66,7 +73,30 @@ function Projects() {
     if (environment && xAuthToken) {
       getAllProjects(environment, xAuthToken)
         .then((response) => {
-          setProjects(response.data)
+          let projects = response.data
+          projects.sort((projectA, projectB) => {
+            const timestamp = (project) => new Date(project.system.createdAt).valueOf()
+            return timestamp(projectB) - timestamp(projectA)
+          })
+          setSourceProjects(projects)
+          setIsLoaded(true)
+          setError(null)
+        })
+        .catch((error) => {
+          setError(error.message)
+          setIsLoaded(true)
+        })
+    }
+
+    if (appConfiguration?.target?.environment && appConfiguration?.target?.xAuthToken) {
+      getAllProjects(appConfiguration?.target?.environment, appConfiguration?.target?.xAuthToken)
+        .then((response) => {
+          let projects = response.data
+          projects.sort((projectA, projectB) => {
+            const timestamp = (project) => new Date(project.system.createdAt).valueOf()
+            return timestamp(projectB) - timestamp(projectA)
+          })
+          setTargetProjects(projects)
           setIsLoaded(true)
           setError(null)
         })
@@ -91,6 +121,7 @@ function Projects() {
           justifyContent="center"
           alignItems="stretch"
           alignContent="stretch"
+          spacing={3}
           sx={{
             '& .MuiCircularProgress-root': {
               margin: '24px'
@@ -98,8 +129,7 @@ function Projects() {
           }}
         >
         { !isLoaded
-          ?
-            <Grid
+          ? <Grid
               item
               xs={12}
               justifyContent="center"
@@ -110,32 +140,98 @@ function Projects() {
                 <CircularProgress />
               </Card>
             </Grid>
-          :
-            <Grid item xs={12} >
-              <Card>
-                <CardHeader title='List of Projects' />
-                <Divider />
-                <CardContent>
-                  <List>
-                    { projects.map((project) => {
-                      return (
+          : <>
+              <Grid item xs={6} >
+                <Card>
+                  <CardHeader
+                    title={
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        alignContent="center">
+                          <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
+                            <Typography variant="h4" component="span" >Source Projects</Typography>
+                            <Chip label={appConfiguration.source.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
+                          </Grid>
+                          <Grid item xs={6} textAlign="right">
+                            <Button
+                              variant="outlined"
+                              startIcon={<AddIcon />}
+                            >New Project</Button>
+                          </Grid>
+                      </Grid>
+                    }
+                  />
+                  <Divider />
+                  <CardContent>
+                    <List>
+                      { sourceProjects.map((project) => (
                         <ListItem key={project.id} component="div">
-                          <NextLink href={`/projects/${project.id}`} passHref>
+                          {/* <NextLink href={`/projects/${project.id}`} passHref> */}
                             <ListItemButton>
                               <ListItemAvatar>
                                 <LanguageIcon />
                               </ListItemAvatar>
-                              <ListItemText primary={project.name} secondary={project.id} />
-                              <ListItemText primary={project.state.status} />
+                              <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
+                              <StatusIndicator status={project.state.status} message={project.state.message} />
                             </ListItemButton>
-                          </NextLink>
+                          {/* </NextLink> */}
                         </ListItem>
-                      )
-                    })}
-                  </List>
-                </CardContent>
-              </Card>
-            </Grid>
+                      ))}
+                    </List>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+
+              <Grid item xs={6} >
+                <Card>
+                  <CardHeader
+                    title={
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        alignContent="center">
+                          <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
+                            <Typography variant="h4" component="span" >Target Projects</Typography>
+                            { appConfiguration?.target?.environment &&
+                              <Chip label={appConfiguration.target.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
+                            }
+                          </Grid>
+                          <Grid item xs={6} textAlign="right">
+                            <Button
+                              variant="outlined"
+                              startIcon={<AddIcon />}
+                            >New Project</Button>
+                          </Grid>
+                      </Grid>
+                    }
+                  />
+                  <Divider />
+                  <CardContent>
+                    <List>
+                      { targetProjects.map((project) => (
+                        <ListItem key={project.id} component="div">
+                          {/* <NextLink href={`/projects/${project.id}`} passHref> */}
+                            <ListItemButton>
+                              <ListItemAvatar>
+                                <LanguageIcon />
+                              </ListItemAvatar>
+                              <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
+                              <StatusIndicator status={project.state.status} message={project.state.message} />
+                            </ListItemButton>
+                          {/* </NextLink> */}
+                        </ListItem>
+                      ))}
+                    </List>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </>
           }
         </Grid>
       </Container>
