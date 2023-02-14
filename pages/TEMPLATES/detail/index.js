@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { CopyBlock } from 'react-code-blocks'
 import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 
-import sampleJson from './sample'
+import sampleJson from 'mock-data/sample-component'
 
 // APIs
 import { getContentType } from 'api';

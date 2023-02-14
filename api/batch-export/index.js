@@ -9,11 +9,6 @@ export const requestAnExport = async (
     dataTypes = ["resourcebundle", "page", "resourcebundle", "folder"],
     sourcePath
 ) => {
-    console.log('environment', environment)
-    console.log('xAuthToken', xAuthToken)
-    console.log('projectId', projectId)
-    console.log('dataTypes', dataTypes)
-    console.log('sourcePath', sourcePath)
     const response = await axios(`https://${environment}.bloomreach.io/${EXPORT_API_PATH}/`, {
         method: 'POST',
         headers: {

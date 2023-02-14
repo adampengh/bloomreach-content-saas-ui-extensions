@@ -114,16 +114,12 @@ function Pages() {
   }
 
   const getPageList = async (channel, callback) => {
-    console.log('getPageList')
     const folderPath = channel?.contentRootPath + '/pages'
     await getFolder(environment, xAuthToken, folderPath)
-      .then(response => {
-        callback(response.data)
-      })
+      .then(response => callback(response.data))
   }
 
   const copyPages = async () => {
-    console.log('Copy Selected Pages')
     for await (const page of checked) {
       await copyPage(page)
     }
@@ -135,7 +131,6 @@ function Pages() {
   }
 
   const copyPage = async (page) => {
-    console.log('Copy Individual Page')
     const path = page.relativePagePath
 
     // Recursively create folder structure
@@ -166,9 +161,7 @@ function Pages() {
     for await (const segment of segments) {
       folderPath += '/' + segment
       await getFolder(environment, xAuthToken, folderPath)
-        .then(response => {
-          console.log(response)
-        })
+        .then(response => console.log(response))
         .catch(async (error) => {
           console.error(error.response.status)
           if (error.response.status === 404) {
