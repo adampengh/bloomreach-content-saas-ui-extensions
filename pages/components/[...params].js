@@ -60,7 +60,6 @@ function ContentTypes() {
     if (environment && xAuthToken && channelId && componentGroup && componentName) {
       getComponent(environment, xAuthToken, channelId, componentGroup, componentName)
         .then((response) => {
-          console.log('component', response.data)
           setComponent(response.data)
           setXResourceVersion(response.headers['x-resource-version'])
           setIsLoaded(true)

@@ -182,7 +182,6 @@ function SidebarMenu() {
   useEffect(() => {
     const sourceConfig = appConfiguration?.source
     const hasMissingRequiredConfigProperties = !!Object.entries(sourceConfig).filter(([,value]) => value === '').length
-    console.log('hasMissingRequiredConfigProperties', hasMissingRequiredConfigProperties)
     setMenuItemsEnabled(!hasMissingRequiredConfigProperties)
   }, [appConfiguration])
 

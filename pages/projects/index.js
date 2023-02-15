@@ -169,7 +169,7 @@ function Projects() {
                     <List>
                       { sourceProjects.map((project) => (
                         <ListItem key={project.id} component="div">
-                          {/* <NextLink href={`/projects/${project.id}`} passHref> */}
+                          <NextLink href={`/projects/source/${project.id}`} passHref>
                             <ListItemButton>
                               <ListItemAvatar>
                                 <LanguageIcon />
@@ -177,7 +177,7 @@ function Projects() {
                               <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
                               <StatusIndicator status={project.state.status} message={project.state.message} />
                             </ListItemButton>
-                          {/* </NextLink> */}
+                          </NextLink>
                         </ListItem>
                       ))}
                     </List>
@@ -216,7 +216,7 @@ function Projects() {
                     <List>
                       { targetProjects.map((project) => (
                         <ListItem key={project.id} component="div">
-                          {/* <NextLink href={`/projects/${project.id}`} passHref> */}
+                          <NextLink href={`/projects/target/${project.id}`} passHref>
                             <ListItemButton>
                               <ListItemAvatar>
                                 <LanguageIcon />
@@ -224,7 +224,7 @@ function Projects() {
                               <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
                               <StatusIndicator status={project.state.status} message={project.state.message} />
                             </ListItemButton>
-                          {/* </NextLink> */}
+                          </NextLink>
                         </ListItem>
                       ))}
                     </List>

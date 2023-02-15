@@ -2,7 +2,7 @@ import {
     Chip,
 } from '@mui/material';
 
-const StatusIndicator = ({ message, status }) => {
+const StatusIndicator = ({ message, status, size = 'small' }) => {
     const styling = { textTransform: 'capitalize', fontWeight: 'bold', marginLeft: '0.5rem' }
 
     let color, variant
@@ -27,7 +27,7 @@ const StatusIndicator = ({ message, status }) => {
             break
     }
 
-    return <Chip label={message} color={color} size="small" variant={variant} sx={styling} />
+    return <Chip label={message} color={color} size={size} variant={variant} sx={styling} />
 }
 
 export default StatusIndicator

@@ -3,7 +3,6 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // API
 import {
-  validateToken,
   getAllProjects
 } from 'api'
 
@@ -26,14 +25,15 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
+// Icons
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 function Configuration() {
   const {
@@ -41,7 +41,9 @@ function Configuration() {
     storeApplicationConfiguration,
   } = useContext(ConfigurationContext)
 
-  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showCreateSourceProjectModal, setShowCreateSourceProjectModal] = useState(false)
+  const [showCreateTargetProjectModal, setShowCreateTargetProjectModal] = useState(false)
 
   const [sourceConfig, setSourceConfig] = useState(appConfiguration.source)
   const [targetConfig, setTargetConfig] = useState(appConfiguration.target)
@@ -59,14 +61,6 @@ function Configuration() {
     setTargetConfig(appConfiguration.target)
 
     if (appConfiguration.source?.environment && appConfiguration.source?.xAuthToken) {
-      validateToken(appConfiguration.source?.environment, appConfiguration?.source?.xAuthToken)
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((error) => {
-          console.log('error', error)
-        })
-
       getAllProjects(appConfiguration.source?.environment, appConfiguration?.source?.xAuthToken)
         .then(response => {
           setSourceDeveloperProjects(response.data)
@@ -104,6 +98,18 @@ function Configuration() {
       setOpen(false);
     }
   }, [snackPack, messageInfo, open])
+
+  const handleSwapEnvironments = () => {
+    const source = sourceConfig
+    const target = targetConfig
+    setSourceConfig(target)
+    setTargetConfig(source)
+    storeApplicationConfiguration({
+      ...appConfiguration,
+      source: target,
+      target: source,
+    })
+  }
 
   const handleSourceProjectIdClick = () => {
     if (appConfiguration?.source?.environment && appConfiguration?.source?.xAuthToken) {
@@ -166,6 +172,15 @@ function Configuration() {
     setMessageInfo(undefined);
   };
 
+  const handleShowModal = (environment) => {
+    if (environment === 'source') {
+      setShowCreateSourceProjectModal(true)
+    }
+    if (environment === 'target') {
+      setShowCreateTargetProjectModal(true)
+    }
+    setShowModal(true)
+  }
   return (
     <>
       <PageTitleWrapper>
@@ -174,7 +189,7 @@ function Configuration() {
           subHeading="Configuration used throughout the application"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           direction="row"
@@ -182,7 +197,7 @@ function Configuration() {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <Card>
               <CardHeader title="Source Environment" />
               <Divider />
@@ -253,7 +268,7 @@ function Configuration() {
                           <Button
                             sx={{ margin: 1 }}
                             variant="outlined"
-                            onClick={() => setShowCreateProjectModal(true)}
+                            onClick={() => handleShowModal('source')}
                           >
                             Create New Project
                           </Button>
@@ -275,7 +290,35 @@ function Configuration() {
             </Card>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item
+            display='flex'
+            justifyContent='center'
+            alignContent='flex-start'
+            alignItem='flex-start'
+            xs={2}
+            sx={{
+              '&.MuiGrid-item': {
+                width: '100%',
+                height: '140px',
+                paddingTop: '4rem',
+                textAlign: 'center'
+              }
+            }}
+          >
+            <Button
+              variant="contained"
+              startIcon={<SwapHorizIcon />}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+              onClick={handleSwapEnvironments}
+            >
+              Swap Environments
+            </Button>
+          </Grid>
+
+          <Grid item xs={5}>
             <Card>
               <CardHeader title="Target Environment" />
               <Divider />
@@ -340,7 +383,7 @@ function Configuration() {
                           <Button
                             sx={{ margin: 1 }}
                             variant="outlined"
-                            onClick={() => setShowCreateProjectModal(true)}
+                            onClick={() => handleShowModal('target')}
                           >
                             Create New Project
                           </Button>
@@ -364,13 +407,22 @@ function Configuration() {
         </Grid>
       </Container>
 
-      { showCreateProjectModal &&
+      { showCreateSourceProjectModal &&
         <CreateProjectModal
-          showCreateProjectModal={showCreateProjectModal}
-          setShowCreateProjectModal={setShowCreateProjectModal}
-          sourceDeveloperProjects={sourceDeveloperProjects}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          projects={sourceDeveloperProjects}
           environment={sourceConfig?.environment}
           xAuthToken={sourceConfig?.xAuthToken}
+        />
+      }
+      { showCreateTargetProjectModal &&
+        <CreateProjectModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          projects={targetDeveloperProjects}
+          environment={targetConfig?.environment}
+          xAuthToken={targetConfig?.xAuthToken}
         />
       }
 
