@@ -9,7 +9,7 @@ import {
   styled
 } from '@mui/material';
 
-import BaseLayout from 'src/layouts/BaseLayout';
+import SidebarLayout from 'src/layouts/SidebarLayout';
 
 import Head from 'next/head';
 import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
@@ -137,5 +137,5 @@ function Status500() {
 export default Status500;
 
 Status500.getLayout = function getLayout(page) {
-  return <BaseLayout>{page}</BaseLayout>;
+  return <SidebarLayout>{page}</SidebarLayout>;
 };

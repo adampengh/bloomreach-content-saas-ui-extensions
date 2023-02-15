@@ -68,25 +68,24 @@ function ContentTypes() {
 
   const [components, setComponents] = useState([])
 
+  useEffect(() => {
+    setSelections(appConfiguration?.pages?.components?.selections)
+  }, [appConfiguration?.pages?.components?.selections])
 
   useEffect(async () => {
-    setSelections(appConfiguration?.pages?.components?.selections)
-
     if (environment && xAuthToken) {
       await getAllProjects(environment, xAuthToken)
         .then(async (response) => {
-          console.log(response)
           let projects = response.data
           if (projectId) {
             projects = projects.find(project => project.id === projectId)
           }
-          console.log('projects', projects)
           await setProjectsList(response.data)
           await setSelectedProject(projects)
         })
 
       // Get all channels filtered by projectId
-      if (selections.projectId) {
+      if (appConfiguration?.pages?.components?.selections?.projectId) {
         await getAllChannels(environment, xAuthToken)
           .then(async (response) => {
             let channels = response.data;
@@ -119,7 +118,7 @@ function ContentTypes() {
     } else {
       setIsLoaded(true)
     }
-  }, [appConfiguration.pages.components.selections.projectId])
+  }, [appConfiguration.pages.components.selections])
 
 
   const handleProjectChange = async (e) => {
@@ -233,7 +232,8 @@ function ContentTypes() {
       headerName: 'Component Name',
       width: 360,
       renderCell: (params) => {
-        return <NextLink href={`/components/${selectedChannel.id}/${params.row.id}`}>{params.row.label}</NextLink>
+        console.log(params)
+        return <NextLink href={`/components/${appConfiguration?.pages?.components?.selections?.channelId}/${params.row.id}`}>{params.row.label}</NextLink>
       }
     },
     {

@@ -14,7 +14,7 @@ import {
   FormHelperText
 } from '@mui/material';
 
-import BaseLayout from 'src/layouts/BaseLayout';
+import SidebarLayout from 'src/layouts/SidebarLayout';
 
 import Head from 'next/head';
 import Logo from 'src/components/LogoSign';
@@ -191,5 +191,5 @@ function StatusComingSoon() {
 export default StatusComingSoon;
 
 StatusComingSoon.getLayout = function getLayout(page) {
-  return <BaseLayout>{page}</BaseLayout>;
+  return <SidebarLayout>{page}</SidebarLayout>;
 };

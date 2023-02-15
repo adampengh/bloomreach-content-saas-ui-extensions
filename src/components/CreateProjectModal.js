@@ -19,14 +19,14 @@ import {
 } from '@mui/material'
 
 export default function CreateProjectModal({
-    showCreateProjectModal,
-    setShowCreateProjectModal,
-    sourceDeveloperProjects,
+    showModal,
+    setShowModal,
+    projects,
     environment,
     xAuthToken,
 }) {
     const handleClose = () => {
-        setShowCreateProjectModal(false)
+        setShowModal(false)
     };
 
     const handleCreateNewProject = (event) => {
@@ -35,15 +35,14 @@ export default function CreateProjectModal({
         const includeContentTypes = event.target.querySelector('#includeContentTypes').checked
         createDeveloperProject(environment, xAuthToken, name, includeContentTypes)
             .then(response => {
-                console.log('success', response)
-                setShowCreateProjectModal(false)
+                setShowModal(false)
             })
     }
 
-    const hasContentTypesProject = !!sourceDeveloperProjects?.filter(project => project.includeContentTypes === true).length
+    const hasContentTypesProject = !!projects?.filter(project => project.includeContentTypes === true).length
 
     return (
-        <Dialog open={showCreateProjectModal} onClose={handleClose}>
+        <Dialog open={showModal} onClose={handleClose}>
             <Box
                 component="form"
                 sx={{

@@ -5,7 +5,7 @@ import '@mui/lab/themeAugmentation';
 
 const themeColors = {
   primary: '#002840',
-  secondary: '#6E759F',
+  secondary: '#FFD503',
   success: '#57CA22',
   warning: '#FFA319',
   error: '#FF1943',
@@ -501,7 +501,7 @@ export const PureLightTheme = createTheme({
     MuiChip: {
       styleOverrides: {
         colorSecondary: {
-          background: colors.alpha.black[5],
+          background: colors.alpha.black[10],
           color: colors.alpha.black[100],
 
           '&:hover': {
@@ -1167,7 +1167,7 @@ export const PureLightTheme = createTheme({
   },
   typography: {
     fontFamily:
-      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+      '"Bloomreach Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
     h1: {
       fontWeight: 700,
       fontSize: 35

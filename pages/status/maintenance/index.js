@@ -8,7 +8,7 @@ import {
   styled
 } from '@mui/material';
 
-import BaseLayout from 'src/layouts/BaseLayout';
+import SidebarLayout from 'src/layouts/SidebarLayout';
 
 import Head from 'next/head';
 import Logo from 'src/components/LogoSign';
@@ -108,5 +108,5 @@ function StatusMaintenance() {
 export default StatusMaintenance;
 
 StatusMaintenance.getLayout = function getLayout(page) {
-  return <BaseLayout>{page}</BaseLayout>;
+  return <SidebarLayout>{page}</SidebarLayout>;
 };

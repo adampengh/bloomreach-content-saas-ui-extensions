@@ -2,13 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // API
-import { getAllProjects } from 'api'
+import {
+  getAllProjects
+} from 'api'
 
 // Components
-import CreateProjectModal from './CreateProjectModal';
+import CreateProjectModal from 'src/components/CreateProjectModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -17,19 +20,20 @@ import {
   Container,
   Divider,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
-  Grid,
   Select,
   TextField,
+  Typography,
 } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
+// Icons
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 function Configuration() {
   const {
@@ -37,7 +41,9 @@ function Configuration() {
     storeApplicationConfiguration,
   } = useContext(ConfigurationContext)
 
-  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showCreateSourceProjectModal, setShowCreateSourceProjectModal] = useState(false)
+  const [showCreateTargetProjectModal, setShowCreateTargetProjectModal] = useState(false)
 
   const [sourceConfig, setSourceConfig] = useState(appConfiguration.source)
   const [targetConfig, setTargetConfig] = useState(appConfiguration.target)
@@ -47,7 +53,8 @@ function Configuration() {
 
   const [snackPack, setSnackPack] = useState([]);
   const [open, setOpen] = useState(false);
-  const [messageInfo, setMessageInfo] = React.useState(undefined);
+  const [messageInfo, setMessageInfo] = useState(undefined);
+  const [messageSeverity, setMessageSeverity] = useState('success')
 
   useEffect(() => {
     setSourceConfig(appConfiguration.source)
@@ -58,12 +65,24 @@ function Configuration() {
         .then(response => {
           setSourceDeveloperProjects(response.data)
         })
+        .catch((error) => {
+          // console.error('Error fetching source projects:', error)
+          const message = error.message
+          setMessageSeverity('error')
+          setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+        })
     }
 
     if (appConfiguration.target?.environment && appConfiguration.target?.xAuthToken) {
       getAllProjects(appConfiguration.target?.environment, appConfiguration?.target?.xAuthToken)
         .then(response => {
           setTargetDeveloperProjects(response.data)
+        })
+        .catch((error) => {
+          // console.error('Error fetching target projects:', error.toJSON())
+          const message = error.message
+          setMessageSeverity('error')
+          setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
         })
     }
   }, [appConfiguration])
@@ -80,11 +99,27 @@ function Configuration() {
     }
   }, [snackPack, messageInfo, open])
 
+  const handleSwapEnvironments = () => {
+    const source = sourceConfig
+    const target = targetConfig
+    setSourceConfig(target)
+    setTargetConfig(source)
+    storeApplicationConfiguration({
+      ...appConfiguration,
+      source: target,
+      target: source,
+    })
+  }
+
   const handleSourceProjectIdClick = () => {
     if (appConfiguration?.source?.environment && appConfiguration?.source?.xAuthToken) {
       getAllProjects(appConfiguration.source.environment, appConfiguration?.source?.xAuthToken)
         .then(response => {
           setSourceDeveloperProjects(response.data)
+        })
+        .catch((error) => {
+          setMessageSeverity('error')
+          setMessageInfo(error.message)
         })
     }
   }
@@ -94,6 +129,10 @@ function Configuration() {
       getAllProjects(appConfiguration.target.environment, appConfiguration?.target?.xAuthToken)
         .then(response => {
           setTargetDeveloperProjects(response.data)
+        })
+        .catch((error) => {
+          setMessageSeverity('error')
+          setMessageInfo(error.message)
         })
     }
   }
@@ -106,6 +145,7 @@ function Configuration() {
     })
 
     const message = 'Source Configuration Saved'
+    setMessageSeverity('success')
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   }
 
@@ -117,6 +157,7 @@ function Configuration() {
     })
 
     const message = 'Target Configuration Saved'
+    setMessageSeverity('success')
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
   }
 
@@ -131,6 +172,15 @@ function Configuration() {
     setMessageInfo(undefined);
   };
 
+  const handleShowModal = (environment) => {
+    if (environment === 'source') {
+      setShowCreateSourceProjectModal(true)
+    }
+    if (environment === 'target') {
+      setShowCreateTargetProjectModal(true)
+    }
+    setShowModal(true)
+  }
   return (
     <>
       <PageTitleWrapper>
@@ -139,7 +189,7 @@ function Configuration() {
           subHeading="Configuration used throughout the application"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           direction="row"
@@ -147,7 +197,7 @@ function Configuration() {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <Card>
               <CardHeader title="Source Environment" />
               <Divider />
@@ -218,7 +268,7 @@ function Configuration() {
                           <Button
                             sx={{ margin: 1 }}
                             variant="outlined"
-                            onClick={() => setShowCreateProjectModal(true)}
+                            onClick={() => handleShowModal('source')}
                           >
                             Create New Project
                           </Button>
@@ -240,7 +290,35 @@ function Configuration() {
             </Card>
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item
+            display='flex'
+            justifyContent='center'
+            alignContent='flex-start'
+            alignItem='flex-start'
+            xs={2}
+            sx={{
+              '&.MuiGrid-item': {
+                width: '100%',
+                height: '140px',
+                paddingTop: '4rem',
+                textAlign: 'center'
+              }
+            }}
+          >
+            <Button
+              variant="contained"
+              startIcon={<SwapHorizIcon />}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+              onClick={handleSwapEnvironments}
+            >
+              Swap Environments
+            </Button>
+          </Grid>
+
+          <Grid item xs={5}>
             <Card>
               <CardHeader title="Target Environment" />
               <Divider />
@@ -305,7 +383,7 @@ function Configuration() {
                           <Button
                             sx={{ margin: 1 }}
                             variant="outlined"
-                            onClick={() => setShowCreateProjectModal(true)}
+                            onClick={() => handleShowModal('target')}
                           >
                             Create New Project
                           </Button>
@@ -329,13 +407,22 @@ function Configuration() {
         </Grid>
       </Container>
 
-      { showCreateProjectModal &&
+      { showCreateSourceProjectModal &&
         <CreateProjectModal
-          showCreateProjectModal={showCreateProjectModal}
-          setShowCreateProjectModal={setShowCreateProjectModal}
-          sourceDeveloperProjects={sourceDeveloperProjects}
+          showModal={showModal}
+          setShowModal={setShowModal}
+          projects={sourceDeveloperProjects}
           environment={sourceConfig?.environment}
           xAuthToken={sourceConfig?.xAuthToken}
+        />
+      }
+      { showCreateTargetProjectModal &&
+        <CreateProjectModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          projects={targetDeveloperProjects}
+          environment={targetConfig?.environment}
+          xAuthToken={targetConfig?.xAuthToken}
         />
       }
 
@@ -346,21 +433,17 @@ function Configuration() {
         autoHideDuration={4000}
         onClose={handleClose}
         TransitionProps={{ onExited: handleExited }}
-        message={messageInfo ? messageInfo.message : undefined}
         sx={{ zIndex: 1000 }}
-        action={
-          <React.Fragment>
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              sx={{ p: 0.5 }}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </React.Fragment>
-        }
-      />
+      >
+        <Alert
+          onClose={handleClose}
+          variant="filled"
+          severity={messageSeverity}
+          sx={{ width: '100%', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
+        >
+          {messageInfo?.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

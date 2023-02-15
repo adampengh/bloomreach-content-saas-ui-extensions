@@ -8,7 +8,10 @@ import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { Provider } from 'react-redux';
+import store from 'redux/store'
 
+import './global.css'
 
 function App(props) {
   const { Component, pageProps } = props;
@@ -27,16 +30,18 @@ function App(props) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
       </Head>
-      <ConfigurationProvider>
-        <SidebarProvider>
-          <ThemeProvider>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <CssBaseline />
-              {getLayout(<Component {...pageProps} />)}
-            </LocalizationProvider>
-          </ThemeProvider>
-        </SidebarProvider>
-      </ConfigurationProvider>
+      <Provider store={store}>
+        <ConfigurationProvider>
+          <SidebarProvider>
+            <ThemeProvider>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <CssBaseline />
+                {getLayout(<Component {...pageProps} />)}
+              </LocalizationProvider>
+            </ThemeProvider>
+          </SidebarProvider>
+        </ConfigurationProvider>
+      </Provider>
     </>
   );
 }

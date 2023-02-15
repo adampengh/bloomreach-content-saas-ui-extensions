@@ -33,8 +33,16 @@ export const getFolder = async (environment, xAuthToken, folderPath, depth = '5'
  * @param {Array<string>=} opt_allowedFolderTypes
  * @returns {<Promise>}
  */
-export const createOrUpdateFolder = async (environment, xAuthToken, folderType, channel, folderPath, displayname, opt_allowedDocumentTypes, opt_allowedFolderTypes) => {
-
+export const createOrUpdateFolder = async (
+    environment,
+    xAuthToken,
+    folderType,
+    channel,
+    folderPath,
+    displayname,
+    opt_allowedDocumentTypes,
+    opt_allowedFolderTypes
+) => {
     const allowedDocumentTypes = opt_allowedDocumentTypes ? opt_allowedDocumentTypes : ["ALL_DOCUMENTS"]
     const allowedFolderTypes = opt_allowedFolderTypes ? opt_allowedFolderTypes : ["FOLDER"]
 

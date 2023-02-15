@@ -237,6 +237,7 @@ function ExportImport() {
                       name="sourcePath"
                       label="Source Path"
                       helperText="/content/documents/<folder>"
+                      placeholder='reference-spa/pages'
                       value={sourcePath || ''}
                       onChange={(e) => setSourcePath(e.target.value)}
                     />
@@ -252,6 +253,8 @@ function ExportImport() {
                         value={selectedProject?.id || ''}
                         onChange={(e) => handleProjectChange(e)}
                       >
+                        <MenuItem value='core'>Core</MenuItem>
+                        <Divider />
                         {projectsList.map(project => (
                           <MenuItem key={project.id} value={project.id}>
                             {project.name} ({project.id})
