@@ -12,12 +12,22 @@ const CONTENT_API_PATH = 'management/content/v1'
  * @returns
  */
 export const getPage = async (environment, xAuthToken, channel, path, projectId = 'core') => {
+    console.groupCollapsed('API: Get Page')
+    console.log('environment:', environment)
+    console.log('xAuthToken:', xAuthToken)
+    console.log('channel:', channel)
+    console.log('path:', path)
+    console.log('projectId:', projectId)
+
     const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_API_PATH}/project/${projectId}/channel/${channel}/page/${path}`, {
         method: 'GET',
         headers: {
           'x-auth-token': xAuthToken
         }
       })
+
+    console.log('response', response.data)
+    console.groupEnd()
 
     return response
 }
@@ -33,8 +43,15 @@ export const getPage = async (environment, xAuthToken, channel, path, projectId 
  * @returns
  */
 export const putPage = async (environment, xAuthToken, projectId, channel, path, pageData) => {
-    const url = `https://${environment}.bloomreach.io/${CONTENT_API_PATH}/project/${projectId}/channel/${channel}/page/${path}`
-    const response = await axios(url, {
+    console.groupCollapsed('API: Put Page')
+    console.log('environment:', environment)
+    console.log('xAuthToken:', xAuthToken)
+    console.log('projectId:', projectId)
+    console.log('channel:', channel)
+    console.log('path:', path)
+    console.log('pageData', pageData)
+
+    const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_API_PATH}/project/${projectId}/channel/${channel}/page/${path}`, {
         method: 'PUT',
         headers: {
             'x-auth-token': xAuthToken,
@@ -43,6 +60,9 @@ export const putPage = async (environment, xAuthToken, projectId, channel, path,
         },
         data: pageData
     })
+
+    console.log('response', response)
+    console.groupEnd()
 
     return response
 }
