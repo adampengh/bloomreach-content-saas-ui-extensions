@@ -42,6 +42,7 @@ import {
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
 // Icons
+import CheckIcon from '@mui/icons-material/Check';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EastIcon from '@mui/icons-material/East';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -56,8 +57,6 @@ function Pages() {
 
   const [selectAll, setSelectAll] = useState(false)
   const [targetChannels, setTargetChannels] = useState([])
-  const [targetChannel, setTargetChannel] = useState({})
-  const [targetPageList, setTargetPageList] = useState()
 
   const [pagesCopied, setPagesCopied] = useState({
     pages: []
@@ -151,10 +150,6 @@ function Pages() {
 
     // Remove all checked pages from Source Channel
     setChecked([])
-    // Add new pages to Target Page List (targetPageList)
-    if (targetChannels.length === 1) {
-      getPageList(targetChannels?.[0], setTargetPageList)
-    }
   }
 
   const copyPage = async (page, targetChannel) => {
@@ -346,18 +341,25 @@ function Pages() {
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <div>
-                    <h3>Pages Copied</h3>
-                    <ul>
-                      {pagesCopied?.pages?.map((page, index) => {
-                        return <li key={index}><strong>{page?.page?.name}</strong> copied to <strong>{page?.channel?.id}</strong></li>
-                      })}
-                    </ul>
-                  </div>
-                  <TreeList
-                    channel={targetChannel}
-                    pageFolder={targetPageList}
-                  />
+                  {pagesCopied?.pages?.length > 0 &&
+                    <Box sx={{ paddingTop: 3 }}>
+                      <Typography variant="h4" component="h4">
+                        Pages Copied
+                      </Typography>
+                      <List>
+                        {pagesCopied?.pages?.map((page, index) =>
+                          <ListItem key={index} sx={{padding: 0.5 }}>
+                            <ListItemIcon>
+                              <CheckIcon />
+                            </ListItemIcon>
+                            <ListItemText>
+                              <strong>{page?.page?.name}</strong> copied to <strong>{page?.channel?.id}</strong>
+                            </ListItemText>
+                          </ListItem>
+                        )}
+                      </List>
+                    </Box>
+                  }
                 </Box>
               </CardContent>
             </Card>
