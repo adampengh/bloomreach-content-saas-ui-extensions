@@ -33,6 +33,7 @@ import {
   ListItemIcon,
   ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   Typography,
 } from '@mui/material';
@@ -41,6 +42,7 @@ import {
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
 // Icons
+import CheckIcon from '@mui/icons-material/Check';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EastIcon from '@mui/icons-material/East';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -53,8 +55,12 @@ function Pages() {
   const [sourceChannel, setSourceChannel] = useState({})
   const [sourcePageList, setSourcePageList] = useState()
 
-  const [targetChannel, setTargetChannel] = useState({})
-  const [targetPageList, setTargetPageList] = useState()
+  const [selectAll, setSelectAll] = useState(false)
+  const [targetChannels, setTargetChannels] = useState([])
+
+  const [pagesCopied, setPagesCopied] = useState({
+    pages: []
+  })
 
   const {
     appConfiguration
@@ -80,6 +86,28 @@ function Pages() {
     setChecked(newChecked);
   };
 
+
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        width: 320,
+      },
+    },
+  };
+
+  const handleSelectedChannelsChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setTargetChannels(
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
+
+  const handleSelectAllChannels = () => {
+    !selectAll ? setTargetChannels(channels) : setTargetChannels([]);
+    setSelectAll(!selectAll)
+  }
 
   useEffect(() => {
     if (environment && xAuthToken) {
@@ -107,12 +135,6 @@ function Pages() {
     getPageList(currentChannel, setSourcePageList)
   }
 
-  const handleTargetDropdownChange = (event) => {
-    const currentChannel = channels.find(ch => ch.id === event.target.value)
-    setTargetChannel(currentChannel)
-    getPageList(currentChannel, setTargetPageList)
-  }
-
   const getPageList = async (channel, callback) => {
     const folderPath = channel?.contentRootPath + '/pages'
     await getFolder(environment, xAuthToken, folderPath)
@@ -120,21 +142,21 @@ function Pages() {
   }
 
   const copyPages = async () => {
-    for await (const page of checked) {
-      await copyPage(page)
+    for await (const targetChannel of targetChannels) {
+      for await (const page of checked) {
+        await copyPage(page, targetChannel)
+      }
     }
 
     // Remove all checked pages from Source Channel
     setChecked([])
-    // Add new pages to Target Page List (targetPageList)
-    getPageList(targetChannel, setTargetPageList)
   }
 
-  const copyPage = async (page) => {
+  const copyPage = async (page, targetChannel) => {
     const path = page.relativePagePath
 
     // Recursively create folder structure
-    await createFoldersRecursively(path)
+    await createFoldersRecursively(path, targetChannel)
 
     // Get Page from Source Channel
     const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path)
@@ -146,14 +168,22 @@ function Pages() {
     // Put Page into Target Channel
     if (pageData) {
       await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
-        .then(response => console.log('response', response))
+        .then(response => {
+          console.log('putPage', response.data)
+          setPagesCopied(prevState => ({
+            pages: [...prevState.pages, {
+              channel: targetChannel,
+              page: pageData
+            }]
+          }))
+        })
         .catch((err) => {
           console.error('Copy Page Error:', err);
         })
     }
   }
 
-  const createFoldersRecursively = async (path) => {
+  const createFoldersRecursively = async (path, targetChannel) => {
     let segments = path.split('/')
     segments.pop()
 
@@ -163,9 +193,10 @@ function Pages() {
       await getFolder(environment, xAuthToken, folderPath)
         .then(response => console.log(response))
         .catch(async (error) => {
-          console.error(error.response.status)
           if (error.response.status === 404) {
             await createOrUpdateFolder(environment, xAuthToken, "pageFolder", targetChannel.branchOf, folderPath, segment)
+          } else {
+            console.error("Error creating folders recursively: ", error)
           }
         })
     }
@@ -223,17 +254,16 @@ function Pages() {
                     </Grid>
                     <Grid item xs={12} md={6}>
                       { checked.length > 0
-                        && targetChannel.id
-                          && sourceChannel.id !== targetChannel.id &&
-                            <FormControl variant="outlined" sx={{ m: 1, minWidth: 160 }}>
-                              <Button
-                                sx={{ margin: 1, padding: 1 }}
-                                variant="contained"
-                                onClick={copyPages}
-                              >
-                                Copy {checked.length == 1 ? 'Page' : 'Pages'}
-                              </Button>
-                            </FormControl>
+                        && !!targetChannels.length &&
+                          <FormControl variant="outlined" sx={{ m: 1, minWidth: 160 }}>
+                            <Button
+                              sx={{ margin: 1, padding: 1 }}
+                              variant="contained"
+                              onClick={copyPages}
+                            >
+                              Copy {checked.length == 1 ? 'Page' : 'Pages'}
+                            </Button>
+                          </FormControl>
                       }
                     </Grid>
                   </Grid>
@@ -283,28 +313,53 @@ function Pages() {
                     spacing={4}
                   >
                     <Grid item xs={12} md={6}>
-                      <FormControl variant="outlined" sx={{ m: 1, minWidth: 320 }}>
-                        <InputLabel id="source-channel-select-label">Channel</InputLabel>
+                      <FormControl required sx={{ m: 1, width: 320 }}>
+                        <InputLabel id="target-channel-select-label">Channel(s)</InputLabel>
                         <Select
-                          id="source-channel-select"
-                          labelId="source-channel-select-label"
-                          label="Source Channel"
-                          value={targetChannel.id ? targetChannel.id : ''}
-                          onChange={handleTargetDropdownChange}
+                          label="Target Channel(s)"
+                          labelId="target-channel-select-label"
+                          id="target-channel-select"
+                          multiple
+                          value={targetChannels}
+                          onChange={handleSelectedChannelsChange}
+                          input={<OutlinedInput label="Data Types" />}
+                          renderValue={(selected) => {
+                            return selected.map(channel => channel.name).join(', ')
+                          }}
+                          MenuProps={MenuProps}
                         >
+                          <MenuItem onClick={handleSelectAllChannels}>
+                            <ListItemText primary={`${!selectAll ? 'Select All' : 'Deselect All'}`} />
+                          </MenuItem>
                           {channels.map((channel) => (
-                            <MenuItem key={channel.id} value={channel.id}>
-                              {channel.name} ({channel.branch})
+                            <MenuItem key={channel.id} value={channel}>
+                              <Checkbox checked={targetChannels.indexOf(channel) > -1} />
+                              <ListItemText primary={`${channel.name} (${channel.branch})`} />
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                     </Grid>
                   </Grid>
-                  <TreeList
-                    channel={targetChannel}
-                    pageFolder={targetPageList}
-                  />
+                  {pagesCopied?.pages?.length > 0 &&
+                    <Box sx={{ paddingTop: 3 }}>
+                      <Typography variant="h4" component="h4">
+                        Pages Copied
+                      </Typography>
+                      <List>
+                        {pagesCopied?.pages?.map((page, index) =>
+                          <ListItem key={index} sx={{padding: 0.5 }}>
+                            <ListItemIcon>
+                              <CheckIcon />
+                            </ListItemIcon>
+                            <ListItemText>
+                              <strong>{page?.page?.name}</strong> copied to <strong>{page?.channel?.id}</strong>
+                            </ListItemText>
+                          </ListItem>
+                        )}
+                      </List>
+                    </Box>
+                  }
                 </Box>
               </CardContent>
             </Card>
