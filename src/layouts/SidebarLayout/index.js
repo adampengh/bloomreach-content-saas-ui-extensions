@@ -1,6 +1,7 @@
 import { Box, alpha, lighten, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
+import Header from './Header';
 import Sidebar from './Sidebar';
 
 const SidebarLayout = ({ children }) => {
@@ -35,6 +36,7 @@ const SidebarLayout = ({ children }) => {
           }
         }}
       >
+        <Header />
         <Sidebar />
         <Box
           sx={{

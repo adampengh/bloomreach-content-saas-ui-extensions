@@ -54,7 +54,7 @@ function ContentTypes() {
   const {
     environment,
     xAuthToken,
-  } = appConfiguration.source
+  } = appConfiguration.environment?.source
 
   useEffect(() => {
     if (environment && xAuthToken && channelId && componentGroup && componentName) {

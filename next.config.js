@@ -1,6 +1,10 @@
 const withImages = require('next-images');
+const { version } = require('./package.json');
 
-const redirects = {
+module.exports = {
+  publicRuntimeConfig: {
+    version,
+  },
   async redirects() {
     return [
       {
@@ -9,7 +13,5 @@ const redirects = {
         permanent: true,
       },
     ];
-  }
+  },
 };
-
-module.exports = withImages(redirects);

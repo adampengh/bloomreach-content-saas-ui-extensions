@@ -13,7 +13,7 @@ import {
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
-import PageHeader from 'src/content/Pages/PageHeader';
+import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
   Box,
@@ -70,7 +70,7 @@ function Pages() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration.source
+  } = appConfiguration.environments?.source
 
 
   const handleToggle = (value) => () => {
@@ -169,7 +169,6 @@ function Pages() {
     if (pageData) {
       await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
         .then(response => {
-          console.log('putPage', response.data)
           setPagesCopied(prevState => ({
             pages: [...prevState.pages, {
               channel: targetChannel,
@@ -191,7 +190,6 @@ function Pages() {
     for await (const segment of segments) {
       folderPath += '/' + segment
       await getFolder(environment, xAuthToken, folderPath)
-        .then(response => console.log(response))
         .catch(async (error) => {
           if (error.response.status === 404) {
             await createOrUpdateFolder(environment, xAuthToken, "pageFolder", targetChannel.branchOf, folderPath, segment)
@@ -206,7 +204,9 @@ function Pages() {
   return (
     <>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageTitle
+          heading='Pages'
+        />
       </PageTitleWrapper>
       <Container maxWidth="xl">
         <Grid

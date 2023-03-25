@@ -4,15 +4,17 @@ export const ConfigurationContext = createContext({});
 
 export function ConfigurationProvider({ children }) {
   const [appConfiguration, setAppConfiguration] = useState({
-    source: {
-      environment: '',
-      xAuthToken: '',
-      projectId: 'core',
-    },
-    target: {
-      environment: '',
-      xAuthToken: '',
-      projectId: 'core',
+    environments: {
+      source: {
+        environment: '',
+        xAuthToken: '',
+        projectId: 'core',
+      },
+      target: {
+        environment: '',
+        xAuthToken: '',
+        projectId: 'core',
+      },
     },
     pages: {
       components: {

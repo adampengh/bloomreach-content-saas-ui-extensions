@@ -1,17 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { CopyBlock } from 'react-code-blocks'
 import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
+import NextLink from 'next/link';
 
 // APIs
-import { getDeveloperProject } from 'api';
+import {
+  getAllChannels,
+  getDeveloperProject,
+} from 'api';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
+import ChannelIcon from 'components/ChannelIcon'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import StatusIndicator from './StatusIndicator';
+import StatusIndicator from 'components/StatusIndicator';
 import {
   Breadcrumbs,
   Box,
@@ -21,6 +26,11 @@ import {
   Container,
   Grid,
   Link,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
   Tabs,
   Tab,
   Typography,
@@ -28,6 +38,9 @@ import {
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+
+// Icons
+import LanguageIcon from '@mui/icons-material/Language';
 
 function ContentTypes({params}) {
   const [error, setError] = useState(null)
@@ -37,20 +50,44 @@ function ContentTypes({params}) {
   const [tab, setTab] = useState(0);
   const [projectData, setProjectData] = useState(null)
 
+  const [pageState, setPageState] = useState({
+    channels: []
+  })
+
   const {
     appConfiguration
   } = useContext(ConfigurationContext)
 
-  useEffect(() => {
-    if (instance === 'source' && appConfiguration?.source?.environment && appConfiguration?.source?.xAuthToken) {
-      getDeveloperProject(appConfiguration?.source?.environment, appConfiguration?.source?.xAuthToken, id)
+  useEffect(async () => {
+    if (instance === 'source' && appConfiguration?.environments?.source?.environment && appConfiguration?.environments?.source?.xAuthToken) {
+      await getDeveloperProject(appConfiguration?.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken, id)
         .then(response => setProjectData(response.data))
+        .catch(err => console.log(err))
+
+      await getAllChannels(appConfiguration?.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken)
+        .then(response => {
+          const channels = response?.data?.filter(project => project.branch === id)
+          setPageState({
+            ...pageState,
+            channels: channels
+          })
+        })
         .catch(err => console.log(err))
     }
 
-    if (instance === 'target' && appConfiguration?.target?.environment && appConfiguration?.target?.xAuthToken) {
-      getDeveloperProject(appConfiguration.target.environment, appConfiguration.target.xAuthToken, id)
+    if (instance === 'target' && appConfiguration?.environments?.target?.environment && appConfiguration?.environments?.target?.xAuthToken) {
+      getDeveloperProject(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken, id)
         .then(response => setProjectData(response.data))
+        .catch(err => console.log(err))
+
+      getAllChannels(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
+        .then(response => {
+          const channels = response?.data?.filter(project => project.branch === id)
+          setPageState({
+            ...pageState,
+            channels: channels
+          })
+        })
         .catch(err => console.log(err))
     }
     setIsLoaded(true)
@@ -70,7 +107,7 @@ function ContentTypes({params}) {
           <Grid item>
             <PageTitle
               heading={projectData?.name}
-              subHeading={projectData?.id}
+              subHeading={`Project ID: ${projectData?.id}`}
             />
           </Grid>
           <Grid item sx={{ marginLeft: '1rem', paddingTop: '0.5rem'}}>
@@ -126,12 +163,29 @@ function ContentTypes({params}) {
                 <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
-                      <Tab label="Item One" />
+                      <Tab label="Channels" />
                       <Tab label="JSON" />
                     </Tabs>
                   </Box>
                   <TabPanel tab={tab} index={0}>
-                    Item One
+                    <List>
+                    {pageState?.channels?.map(channel => {
+                      console.log('channel', channel)
+                      return (
+                        // <p key={channel.id}>{channel.id}</p>
+                        <ListItem key={channel.id} component="div">
+                          <NextLink href={`/channels/${channel.id}`} passHref>
+                            <ListItemButton>
+                              <ListItemAvatar>
+                                <ChannelIcon icon={channel.icon} />
+                              </ListItemAvatar>
+                              <ListItemText primary={`${channel.name} (${channel.id})`} />
+                            </ListItemButton>
+                          </NextLink>
+                        </ListItem>
+                      )
+                    })}
+                    </List>
                   </TabPanel>
                   <TabPanel tab={tab} index={1}>
                     { projectData &&
@@ -177,7 +231,6 @@ function TabPanel(props) {
 
 ContentTypes.getInitialProps = async (ctx) => {
   const { params } = ctx.query
-
   return { params: params }
 }
 
