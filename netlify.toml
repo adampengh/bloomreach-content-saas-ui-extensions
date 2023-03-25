@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/"
+  to = "/configuration"
+  status = 301
