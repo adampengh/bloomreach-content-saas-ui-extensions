@@ -16,6 +16,7 @@ import {
   ChannelTab,
   ComponentsTab,
   LayoutsTab,
+  RoutesTab,
 } from '/modules/channels'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -148,7 +149,7 @@ function ChannelDetails() {
                     <LayoutsTab channel={channel} />
                   </TabPanel>
                   <TabPanel value={value} index={3}>
-                    Routes
+                    <RoutesTab channel={channel} />
                   </TabPanel>
                   <TabPanel value={value} index={4}>
                     Menus
