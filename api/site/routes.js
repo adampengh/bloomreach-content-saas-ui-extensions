@@ -51,6 +51,6 @@ export const deleteRoute = async (environment, xAuthToken, channelId, route) => 
             'x-auth-token': xAuthToken
         }
     })
-m
+
     return response
 }
