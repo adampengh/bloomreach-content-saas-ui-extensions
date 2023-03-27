@@ -3,7 +3,6 @@ import NextLink from 'next/link'
 
 // API
 import {
-  deleteComponent,
   getAllComponents,
   getAllComponentGroups,
 } from '/api'
@@ -15,11 +14,6 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
   FormControl,
   Grid,
   InputLabel,
@@ -258,6 +252,7 @@ export const ComponentsTab = ({ channel }) => {
                 checkboxSelection
                 disableSelectionOnClick
                 onSelectionModelChange={(ids) => setSelectedComponents(ids)}
+                selectionModel={selectedComponents}
                 initialState={{
                   sorting: {
                     sortModel: [{

@@ -47,6 +47,7 @@ const DeleteComponentModal = ({
 
   const handleDeleteComponents = async (event) => {
     event.preventDefault()
+    await setShowDeleteComponentsModal(false)
 
     for await (const component of selectedComponents) {
       const componentGroup = component.split('/')[0]
@@ -73,8 +74,7 @@ const DeleteComponentModal = ({
         setPageSize(columns.length)
       })
 
-      await setSelectedComponents([])
-      await setShowDeleteComponentsModal(false)
+    await setSelectedComponents([])
   }
 
   return (

@@ -15,6 +15,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 import {
   ChannelTab,
   ComponentsTab,
+  LayoutsTab,
 } from '/modules/channels'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -144,7 +145,7 @@ function ChannelDetails() {
                     <ComponentsTab channel={channel} />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    Layouts
+                    <LayoutsTab channel={channel} />
                   </TabPanel>
                   <TabPanel value={value} index={3}>
                     Routes
