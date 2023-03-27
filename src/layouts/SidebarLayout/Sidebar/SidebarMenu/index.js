@@ -180,7 +180,7 @@ function SidebarMenu() {
   } = useContext(ConfigurationContext)
 
   useEffect(() => {
-    const sourceConfig = appConfiguration?.source
+    const sourceConfig = appConfiguration?.environments?.source
     const hasMissingRequiredConfigProperties = !!Object.entries(sourceConfig).filter(([,value]) => value === '').length
     setMenuItemsEnabled(!hasMissingRequiredConfigProperties)
   }, [appConfiguration])
@@ -216,7 +216,7 @@ function SidebarMenu() {
               <ListItem component="div">
                 <NextLink href="/configuration" passHref>
                   <Button
-                    className={currentRoute === '/configuration' ? 'active' : ''}
+                    className={currentRoute.startsWith('/configuration') ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
@@ -246,7 +246,7 @@ function SidebarMenu() {
                     <NextLink href="/projects" passHref>
                       <Button
                         className={
-                          currentRoute === '/projects' ? 'active' : ''
+                          currentRoute.startsWith('/projects') ? 'active' : ''
                         }
                         disableRipple
                         component="a"
@@ -275,7 +275,7 @@ function SidebarMenu() {
                     <NextLink href="/channels" passHref>
                       <Button
                         className={
-                          currentRoute === '/channels' ? 'active' : ''
+                          currentRoute.startsWith('/channels') ? 'active' : ''
                         }
                         disableRipple
                         component="a"
@@ -283,21 +283,6 @@ function SidebarMenu() {
                         startIcon={<FormatListBulletedIcon />}
                       >
                         Channels
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                  <ListItem component="div">
-                    <NextLink href="/components" passHref>
-                      <Button
-                        className={
-                          currentRoute === '/components' ? 'active' : ''
-                        }
-                        disableRipple
-                        component="a"
-                        onClick={closeSidebar}
-                        startIcon={<FormatListBulletedIcon />}
-                      >
-                        Components
                       </Button>
                     </NextLink>
                   </ListItem>
@@ -319,7 +304,7 @@ function SidebarMenu() {
                     <NextLink href="/pages" passHref>
                       <Button
                         className={
-                          currentRoute === '/pages' ? 'active' : ''
+                          currentRoute.startsWith('/pages') ? 'active' : ''
                         }
                         disableRipple
                         component="a"
@@ -334,7 +319,7 @@ function SidebarMenu() {
                     <NextLink href="/export-import" passHref>
                       <Button
                           className={
-                            currentRoute === '/export-import' ? 'active' : ''
+                            currentRoute.startsWith('/export-import') ? 'active' : ''
                           }
                           disableRipple
                           component="a"
@@ -363,7 +348,7 @@ function SidebarMenu() {
                     <NextLink href="/content-types" passHref>
                       <Button
                         className={
-                          currentRoute === '/content-types' ? 'active' : ''
+                          currentRoute.startsWith('/content-types') ? 'active' : ''
                         }
                         disableRipple
                         component="a"

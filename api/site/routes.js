@@ -31,11 +31,12 @@ export const getRoute = async (environment, xAuthToken, channelId, route) => {
     return response
 }
 
-export const putRoute = async (environment, xAuthToken, channelId, route, data) => {
+export const putRoute = async (environment, xAuthToken, channelId, route, data, opt_xResourceVersion) => {
     const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/routes/${route}`, {
         method: 'PUT',
         headers: {
-            'x-auth-token': xAuthToken
+            'x-auth-token': xAuthToken,
+            ...(opt_xResourceVersion && {'x-resource-version': opt_xResourceVersion}),
         },
         data: data
     })
@@ -50,6 +51,6 @@ export const deleteRoute = async (environment, xAuthToken, channelId, route) => 
             'x-auth-token': xAuthToken
         }
     })
-m
+
     return response
 }

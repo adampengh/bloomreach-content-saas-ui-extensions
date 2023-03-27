@@ -48,7 +48,7 @@ function Projects() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration.source
+  } = appConfiguration.environments?.source
 
   useEffect(() => {
     // For demonstration purposes, set isLoaded to true after 2000ms

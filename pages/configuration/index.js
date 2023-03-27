@@ -7,11 +7,10 @@ import {
 } from 'api'
 
 // Components
-import CreateProjectModal from 'src/components/CreateProjectModal';
+import CreateProjectModal from 'components/CreateProjectModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
-  Alert,
   Box,
   Button,
   Card,
@@ -25,79 +24,58 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from '@mui/material';
-import Snackbar from '@mui/material/Snackbar';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ErrorContext } from 'src/contexts/ErrorContext';
 
 // Icons
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 function Configuration() {
+  // Context
   const {
     appConfiguration,
     storeApplicationConfiguration,
   } = useContext(ConfigurationContext)
+  const { handleShowSnackbar } = useContext(ErrorContext)
 
+  // State
   const [showModal, setShowModal] = useState(false);
   const [showCreateSourceProjectModal, setShowCreateSourceProjectModal] = useState(false)
   const [showCreateTargetProjectModal, setShowCreateTargetProjectModal] = useState(false)
 
-  const [sourceConfig, setSourceConfig] = useState(appConfiguration.source)
-  const [targetConfig, setTargetConfig] = useState(appConfiguration.target)
+  const [sourceConfig, setSourceConfig] = useState(appConfiguration?.environments?.source)
+  const [targetConfig, setTargetConfig] = useState(appConfiguration?.environments?.target)
 
   const [sourceDeveloperProjects, setSourceDeveloperProjects] = useState([])
   const [targetDeveloperProjects, setTargetDeveloperProjects] = useState([])
 
-  const [snackPack, setSnackPack] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [messageInfo, setMessageInfo] = useState(undefined);
-  const [messageSeverity, setMessageSeverity] = useState('success')
-
   useEffect(() => {
-    setSourceConfig(appConfiguration.source)
-    setTargetConfig(appConfiguration.target)
+    setSourceConfig(appConfiguration.environments?.source)
+    setTargetConfig(appConfiguration.environments?.target)
 
-    if (appConfiguration.source?.environment && appConfiguration.source?.xAuthToken) {
-      getAllProjects(appConfiguration.source?.environment, appConfiguration?.source?.xAuthToken)
+    if (appConfiguration.environments?.source?.environment && appConfiguration.environments?.source?.xAuthToken) {
+      getAllProjects(appConfiguration.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken)
         .then(response => {
           setSourceDeveloperProjects(response.data)
         })
         .catch((error) => {
-          // console.error('Error fetching source projects:', error)
-          const message = error.message
-          setMessageSeverity('error')
-          setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+          handleShowSnackbar('error', error.message)
         })
     }
 
-    if (appConfiguration.target?.environment && appConfiguration.target?.xAuthToken) {
-      getAllProjects(appConfiguration.target?.environment, appConfiguration?.target?.xAuthToken)
+    if (appConfiguration.environments?.target?.environment && appConfiguration.environments?.target?.xAuthToken) {
+      getAllProjects(appConfiguration.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
         .then(response => {
           setTargetDeveloperProjects(response.data)
         })
         .catch((error) => {
-          // console.error('Error fetching target projects:', error.toJSON())
-          const message = error.message
-          setMessageSeverity('error')
-          setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+          handleShowSnackbar('error', error.message)
         })
     }
   }, [appConfiguration])
-
-  useEffect(() => {
-    if (snackPack.length && !messageInfo) {
-      // Set a new snack when we don't have an active one
-      setMessageInfo({ ...snackPack[0] });
-      setSnackPack((prev) => prev.slice(1));
-      setOpen(true);
-    } else if (snackPack.length && messageInfo && open) {
-      // Close an active snack when a new one is added
-      setOpen(false);
-    }
-  }, [snackPack, messageInfo, open])
 
   const handleSwapEnvironments = () => {
     const source = sourceConfig
@@ -106,33 +84,33 @@ function Configuration() {
     setTargetConfig(source)
     storeApplicationConfiguration({
       ...appConfiguration,
-      source: target,
-      target: source,
+      environments: {
+        source: target,
+        target: source,
+      }
     })
   }
 
   const handleSourceProjectIdClick = () => {
-    if (appConfiguration?.source?.environment && appConfiguration?.source?.xAuthToken) {
-      getAllProjects(appConfiguration.source.environment, appConfiguration?.source?.xAuthToken)
+    if (appConfiguration?.environments?.source?.environment && appConfiguration?.environments?.source?.xAuthToken) {
+      getAllProjects(appConfiguration.environments?.source.environment, appConfiguration?.environments?.source?.xAuthToken)
         .then(response => {
           setSourceDeveloperProjects(response.data)
         })
         .catch((error) => {
-          setMessageSeverity('error')
-          setMessageInfo(error.message)
+          handleShowSnackbar('error', error.message)
         })
     }
   }
 
   const handleTargetProjectIdClick = () => {
-    if (appConfiguration?.target?.environment && appConfiguration?.target?.xAuthToken) {
-      getAllProjects(appConfiguration.target.environment, appConfiguration?.target?.xAuthToken)
+    if (appConfiguration?.environments?.target?.environment && appConfiguration?.environments?.target?.xAuthToken) {
+      getAllProjects(appConfiguration.environments?.target.environment, appConfiguration?.environments?.target?.xAuthToken)
         .then(response => {
           setTargetDeveloperProjects(response.data)
         })
         .catch((error) => {
-          setMessageSeverity('error')
-          setMessageInfo(error.message)
+          handleShowSnackbar('error', error.message)
         })
     }
   }
@@ -141,36 +119,27 @@ function Configuration() {
     event.preventDefault();
     storeApplicationConfiguration({
       ...appConfiguration,
-      source: sourceConfig,
+      environments: {
+        source: sourceConfig,
+        target: appConfiguration.environments.target
+      }
     })
 
-    const message = 'Source Configuration Saved'
-    setMessageSeverity('success')
-    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+    handleShowSnackbar('success', 'Source Configuration Saved')
   }
 
   const handleSubmitTargetChannel = (event) => {
     event.preventDefault();
     storeApplicationConfiguration({
       ...appConfiguration,
-      target: targetConfig,
+      environments: {
+        source: appConfiguration.environments.source,
+        target: targetConfig,
+      }
     })
 
-    const message = 'Target Configuration Saved'
-    setMessageSeverity('success')
-    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+    handleShowSnackbar('success', 'Target Configuration Saved')
   }
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
-
-  const handleExited = () => {
-    setMessageInfo(undefined);
-  };
 
   const handleShowModal = (environment) => {
     if (environment === 'source') {
@@ -231,7 +200,7 @@ function Configuration() {
                       value={sourceConfig?.xAuthToken || ''}
                       onChange={(e) => setSourceConfig({...sourceConfig, xAuthToken: e.target.value})}
                     />
-                    { appConfiguration.source?.environment && appConfiguration.source?.xAuthToken &&
+                    { appConfiguration.environments?.source?.environment && appConfiguration.environments?.source?.xAuthToken &&
                       <Grid
                         container
                         direction="row"
@@ -294,7 +263,7 @@ function Configuration() {
             display='flex'
             justifyContent='center'
             alignContent='flex-start'
-            alignItem='flex-start'
+            alignItems='flex-start'
             xs={2}
             sx={{
               '&.MuiGrid-item': {
@@ -348,38 +317,46 @@ function Configuration() {
                       value={targetConfig?.xAuthToken || ''}
                       onChange={(e) => setTargetConfig({...targetConfig, xAuthToken: e.target.value})}
                     />
-                    { appConfiguration.target?.environment && appConfiguration.target?.xAuthToken &&
+                    { appConfiguration.environments?.target?.environment && appConfiguration.environments?.target?.xAuthToken &&
                     <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="stretch"
-                    spacing={3}
-                    sx={{ width: '100%' }}
-                  >
-                    <Grid item>
-                      <FormControl
-                        onMouseDown={handleTargetProjectIdClick}
-                        variant="outlined"
-                        sx={{ m: 1, minWidth: 240, marginTop: 3 }}
+                      container
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      alignContent="center"
+                      rowSpacing={3}
+                      sx={{ width: '100%' }}
+                    >
+                      <Grid
+                        item
+                        display="flex"
+                        flexDirection="row"
+                        alignContent="center"
+                        alignItems="center"
+                        sx={{ marginTop: 3 }}
                       >
-                        <InputLabel id="targetProjectId">Project ID</InputLabel>
-                        <Select
-                          id="targetProjectId"
-                          labelId="targetProjectId"
-                          label="Target Project ID"
-                          value={targetConfig?.projectId || ''}
-                          onChange={(e) => setTargetConfig({...targetConfig, projectId: e.target.value})}
+                        <FormControl
+                          onMouseDown={handleTargetProjectIdClick}
+                          variant="outlined"
+                          sx={{ ml: 1, minWidth: 240 }}
                         >
-                          {targetDeveloperProjects.map(project => (
-                            <MenuItem key={project.id} value={project.id}>
-                              {project.name} ({project.id})
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      </Grid>
-                        <Grid item sx={{ fm: 1, marginTop: 3 }}>
+                          <InputLabel id="targetProjectId">Project ID</InputLabel>
+                          <Select
+                            id="targetProjectId"
+                            labelId="targetProjectId"
+                            label="Target Project ID"
+                            value={targetConfig?.projectId || ''}
+                            onChange={(e) => setTargetConfig({...targetConfig, projectId: e.target.value})}
+                          >
+                            {targetDeveloperProjects.map(project => (
+                              <MenuItem key={project.id} value={project.id}>
+                                {project.name} ({project.id})
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        </Grid>
+                        <Grid item>
                           <Button
                             sx={{ margin: 1 }}
                             variant="outlined"
@@ -425,25 +402,6 @@ function Configuration() {
           xAuthToken={targetConfig?.xAuthToken}
         />
       }
-
-      <Snackbar
-        key={messageInfo ? messageInfo.key : undefined}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={open}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        TransitionProps={{ onExited: handleExited }}
-        sx={{ zIndex: 1000 }}
-      >
-        <Alert
-          onClose={handleClose}
-          variant="filled"
-          severity={messageSeverity}
-          sx={{ width: '100%', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
-        >
-          {messageInfo?.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 }

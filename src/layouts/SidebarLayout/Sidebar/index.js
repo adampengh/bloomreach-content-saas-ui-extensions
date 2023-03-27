@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import Scrollbar from 'src/components/Scrollbar';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
+// Components
 import {
   Box,
   Drawer,
@@ -9,11 +10,9 @@ import {
   styled,
   Divider,
   useTheme,
-  Button,
   lighten,
   darken
 } from '@mui/material';
-
 import SidebarMenu from './SidebarMenu';
 import Logo from 'src/components/LogoSign';
 
@@ -54,13 +53,8 @@ function Sidebar() {
         }}
       >
         <Scrollbar>
-          <Box mt={3}>
-            <Box
-              mx={2}
-              sx={{
-                width: 52
-              }}
-            >
+          <Box mt={2}>
+            <Box mx={2}>
               <Logo />
             </Box>
           </Box>
@@ -99,12 +93,7 @@ function Sidebar() {
         >
           <Scrollbar>
             <Box mt={3}>
-              <Box
-                mx={2}
-                sx={{
-                  width: 52
-                }}
-              >
+              <Box mx={2}>
                 <Logo />
               </Box>
             </Box>

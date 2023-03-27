@@ -21,7 +21,7 @@ export const getAllLayouts = async (environment, xAuthToken, channelId) => {
 }
 
 export const getLayout = async (environment, xAuthToken, channelId, layout) => {
-    const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/routes/${layout}`, {
+    const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/layouts/${layout}`, {
         method: 'GET',
         headers: {
             'x-auth-token': xAuthToken
@@ -31,25 +31,27 @@ export const getLayout = async (environment, xAuthToken, channelId, layout) => {
     return response
 }
 
-export const putLayout = async (environment, xAuthToken, channelId, layout, data) => {
-    const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/routes/${layout}`, {
-        method: 'PUT',
-        headers: {
-            'x-auth-token': xAuthToken
-        },
-        data: data
-    })
+export const putLayout = async (environment, xAuthToken, channelId, layout, data, opt_xResourceVersion) => {
+  console.log('opt_xResourceVersion:', opt_xResourceVersion)
+  const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/layouts/${layout}`, {
+      method: 'PUT',
+      headers: {
+          'x-auth-token': xAuthToken,
+          ...(opt_xResourceVersion && {'x-resource-version': opt_xResourceVersion}),
+      },
+      data: data
+  })
 
-    return response
+  return response
 }
 
 export const deleteLayout = async (environment, xAuthToken, channelId, layout) => {
-    const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/routes/${layout}`, {
+    const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/layouts/${layout}`, {
         method: 'DELETE',
         headers: {
             'x-auth-token': xAuthToken
         }
     })
-m
+
     return response
 }

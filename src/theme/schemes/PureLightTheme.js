@@ -5,7 +5,7 @@ import '@mui/lab/themeAugmentation';
 
 const themeColors = {
   primary: '#002840',
-  secondary: '#FFD503',
+  secondary: '#243B55',
   success: '#57CA22',
   warning: '#FFA319',
   error: '#FF1943',
@@ -245,7 +245,7 @@ export const PureLightTheme = createTheme({
     width: '290px'
   },
   header: {
-    height: '0',
+    height: '80px',
     background: colors.alpha.white[100],
     boxShadow: colors.shadows.cardSm,
     textColor: colors.secondary.main
@@ -306,9 +306,9 @@ export const PureLightTheme = createTheme({
       hoverOpacity: 0.1,
       selected: colors.alpha.black[10],
       selectedOpacity: 0.1,
-      disabled: colors.alpha.black[50],
-      disabledBackground: colors.alpha.black[5],
-      disabledOpacity: 0.38,
+      disabled: colors.alpha.black[70],
+      disabledBackground: colors.alpha.black[10],
+      disabledOpacity: 1,
       focus: colors.alpha.black[10],
       focusOpacity: 0.05,
       activatedOpacity: 0.12

@@ -31,7 +31,7 @@ export const getComponentGroup = async (environment, xAuthToken, channelId, comp
     return response
 }
 
-export const putComponentGroup = async (environment, xAuthToken, channelId, componentGroup, data) => {
+export const createComponentGroup = async (environment, xAuthToken, channelId, componentGroup, data) => {
     const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/component_groups/${componentGroup}`, {
         method: 'PUT',
         headers: {

@@ -9,6 +9,7 @@ import { getAllChannels } from 'api';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
+import ChannelIcon from 'components/ChannelIcon'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
@@ -29,20 +30,6 @@ import {
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
-
-const ChannelIcon = ({ icon }) => {
-  const style = {
-    backgroundImage: `url(${icon})`,
-    backgroundSize: '36px',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    width: '36px',
-    height: '36px',
-  }
-  return <div style={style} />;
-}
-
-
 function Channels() {
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
@@ -57,7 +44,7 @@ function Channels() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration.source
+  } = appConfiguration.environments?.source
 
   useEffect(() => {
     if (environment && xAuthToken) {
@@ -120,7 +107,7 @@ function Channels() {
               {projects.map((project) => (
                 <Grid item xs={12} key={project}>
                   <Card>
-                    <CardHeader title={project} />
+                    <CardHeader title={project} sx={{ textAlign: 'left' }} />
                     <Divider />
                     <CardContent>
                       <List>
@@ -129,7 +116,7 @@ function Channels() {
                           .map((channel) => {
                             return (
                               <ListItem key={channel.id} component="div">
-                                <NextLink href="/" passHref>
+                                <NextLink href={`/channels/${channel.id}`} passHref>
                                   <ListItemButton>
                                     <ListItemAvatar>
                                       <ChannelIcon icon={channel.icon} />

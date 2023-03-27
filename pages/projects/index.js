@@ -9,10 +9,10 @@ import { getAllProjects } from 'api';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
+import CreateProjectModal from 'components/CreateProjectModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import CreateProjectModal from 'src/components/CreateProjectModal';
-import StatusIndicator from './StatusIndicator';
+import StatusIndicator from 'components/StatusIndicator';
 import {
   Button,
   Card,
@@ -39,23 +39,9 @@ import AddIcon from '@mui/icons-material/Add';
 import LanguageIcon from '@mui/icons-material/Language';
 
 
-const ChannelIcon = ({ icon }) => {
-  const style = {
-    backgroundImage: `url(${icon})`,
-    backgroundSize: '36px',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
-    width: '36px',
-    height: '36px',
-  }
-  return <div style={style} />;
-}
-
-
 function Projects() {
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
-  // const [channels, setChannels] = useState([])
   const [sourceProjects, setSourceProjects] = useState([])
   const [targetProjects, setTargetProjects] = useState([])
 
@@ -67,10 +53,11 @@ function Projects() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration.source
+  } = appConfiguration.environments?.source
 
   useEffect(() => {
     if (environment && xAuthToken) {
+      // Get source projects
       getAllProjects(environment, xAuthToken)
         .then((response) => {
           let projects = response.data
@@ -88,8 +75,9 @@ function Projects() {
         })
     }
 
-    if (appConfiguration?.target?.environment && appConfiguration?.target?.xAuthToken) {
-      getAllProjects(appConfiguration?.target?.environment, appConfiguration?.target?.xAuthToken)
+    if (appConfiguration?.environments?.target?.environment && appConfiguration?.environments?.target?.xAuthToken) {
+      // Get target projects
+      getAllProjects(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
         .then((response) => {
           let projects = response.data
           projects.sort((projectA, projectB) => {
@@ -153,7 +141,7 @@ function Projects() {
                         alignContent="center">
                           <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
                             <Typography variant="h4" component="span" >Source Projects</Typography>
-                            <Chip label={appConfiguration.source.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
+                            <Chip label={appConfiguration.environments?.source?.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
                           </Grid>
                           <Grid item xs={6} textAlign="right">
                             <Button
@@ -198,8 +186,8 @@ function Projects() {
                         alignContent="center">
                           <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
                             <Typography variant="h4" component="span" >Target Projects</Typography>
-                            { appConfiguration?.target?.environment &&
-                              <Chip label={appConfiguration.target.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
+                            { appConfiguration?.environments?.target?.environment &&
+                              <Chip label={appConfiguration.environments.target.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
                             }
                           </Grid>
                           <Grid item xs={6} textAlign="right">

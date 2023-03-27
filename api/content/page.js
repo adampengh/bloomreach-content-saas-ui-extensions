@@ -12,7 +12,7 @@ const CONTENT_API_PATH = 'management/content/v1'
  * @returns
  */
 export const getPage = async (environment, xAuthToken, channel, path, projectId = 'core') => {
-    console.groupCollapsed('API: Get Page')
+    console.groupCollapsed('API: getPage()')
     console.log('environment:', environment)
     console.log('xAuthToken:', xAuthToken)
     console.log('channel:', channel)
@@ -43,7 +43,7 @@ export const getPage = async (environment, xAuthToken, channel, path, projectId 
  * @returns
  */
 export const putPage = async (environment, xAuthToken, projectId, channel, path, pageData) => {
-    console.groupCollapsed('API: Put Page')
+    console.groupCollapsed('API: putPage()')
     console.log('environment:', environment)
     console.log('xAuthToken:', xAuthToken)
     console.log('projectId:', projectId)

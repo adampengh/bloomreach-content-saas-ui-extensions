@@ -4,12 +4,16 @@ import nProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import ThemeProvider from 'src/theme/ThemeProvider';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
-import { SidebarProvider } from 'src/contexts/SidebarContext';
+
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Provider } from 'react-redux';
 import store from 'redux/store'
+
+// Providers
+import { Provider } from 'react-redux';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
+import { ErrorProvider } from 'src/contexts/ErrorContext';
+import { SidebarProvider } from 'src/contexts/SidebarContext';
 
 import './global.css'
 
@@ -31,16 +35,18 @@ function App(props) {
         />
       </Head>
       <Provider store={store}>
-        <ConfigurationProvider>
-          <SidebarProvider>
-            <ThemeProvider>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <CssBaseline />
-                {getLayout(<Component {...pageProps} />)}
-              </LocalizationProvider>
-            </ThemeProvider>
-          </SidebarProvider>
-        </ConfigurationProvider>
+        <ErrorProvider>
+          <ConfigurationProvider>
+            <SidebarProvider>
+              <ThemeProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <CssBaseline />
+                  {getLayout(<Component {...pageProps} />)}
+                </LocalizationProvider>
+              </ThemeProvider>
+            </SidebarProvider>
+          </ConfigurationProvider>
+        </ErrorProvider>
       </Provider>
     </>
   );

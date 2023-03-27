@@ -116,7 +116,6 @@ function StatusComingSoon() {
       <MainContent>
         <TopWrapper>
           <Container maxWidth="md">
-            <Logo />
             <Box textAlign="center" mb={3}>
               <Container maxWidth="xs">
                 <Typography variant="h1" sx={{ mt: 4, mb: 2 }}>
@@ -128,59 +127,10 @@ function StatusComingSoon() {
                   fontWeight="normal"
                   sx={{ mb: 4 }}
                 >
-                  We're working on implementing the last features before our
-                  launch!
+                  We're working on implementing this feature!
                 </Typography>
               </Container>
             </Box>
-
-            <Box display="flex" justifyContent="center">
-              {timerComponents.length ? timerComponents : <>Time's up!</>}
-            </Box>
-
-            <Container maxWidth="sm">
-              <Box sx={{ textAlign: 'center', p: 4 }}>
-                <FormControl variant="outlined" fullWidth>
-                  <OutlinedInputWrapper
-                    type="text"
-                    placeholder="Enter your email address here..."
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <ButtonNotify variant="contained" size="small">
-                          Notify Me
-                        </ButtonNotify>
-                      </InputAdornment>
-                    }
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <MailTwoToneIcon />
-                      </InputAdornment>
-                    }
-                  />
-                  <FormHelperText>
-                    We'll email you once our website is launched!
-                  </FormHelperText>
-                </FormControl>
-                <Divider sx={{ my: 4 }} />
-                <Box sx={{ textAlign: 'center' }}>
-                  <Tooltip arrow placement="top" title="Facebook">
-                    <IconButton color="primary">
-                      <FacebookIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip arrow placement="top" title="Twitter">
-                    <IconButton color="primary">
-                      <TwitterIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip arrow placement="top" title="Instagram">
-                    <IconButton color="primary">
-                      <InstagramIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </Box>
-            </Container>
           </Container>
         </TopWrapper>
       </MainContent>

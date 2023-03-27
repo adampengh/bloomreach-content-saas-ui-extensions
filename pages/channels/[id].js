@@ -6,12 +6,19 @@ import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 import sampleJson from 'mock-data/sample-component'
 
 // APIs
-import { getContentType } from 'api';
+import { getChannel } from 'api';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
+import {
+  ChannelTab,
+  ComponentsTab,
+  LayoutsTab,
+  RoutesTab,
+  MenusTab,
+} from '/modules/channels'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
@@ -25,21 +32,32 @@ import {
   Link,
   Tabs,
   Tab,
+  TextField,
   Typography,
 } from '@mui/material';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
-function ContentTypes() {
-  const router = useRouter()
-  const { id } = router.query
+const TABS = [
+  'channels',
+  'components',
+  'layouts',
+  'routes',
+  'menus',
+]
+
+function ChannelDetails() {
+  const { push, query } = useRouter();
+  const { id: channelId, tab } = query;
+  console.log('ChannelDetails channelId', channelId)
+  console.log('ChannelDetails tab', tab, query)
 
   const [value, setValue] = useState(0);
 
   const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
-  const [contentType, setContentType] = useState(null)
+  const [channel, setChannel] = useState(null)
 
   const {
     appConfiguration
@@ -52,38 +70,38 @@ function ContentTypes() {
   } = appConfiguration.environments?.source
 
   useEffect(() => {
-    if (environment && xAuthToken && id) {
-      setIsLoaded(true)
-    } else {
-      setIsLoaded(true)
-    }
-  }, [environment, xAuthToken, id])
+    tab ? setValue(TABS.indexOf(tab)) : 0;
 
-  const handleChange = (event, newValue) => {
+    if (environment && xAuthToken && channelId) {
+      getChannel(environment, xAuthToken, channelId)
+        .then(response => {
+          console.log(response)
+          setChannel(response.data)
+          setIsLoaded(true)
+        })
+        .catch(error => console.error(error))
+    }
+  }, [environment, xAuthToken, channelId])
+
+  const handleTabChange = (event, newValue) => {
     setValue(newValue);
+    push({ query: { ...query, tab: TABS[newValue] } }, undefined, { shallow: true });
   };
+
+  if (!isLoaded) {
+    return null;
+  }
 
   return (
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading={`DETAIL PAGE`}
-          subHeading={`X-Resource-Version:`}
+          heading={`${channel.name}`}
+          subHeading={channel.id}
         />
       </PageTitleWrapper>
 
       <Container maxWidth="xl">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem'}}>
-          <Link
-            underline="hover"
-            color="inherit"
-            href="/content-types"
-          >
-            Content Types
-          </Link>
-          <Typography color="text.primary">PAGE TITLE</Typography>
-        </Breadcrumbs>
-
         <Grid
           container
           direction="row"
@@ -112,31 +130,30 @@ function ContentTypes() {
           :
             <Grid item xs={12}>
               <Card>
-                <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
+                <CardContent sx={{ fontWeight: 'bold' }}>
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                      <Tab label="Item One" />
-                      <Tab label="Item Two" />
-                      <Tab label="JSON" />
+                    <Tabs value={value} onChange={handleTabChange}>
+                      <Tab label="Channel" />
+                      <Tab label="Components" />
+                      <Tab label="Layouts" />
+                      <Tab label="Routes" />
+                      <Tab label="Menus" />
                     </Tabs>
                   </Box>
                   <TabPanel value={value} index={0}>
-                    Item One
+                    <ChannelTab channel={channel} />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    Item Two
+                    <ComponentsTab channel={channel} />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    { sampleJson &&
-                      <CopyBlock
-                        text={JSON.stringify(sampleJson, null, 4)}
-                        language='json'
-                        wrapLines
-                        theme={bloomreachTheme}
-                        showLineNumbers={true}
-                        codeBlock
-                      />
-                    }
+                    <LayoutsTab channel={channel} />
+                  </TabPanel>
+                  <TabPanel value={value} index={3}>
+                    <RoutesTab channel={channel} />
+                  </TabPanel>
+                  <TabPanel value={value} index={4}>
+                    <MenusTab channel={channel} />
                   </TabPanel>
                 </CardContent>
               </Card>
@@ -148,7 +165,7 @@ function ContentTypes() {
   );
 }
 
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -160,7 +177,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ py: 3, px: 1 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -168,6 +185,6 @@ function TabPanel(props) {
   );
 }
 
-ContentTypes.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
+ChannelDetails.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 
-export default ContentTypes;
+export default ChannelDetails;

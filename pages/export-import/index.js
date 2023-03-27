@@ -61,7 +61,7 @@ function ExportImport() {
     environment,
     xAuthToken,
     projectId,
-  } = appConfiguration.source
+  } = appConfiguration.environments?.source
 
   const [dataTypes, setDataTypes] = useState(DATA_TYPES)
   const [sourcePath, setSourcePath] = useState("")
@@ -94,8 +94,8 @@ function ExportImport() {
     }
 
     // Get target projects list
-    if (appConfiguration.target.environment && appConfiguration.target.xAuthToken) {
-      getAllProjects(appConfiguration.target.environment, appConfiguration.target.xAuthToken)
+    if (appConfiguration.environments?.target.environment && appConfiguration.environments?.target.xAuthToken) {
+      getAllProjects(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken)
         .then((response) => {
           console.log(response)
           let projects = response.data
