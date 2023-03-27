@@ -98,15 +98,8 @@ export const ComponentsTab = ({ channel }) => {
 
   const handleComponentGroupChange = (event) => {
     event.preventDefault()
-    // setSelectedComponentGroup(event.target.value)
+    setSelectedComponentGroup(event.target.value)
   }
-
-  const handleConfirmationDialog = (components) => {
-    console.log('handleConfirmationDialog', components)
-    // setSelectedComponents(components)
-    // setShowDeleteComponentsModal(true)
-  }
-
 
   const columns = [
     {
@@ -119,8 +112,12 @@ export const ComponentsTab = ({ channel }) => {
           !selectedComponentGroup?.system
             ?
             <ButtonGroup size="small" variant="outlined">
-              <Button sx={{ padding: padding}}>
-                <EditIcon fontSize="small" />
+              <Button
+                sx={{ padding: padding}}
+                >
+                <NextLink href={`/components/${channel.id}/${params.row.id}`}>
+                  <EditIcon fontSize="small" />
+                </NextLink>
               </Button>
               <Button
                 sx={{ padding: padding}}
@@ -193,10 +190,10 @@ export const ComponentsTab = ({ channel }) => {
           justifyContent="space-between"
           xs={12}>
             <Grid
-            display="flex"
-            alignItems="center"
-            alignContent="center"
-            justifyContent="space-between"
+              display="flex"
+              alignItems="center"
+              alignContent="center"
+              justifyContent="space-between"
             >
               <FormControl
                 variant="outlined"
@@ -288,6 +285,9 @@ export const ComponentsTab = ({ channel }) => {
         selectedComponents={selectedComponents}
         setSelectedComponents={setSelectedComponents}
         channelId={channel.id}
+        selectedComponentGroup={selectedComponentGroup}
+        setComponents={setComponents}
+        setPageSize={setPageSize}
       />
     </>
   )

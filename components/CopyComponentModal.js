@@ -79,9 +79,6 @@ export default function CopyComponentModal({
     console.log('selectedEnvironment', selectedEnvironment)
     console.log('checked', checked)
 
-    const environment = appConfiguration?.environments?.[selectedEnvironment]?.environment
-    const xAuthToken = appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken
-
     for await (const channel of checked) {
       for await (const component of selectedComponents) {
         console.log('copy component', component, 'to channel', channel.id)
@@ -91,7 +88,13 @@ export default function CopyComponentModal({
         console.log('componentName', componentName)
 
         // Check if component exists in destination channel
-        const xResourceVersion = await getComponent(environment, xAuthToken, channel.id, componentGroup, componentName)
+        const xResourceVersion = await getComponent(
+          appConfiguration?.environments?.[selectedEnvironment]?.environment,
+          appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+          channel.id,
+          componentGroup,
+          componentName
+        )
           .then(response => {
             console.log('Check for Existing Component Success', response.headers)
             return response.headers['x-resource-version']
@@ -99,7 +102,13 @@ export default function CopyComponentModal({
           .catch(error => console.error('Get Component Error', error.message))
 
         // Get component
-        const componentData = await getComponent(environment, xAuthToken, channelId, componentGroup, componentName)
+        const componentData = await getComponent(
+          appConfiguration?.environments?.source?.environment,
+          appConfiguration?.environments?.source?.xAuthToken,
+          channelId,
+          componentGroup,
+          componentName
+        )
           .then(response => {
             console.log('Get Component Success', response.headers)
             return response.data
@@ -110,7 +119,15 @@ export default function CopyComponentModal({
 
         // Put component
         if (componentData) {
-          await putComponent(environment, xAuthToken, channel.id, componentGroup, componentName, componentData, xResourceVersion)
+          await putComponent(
+            appConfiguration?.environments?.[selectedEnvironment]?.environment,
+            appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+            channel.id,
+            componentGroup,
+            componentName,
+            componentData,
+            xResourceVersion
+          )
             .then(response => {
               console.log('Put Component Success')
             })

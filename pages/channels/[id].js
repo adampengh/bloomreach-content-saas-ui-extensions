@@ -99,16 +99,6 @@ function ChannelDetails() {
       </PageTitleWrapper>
 
       <Container maxWidth="xl">
-        {/* <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem'}}>
-          <Link
-            underline="hover"
-            color="inherit"
-            href="/channels"
-          >
-            Channels
-          </Link>
-          <Typography color="text.primary">{channel?.id}</Typography>
-        </Breadcrumbs> */}
         <Grid
           container
           direction="row"
