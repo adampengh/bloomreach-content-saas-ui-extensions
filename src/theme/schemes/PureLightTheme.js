@@ -637,6 +637,9 @@ export const PureLightTheme = createTheme({
         },
         textSizeLarge: {
           padding: '12px 16px'
+        },
+        textPrimary: {
+          color: colors.alpha.white[70]
         }
       }
     },
