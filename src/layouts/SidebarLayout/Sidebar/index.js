@@ -1,11 +1,16 @@
 import { useContext } from 'react';
+import NextLink from 'next/link';
 import Scrollbar from 'src/components/Scrollbar';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 
 // Components
 import {
   Box,
+  Button,
   Drawer,
+  List,
+  ListItem,
+  Typography,
   alpha,
   styled,
   Divider,
@@ -72,6 +77,16 @@ function Sidebar() {
             background: theme.colors.alpha.trueWhite[10]
           }}
         />
+        <Box p={2}>
+          <Button
+            href="/release-notes"
+            variant="text"
+            color="primary"
+            size="small"
+          >
+            Release Notes
+          </Button>
+        </Box>
       </SidebarWrapper>
       <Drawer
         sx={{
