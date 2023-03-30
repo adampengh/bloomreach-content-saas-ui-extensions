@@ -45,7 +45,7 @@ export default function CopyContentTypeModal({
   const [checked, setChecked] = useState([]);
 
   // useEffect(() => {
-  //   getAllChannels(appConfiguration.environments?.[selectedEnvironment]?.environment, appConfiguration.environments?.[selectedEnvironment]?.xAuthToken)
+  //   getAllDeveloperChannels(appConfiguration.environments?.[selectedEnvironment]?.environment, appConfiguration.environments?.[selectedEnvironment]?.xAuthToken)
   //     .then((response) => {
   //       const data = response.data.filter(channel => channel.branch === appConfiguration.environments?.[selectedEnvironment]?.projectId)
   //       setChannels(data)
@@ -63,7 +63,7 @@ export default function CopyContentTypeModal({
     // event.preventDefault()
     // setSelectedEnvironment(event.target.value)
 
-    // getAllChannels(appConfiguration.environments?.[event.target.value]?.environment, appConfiguration.environments?.[event.target.value]?.xAuthToken)
+    // getAllDeveloperChannels(appConfiguration.environments?.[event.target.value]?.environment, appConfiguration.environments?.[event.target.value]?.xAuthToken)
     //   .then((response) => {
     //     const data = response.data.filter(channel => channel.branch === appConfiguration.environments?.[event.target.value]?.projectId)
     //     setChannels(data)

@@ -5,7 +5,7 @@ describe('config vars', () => {
     })
     it('should return xAuthToken variable', () => {
         expect(typeof global.xAuthToken).toBe('string')
-        expect(global.xAuthToken).toBe('b6d9883f-3682-4e66-b51d-2f771903d5de')
+        expect(global.xAuthToken).toBe('76c52a73-27a6-41d4-a347-35cc7aa1a42b')
     })
     it('should return channel variable', () => {
         expect(typeof global.channel).toBe('string')

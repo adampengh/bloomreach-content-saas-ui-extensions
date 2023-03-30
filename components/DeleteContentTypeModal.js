@@ -57,7 +57,6 @@ const DeleteContentTypeModal = ({
       onClose={handleClose}
       fullWidth={true}
       maxWidth={'sm'}
-
     >
       <DialogTitle id="alert-dialog-title">
         {"Confirm Deletion"}
@@ -69,7 +68,7 @@ const DeleteContentTypeModal = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button color="error" variant="contained" onClick={handleDeleteItems(selectedRows)} autoFocus>
+        <Button color="error" variant="contained" autoFocus>
           Delete
         </Button>
       </DialogActions>

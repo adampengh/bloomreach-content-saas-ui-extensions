@@ -4,6 +4,9 @@ export * from './batch-export'
 // Content Batch Import API
 
 
+// Content Type Management API
+export * from './content-types'
+
 // Content Management API
 export * from './content'
 
