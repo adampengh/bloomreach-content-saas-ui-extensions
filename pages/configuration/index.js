@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // API
@@ -34,6 +35,9 @@ import { ErrorContext } from 'src/contexts/ErrorContext';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 function Configuration() {
+  const { query } = useRouter();
+  const { namespace, token } = query;
+
   // Context
   const {
     appConfiguration,
@@ -53,27 +57,35 @@ function Configuration() {
   const [targetDeveloperProjects, setTargetDeveloperProjects] = useState([])
 
   useEffect(() => {
+    const config = {
+      ...sourceConfig,
+      environment: namespace,
+      xAuthToken: token
+    }
+    setSourceConfig(config)
+    storeApplicationConfiguration({
+      ...appConfiguration,
+      environments: {
+        source: config,
+        target: targetConfig
+      }
+    })
+  }, [namespace, token])
+
+  useEffect(() => {
     setSourceConfig(appConfiguration.environments?.source)
     setTargetConfig(appConfiguration.environments?.target)
 
     if (appConfiguration.environments?.source?.environment && appConfiguration.environments?.source?.xAuthToken) {
       getAllProjects(appConfiguration.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken)
-        .then(response => {
-          setSourceDeveloperProjects(response.data)
-        })
-        .catch((error) => {
-          handleShowSnackbar('error', error.message)
-        })
+        .then(response => setSourceDeveloperProjects(response.data))
+        .catch((error) => handleShowSnackbar('error', error.message))
     }
 
     if (appConfiguration.environments?.target?.environment && appConfiguration.environments?.target?.xAuthToken) {
       getAllProjects(appConfiguration.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
-        .then(response => {
-          setTargetDeveloperProjects(response.data)
-        })
-        .catch((error) => {
-          handleShowSnackbar('error', error.message)
-        })
+        .then(response => setTargetDeveloperProjects(response.data))
+        .catch((error) => handleShowSnackbar('error', error.message))
     }
   }, [appConfiguration])
 
@@ -94,24 +106,16 @@ function Configuration() {
   const handleSourceProjectIdClick = () => {
     if (appConfiguration?.environments?.source?.environment && appConfiguration?.environments?.source?.xAuthToken) {
       getAllProjects(appConfiguration.environments?.source.environment, appConfiguration?.environments?.source?.xAuthToken)
-        .then(response => {
-          setSourceDeveloperProjects(response.data)
-        })
-        .catch((error) => {
-          handleShowSnackbar('error', error.message)
-        })
+        .then(response => setSourceDeveloperProjects(response.data))
+        .catch((error) => handleShowSnackbar('error', error.message))
     }
   }
 
   const handleTargetProjectIdClick = () => {
     if (appConfiguration?.environments?.target?.environment && appConfiguration?.environments?.target?.xAuthToken) {
       getAllProjects(appConfiguration.environments?.target.environment, appConfiguration?.environments?.target?.xAuthToken)
-        .then(response => {
-          setTargetDeveloperProjects(response.data)
-        })
-        .catch((error) => {
-          handleShowSnackbar('error', error.message)
-        })
+        .then(response => setTargetDeveloperProjects(response.data))
+        .catch((error) => handleShowSnackbar('error', error.message))
     }
   }
 
