@@ -379,7 +379,7 @@ export const PureLightTheme = createTheme({
           flexDirection: 'column'
         },
         '#nprogress': {
-          pointerEvents: 'none'
+          // pointerEvents: 'none'
         },
         '#nprogress .bar': {
           background: colors.primary.lighter

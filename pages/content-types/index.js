@@ -2,7 +2,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import NextLink from 'next/link';
 
 // APIs
-import { getAllContentTypes } from 'api/content-types';
+import {
+  getAllContentTypes,
+  getDeveloperProject,
+} from 'api';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
@@ -21,6 +24,7 @@ import {
   CircularProgress,
   Container,
   Grid,
+  Tooltip,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -42,14 +46,16 @@ function ContentTypes() {
   const {
     environment,
     xAuthToken,
+    projectId
   } = appConfiguration.environments?.source
-
 
   // State
   const [pageData, setPageData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [showCopyModal, setShowCopyModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [isSourceProjectIncludeContentTypes, setIsSourceProjectIncludeContentTypes] = useState(false)
+  const [isTargetProjectIncludeContentTypes, setIsTargetProjectIncludeContentTypes] = useState(false)
 
   // DataGrid State
   const [pageSize, setPageSize] = useState(10);
@@ -77,6 +83,23 @@ function ContentTypes() {
     } else {
       setIsLoaded(true)
     }
+
+    console.log('appConfiguration?.environments?.target?.environment', appConfiguration?.environments?.target?.environment)
+    console.log('appConfiguration?.environments?.target?.xAuthToken', appConfiguration?.environments?.target?.xAuthToken)
+    console.log('appConfiguration?.environments?.target?.projectId', appConfiguration?.environments?.target?.projectId)
+    if (appConfiguration?.environments?.target?.environment &&
+      appConfiguration?.environments?.target?.xAuthToken &&
+      appConfiguration?.environments?.target?.projectId) {
+        getDeveloperProject(
+          appConfiguration?.environments?.target?.environment,
+          appConfiguration?.environments?.target?.xAuthToken,
+          appConfiguration?.environments?.target?.projectId)
+          .then(response => {
+            console.log('response.data', response.data)
+            setIsTargetProjectIncludeContentTypes(response.data.includeContentTypes)
+          })
+          .catch(error => console.error(error))
+    }
   }, [appConfiguration])
 
   const columns = [
@@ -102,15 +125,16 @@ function ContentTypes() {
             >
               <ContentCopyIcon fontSize="small" />
             </Button>
-            <Button
+            {/* <Button
               color="error"
+              disabled
               onClick={() => {
                 setSelectedRows([params.row.id])
                 setShowDeleteModal(true)
               }}
               sx={{ padding: padding}}>
               <DeleteOutlineIcon fontSize="small" />
-            </Button>
+            </Button> */}
           </ButtonGroup>
         )
       }
@@ -158,22 +182,40 @@ function ContentTypes() {
           </Grid>
           <Grid item xs={12} display="inline-flex" justifyContent="flex-end">
             <ButtonGroup aria-label="outlined primary button group">
+
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
               >Content Type</Button>
-              <Button
-                disabled={!selectedRows.length}
-                onClick={setShowCopyModal}
-                startIcon={<ContentCopyIcon />}
-              >Copy</Button>
-              <Button
+
+              {!(selectedRows.length && isTargetProjectIncludeContentTypes)
+                ?
+                <Tooltip title="Delete">
+                  <Button
+                    disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
+                    onClick={setShowCopyModal}
+                    startIcon={<ContentCopyIcon />}
+                  >Copy</Button>
+                </Tooltip>
+
+                :
+                <Button
+                  disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
+                  onClick={setShowCopyModal}
+                  startIcon={<ContentCopyIcon />}
+                >Copy</Button>
+              }
+
+
+
+              {/* <Button
                 color="error"
                 variant="outlined"
-                disabled={!selectedRows.length}
+                disabled
+                // disabled={!selectedRows.length}
                 startIcon={<DeleteOutlineIcon />}
                 onClick={setShowDeleteModal}
-              >Delete</Button>
+              >Delete</Button> */}
             </ButtonGroup>
           </Grid>
       </Grid>
@@ -201,6 +243,7 @@ function ContentTypes() {
                     checkboxSelection
                     disableSelectionOnClick
                     onSelectionModelChange={(ids) => setSelectedRows(ids)}
+                    selectionModel={selectedRows}
                     initialState={{
                       sorting: {
                         sortModel: [{
@@ -217,21 +260,21 @@ function ContentTypes() {
         </Grid>
       </Container>
 
-      <CopyContentTypeModal
+      {/* <CopyContentTypeModal
         showCopyModal={showCopyModal}
         setShowCopyModal={setShowCopyModal}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         // channelId={channel.id}
-      />
+      /> */}
 
-      <DeleteContentTypeModal
+      {/* <DeleteContentTypeModal
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         // channelId={channel.id}
-      />
+      /> */}
     </>
   );
 }

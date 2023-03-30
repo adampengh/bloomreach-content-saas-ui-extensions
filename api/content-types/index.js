@@ -30,8 +30,9 @@ export const getAllContentTypes = async (environment, xAuthToken, opt_projectId)
  */
 export const getContentType = async (environment, xAuthToken, contentTypeName, opt_projectId) => {
     const projectId = opt_projectId || 'core';
+    const contentType = contentTypeName.replace(':', '-')
 
-    const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_TYPE_API_PATH}/${projectId}/${contentTypeName}`, {
+    const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_TYPE_API_PATH}/${projectId}/${contentType}`, {
         method: 'GET',
         headers: {
             'x-auth-token': xAuthToken
@@ -39,4 +40,19 @@ export const getContentType = async (environment, xAuthToken, contentTypeName, o
     })
 
     return response
+}
+
+
+export const putContentType = async (environment, xAuthToken, contentTypeName, data, opt_xResourceVersion) => {
+  const contentType = contentTypeName.replace(':', '-')
+  const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_TYPE_API_PATH}/development/${contentTypeName}`, {
+      method: 'GET',
+      headers: {
+          'x-auth-token': xAuthToken,
+          ...(opt_xResourceVersion && {'x-resource-version': opt_xResourceVersion}),
+      },
+      data: data
+  })
+
+  return response
 }

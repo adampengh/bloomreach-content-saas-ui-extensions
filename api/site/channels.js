@@ -1,6 +1,28 @@
 import axios from 'axios';
 
 const CHANNEL_API_PATH = 'management/site/v1'
+const DELIVERY_CHANNEL_API_PATH = 'delivery/site/v1'
+
+/**
+ * Get all core channels from Delivery API
+ * @param {string} environment
+ * @returns
+ */
+export const getAllCoreChannels = async (environment) => {
+  console.groupCollapsed('Site Management API: getAllCoreChannels()')
+  console.log('environment:', environment)
+
+  const url = `https://${environment}.bloomreach.io/${DELIVERY_CHANNEL_API_PATH}/channels`
+  console.log('url:', url)
+  const response = await axios(url, {
+    method: 'GET',
+  })
+
+  console.log('response', response.data)
+  console.groupEnd()
+
+  return response
+}
 
 /**
  * Get all channels
@@ -53,7 +75,7 @@ export const getChannel = async (environment, xAuthToken, channelId) => {
 }
 
 /**
- * Get channel
+ * Add channel to project
  * @param {string} environment
  * @param {string} xAuthToken
  * @param {string} projectId
@@ -82,4 +104,30 @@ export const addChannelToProject = async (environment, xAuthToken, projectId, ch
     console.groupEnd()
 
     return response
+}
+
+/**
+ * Deletes a channel branch
+ * @param {string} environment
+ * @param {string} xAuthToken
+ * @param {string} channelId
+ * @returns
+ */
+export const deleteChannelBranch = async (environment, xAuthToken, channelId) => {
+  console.groupCollapsed('Site Management API: getChannel()')
+  console.log('environment:', environment)
+  console.log('xAuthToken:', xAuthToken)
+  console.log('channelId:', channelId)
+
+  const response = await axios(`https://${environment}.bloomreach.io/${CHANNEL_API_PATH}/channels/${channelId}`, {
+      method: 'DELETE',
+      headers: {
+          'x-auth-token': xAuthToken
+      }
+  })
+
+  console.log('response', response.data)
+  console.groupEnd()
+
+  return response
 }

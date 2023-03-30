@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 
 // APIs
 import {
+  getAllCoreChannels,
   getAllChannels,
   getDeveloperProject,
 } from 'api';
@@ -13,6 +14,8 @@ import {
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
+import AddChannelModal from 'components/projects/AddChannelModal';
+import DeleteChannelModal from 'components/projects/DeleteChannelModal';
 import ChannelIcon from 'components/ChannelIcon'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -20,11 +23,13 @@ import StatusIndicator from 'components/StatusIndicator';
 import {
   Breadcrumbs,
   Box,
+  Button,
   Card,
   CardContent,
   CircularProgress,
   Container,
   Grid,
+  IconButton,
   Link,
   List,
   ListItem,
@@ -40,19 +45,20 @@ import {
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
 // Icons
-import LanguageIcon from '@mui/icons-material/Language';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ContentTypes({params}) {
-  const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [showAddChannelModal, setShowAddChannelModal] = useState(false)
+  const [showDeleteChannelModal, setShowDeleteChannelModal] = useState(false)
+  const [channelToDelete, setChannelToDelete] = useState(null)
 
   const [instance, id] = params
   const [tab, setTab] = useState(0);
-  const [projectData, setProjectData] = useState(null)
 
-  const [pageState, setPageState] = useState({
-    channels: []
-  })
+  const [channels, setChannels] = useState([])
+  const [coreChannels, setCoreChannels] = useState([])
+  const [projectData, setProjectData] = useState([])
 
   const {
     appConfiguration
@@ -64,38 +70,40 @@ function ContentTypes({params}) {
         .then(response => setProjectData(response.data))
         .catch(err => console.log(err))
 
+      await getAllCoreChannels(appConfiguration?.environments?.source?.environment)
+        .then(response => setCoreChannels(response.data))
+        .catch(err => console.log(err))
+
       await getAllChannels(appConfiguration?.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken)
-        .then(response => {
-          const channels = response?.data?.filter(project => project.branch === id)
-          setPageState({
-            ...pageState,
-            channels: channels
-          })
-        })
+        .then(response => setChannels(response?.data?.filter(project => project.branch === id)))
         .catch(err => console.log(err))
     }
 
     if (instance === 'target' && appConfiguration?.environments?.target?.environment && appConfiguration?.environments?.target?.xAuthToken) {
-      getDeveloperProject(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken, id)
+      await getDeveloperProject(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken, id)
         .then(response => setProjectData(response.data))
         .catch(err => console.log(err))
 
-      getAllChannels(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
-        .then(response => {
-          const channels = response?.data?.filter(project => project.branch === id)
-          setPageState({
-            ...pageState,
-            channels: channels
-          })
-        })
+      await getAllCoreChannels(appConfiguration?.environments?.target?.environment)
+        .then(response => setCoreChannels(response.data))
+        .catch(err => console.log(err))
+
+      await getAllChannels(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
+        .then(response => setChannels(response?.data?.filter(project => project.branch === id)))
         .catch(err => console.log(err))
     }
+
     setIsLoaded(true)
   }, [instance, id, appConfiguration])
 
   const handleChange = (event, newValue) => {
     setTab(newValue);
   };
+
+  const handleClickDeleteIcon = (channelId) => {
+    setChannelToDelete(channelId)
+    setShowDeleteChannelModal(true)
+  }
 
   return (
     <>
@@ -107,7 +115,7 @@ function ContentTypes({params}) {
           <Grid item>
             <PageTitle
               heading={projectData?.name}
-              subHeading={`Project ID: ${projectData?.id}`}
+              subHeading={`Project ID: ${id}`}
             />
           </Grid>
           <Grid item sx={{ marginLeft: '1rem', paddingTop: '0.5rem'}}>
@@ -168,12 +176,26 @@ function ContentTypes({params}) {
                     </Tabs>
                   </Box>
                   <TabPanel tab={tab} index={0}>
-                    <List>
-                    {pageState?.channels?.map(channel => {
-                      console.log('channel', channel)
-                      return (
-                        // <p key={channel.id}>{channel.id}</p>
-                        <ListItem key={channel.id} component="div">
+                    <Button
+                      sx={{ margin: 1 }}
+                      variant="outlined"
+                      onClick={() => setShowAddChannelModal(true)}
+                    >
+                      Add Channels
+                    </Button>
+
+                    <List sx={{ padding: 0 }}>
+                      {channels?.map(channel =>
+                        <ListItem key={channel.id} component="div"
+                          secondaryAction={
+                            <IconButton
+                              edge="end"
+                              aria-label="delete"
+                              onClick={() => handleClickDeleteIcon(channel.id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          }>
                           <NextLink href={`/channels/${channel.id}`} passHref>
                             <ListItemButton>
                               <ListItemAvatar>
@@ -183,8 +205,7 @@ function ContentTypes({params}) {
                             </ListItemButton>
                           </NextLink>
                         </ListItem>
-                      )
-                    })}
+                      )}
                     </List>
                   </TabPanel>
                   <TabPanel tab={tab} index={1}>
@@ -205,6 +226,25 @@ function ContentTypes({params}) {
           }
         </Grid>
       </Container>
+
+      <AddChannelModal
+        showAddChannelModal={showAddChannelModal}
+        setShowAddChannelModal={setShowAddChannelModal}
+        channels={channels}
+        setChannels={setChannels}
+        coreChannels={coreChannels}
+        instance={instance}
+        projectId={id}
+      />
+
+      <DeleteChannelModal
+        showDeleteChannelModal={showDeleteChannelModal}
+        setShowDeleteChannelModal={setShowDeleteChannelModal}
+        channels={channels}
+        setChannels={setChannels}
+        channelToDelete={channelToDelete}
+        instance={instance}
+      />
     </>
   );
 }
@@ -221,7 +261,7 @@ function TabPanel(props) {
       {...other}
     >
       {tab === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 1 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
