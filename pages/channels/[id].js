@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
+import Head from 'next/head';
 import { useRouter } from 'next/router'
-import { CopyBlock } from 'react-code-blocks'
-import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
-
-import sampleJson from 'mock-data/sample-component'
 
 // APIs
 import { getChannel } from 'api';
@@ -21,19 +18,16 @@ import {
 } from '/modules/channels'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import TabPanel from 'components/TabPanel';
 import {
-  Breadcrumbs,
   Box,
   Card,
   CardContent,
   CircularProgress,
   Container,
   Grid,
-  Link,
   Tabs,
   Tab,
-  TextField,
-  Typography,
 } from '@mui/material';
 
 // Contexts
@@ -50,12 +44,9 @@ const TABS = [
 function ChannelDetails() {
   const { push, query } = useRouter();
   const { id: channelId, tab } = query;
-  console.log('ChannelDetails channelId', channelId)
-  console.log('ChannelDetails tab', tab, query)
 
   const [value, setValue] = useState(0);
 
-  const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [channel, setChannel] = useState(null)
 
@@ -66,7 +57,6 @@ function ChannelDetails() {
   const {
     environment,
     xAuthToken,
-    projectId,
   } = appConfiguration.environments?.source
 
   useEffect(() => {
@@ -94,6 +84,9 @@ function ChannelDetails() {
 
   return (
     <>
+      <Head>
+        <title>Channel: {channel.id}</title>
+      </Head>
       <PageTitleWrapper>
         <PageTitle
           heading={`${channel.name}`}
@@ -165,25 +158,7 @@ function ChannelDetails() {
   );
 }
 
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ py: 3, px: 1 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
 
 ChannelDetails.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import Head from 'next/head';
 import NextLink from 'next/link';
 
 // APIs
@@ -28,6 +28,7 @@ import {
   ListItemText,
   ListItemAvatar,
   ListItemButton,
+  Tooltip,
   Typography,
 } from '@mui/material';
 
@@ -36,11 +37,11 @@ import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
 // Icons
 import AddIcon from '@mui/icons-material/Add';
+import DifferenceIcon from '@mui/icons-material/Difference';
 import LanguageIcon from '@mui/icons-material/Language';
 
 
 function Projects() {
-  const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [sourceProjects, setSourceProjects] = useState([])
   const [targetProjects, setTargetProjects] = useState([])
@@ -52,7 +53,6 @@ function Projects() {
   const {
     environment,
     xAuthToken,
-    projectId,
   } = appConfiguration.environments?.source
 
   useEffect(() => {
@@ -61,16 +61,15 @@ function Projects() {
       getAllProjects(environment, xAuthToken)
         .then((response) => {
           let projects = response.data
+          console.log('projects', projects)
           projects.sort((projectA, projectB) => {
             const timestamp = (project) => new Date(project.system.createdAt).valueOf()
             return timestamp(projectB) - timestamp(projectA)
           })
           setSourceProjects(projects)
           setIsLoaded(true)
-          setError(null)
         })
         .catch((error) => {
-          setError(error.message)
           setIsLoaded(true)
         })
     }
@@ -86,10 +85,8 @@ function Projects() {
           })
           setTargetProjects(projects)
           setIsLoaded(true)
-          setError(null)
         })
         .catch((error) => {
-          setError(error.message)
           setIsLoaded(true)
         })
     }
@@ -97,6 +94,9 @@ function Projects() {
 
   return (
     <>
+      <Head>
+        <title>Projects</title>
+      </Head>
       <PageTitleWrapper>
         <PageTitle
           heading="Projects"
@@ -160,7 +160,16 @@ function Projects() {
                           <NextLink href={`/projects/source/${project.id}`} passHref>
                             <ListItemButton>
                               <ListItemAvatar>
-                                <LanguageIcon />
+                               {project.includeContentTypes
+                                ? <>
+                                  <LanguageIcon />
+                                  <Tooltip title="Includes Content Types">
+                                    <DifferenceIcon />
+                                  </Tooltip>
+                                </>
+                                : <LanguageIcon />
+                               }
+
                               </ListItemAvatar>
                               <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
                               <StatusIndicator status={project.state.status} message={project.state.message} />

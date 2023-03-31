@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Head from 'next/head';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // API
@@ -34,13 +35,10 @@ import {
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
-const ITEM_HEIGHT = 36;
-const ITEM_PADDING_TOP = 0;
 const MenuProps = {
   PaperProps: {
     style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: 230,
     },
   },
 };
@@ -181,13 +179,16 @@ function ExportImport() {
 
   return (
     <>
+      <Head>
+        <title>Content Export/Import</title>
+      </Head>
       <PageTitleWrapper>
         <PageTitle
           heading="Export & Import"
           subHeading="Batch Export & Import operation"
         />
       </PageTitleWrapper>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Grid
           container
           direction="row"

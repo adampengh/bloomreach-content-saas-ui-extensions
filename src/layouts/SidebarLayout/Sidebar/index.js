@@ -83,8 +83,18 @@ function Sidebar() {
             variant="text"
             color="primary"
             size="small"
+            sx={{ color: theme.colors.alpha.trueWhite[70] }}
           >
             Release Notes
+          </Button>
+          <Button
+            href="/contributing"
+            variant="text"
+            color="primary"
+            size="small"
+            sx={{ color: theme.colors.alpha.trueWhite[70] }}
+          >
+            Contributing
           </Button>
         </Box>
       </SidebarWrapper>

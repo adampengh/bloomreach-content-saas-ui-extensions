@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Head from 'next/head';
 
 // API Methods
 import {
@@ -48,8 +49,7 @@ import EastIcon from '@mui/icons-material/East';
 import FolderIcon from '@mui/icons-material/Folder';
 
 function Pages() {
-  const [checked, setChecked] = React.useState([]);
-  const [error, setError] = useState(null)
+  const [checked, setChecked] = React.useState([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [channels, setChannels] = useState([])
   const [sourceChannel, setSourceChannel] = useState({})
@@ -119,10 +119,8 @@ function Pages() {
           }
           setChannels(data)
           setIsLoaded(true)
-          setError(null)
         })
         .catch((error) => {
-          setError(error.message)
           setIsLoaded(true)
         })
     }
@@ -203,6 +201,9 @@ function Pages() {
 
   return (
     <>
+      <Head>
+        <title>Pages</title>
+      </Head>
       <PageTitleWrapper>
         <PageTitle
           heading='Pages'

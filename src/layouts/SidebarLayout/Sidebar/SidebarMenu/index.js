@@ -22,6 +22,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 // Icons
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import InfoIcon from '@mui/icons-material/Info';
 import PlagiarismIcon from '@mui/icons-material/Plagiarism';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
@@ -202,6 +203,19 @@ function SidebarMenu() {
                       startIcon={<SettingsIcon />}
                     >
                       TEMPLATES
+                    </Button>
+                  </NextLink>
+                </ListItem>
+                <ListItem component="div">
+                  <NextLink href="/getting-started" passHref>
+                    <Button
+                      className={currentRoute.startsWith('/getting-started') ? 'active' : ''}
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<InfoIcon />}
+                    >
+                      Getting Started
                     </Button>
                   </NextLink>
                 </ListItem>

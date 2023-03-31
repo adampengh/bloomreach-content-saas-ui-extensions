@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import Head from 'next/head';
 import NextLink from 'next/link';
 
 // APIs
@@ -31,7 +31,6 @@ import {
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
 function Channels() {
-  const [error, setError] = useState(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const [channels, setChannels] = useState([])
   const [projects, setProjects] = useState([])
@@ -57,10 +56,8 @@ function Channels() {
           setProjects(Array.from(new Set(data.map(channel => channel.projectName))))
           setChannels(data)
           setIsLoaded(true)
-          setError(null)
         })
         .catch((error) => {
-          setError(error.message)
           setIsLoaded(true)
         })
     }
@@ -68,6 +65,9 @@ function Channels() {
 
   return (
     <>
+      <Head>
+        <title>Channels</title>
+      </Head>
       <PageTitleWrapper>
         <PageTitle
           heading="Channels"
