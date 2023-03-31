@@ -57,19 +57,21 @@ function Configuration() {
   const [targetDeveloperProjects, setTargetDeveloperProjects] = useState([])
 
   useEffect(() => {
-    const config = {
-      ...sourceConfig,
-      environment: namespace,
-      xAuthToken: token
-    }
-    setSourceConfig(config)
-    storeApplicationConfiguration({
-      ...appConfiguration,
-      environments: {
-        source: config,
-        target: targetConfig
+    if (namespace && token) {
+      const config = {
+        ...sourceConfig,
+        environment: namespace,
+        xAuthToken: token
       }
-    })
+      setSourceConfig(config)
+      storeApplicationConfiguration({
+        ...appConfiguration,
+        environments: {
+          source: config,
+          target: targetConfig
+        }
+      })
+    }
   }, [namespace, token])
 
   useEffect(() => {

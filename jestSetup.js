@@ -1,5 +1,5 @@
 global.environment = 'profserv02'
-global.xAuthToken = '76c52a73-27a6-41d4-a347-35cc7aa1a42b'
+// global.xAuthToken = ''
 global.channel = 'shared-english'
 global.path = 'pages/test-page'
 global.folderPath = '/content/documents/shared-english/pages'
