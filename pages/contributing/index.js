@@ -7,17 +7,17 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 import MarkdownPage from 'modules/markdown/MarkdownPage'
 
 
-function ReleaseNotes({markdown}) {
+function Contributing({markdown}) {
   return (
     <MarkdownPage
       markdown={markdown}
-      title='Release Notes'
+      title='Contributing'
     />
   );
 }
 
 export async function getStaticProps() {
-  const markdown = await getMarkdown('CHANGELOG.md');
+  const markdown = await getMarkdown('CONTRIBUTING.md');
   return {
     props: {
       markdown
@@ -25,8 +25,8 @@ export async function getStaticProps() {
   };
 }
 
-ReleaseNotes.getLayout = function getLayout(page) {
+Contributing.getLayout = function getLayout(page) {
   return <SidebarLayout>{page}</SidebarLayout>;
 };
 
-export default ReleaseNotes;
+export default Contributing;

@@ -22,6 +22,7 @@ import { SidebarContext } from 'src/contexts/SidebarContext';
 // Icons
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import InfoIcon from '@mui/icons-material/Info';
 import PlagiarismIcon from '@mui/icons-material/Plagiarism';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
@@ -188,27 +189,42 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
-        {process.env.NODE_ENV === 'development' &&
+
           <List component="div">
             <SubMenuWrapper>
               <List component="div">
+                {process.env.NODE_ENV === 'development' &&
+                  <ListItem component="div">
+                    <NextLink href="/TEMPLATES" passHref>
+                      <Button
+                        className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<SettingsIcon />}
+                      >
+                        TEMPLATES
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                }
                 <ListItem component="div">
-                  <NextLink href="/TEMPLATES" passHref>
+                  <NextLink href="/getting-started" passHref>
                     <Button
-                      className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
+                      className={currentRoute.startsWith('/getting-started') ? 'active' : ''}
                       disableRipple
                       component="a"
                       onClick={closeSidebar}
-                      startIcon={<SettingsIcon />}
+                      startIcon={<InfoIcon />}
                     >
-                      TEMPLATES
+                      Getting Started
                     </Button>
                   </NextLink>
                 </ListItem>
               </List>
             </SubMenuWrapper>
           </List>
-        }
+
 
         <List component="div">
           <SubMenuWrapper>

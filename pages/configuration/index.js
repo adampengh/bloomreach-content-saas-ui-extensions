@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router'
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
@@ -158,6 +159,9 @@ function Configuration() {
   }
   return (
     <>
+      <Head>
+        <title>Configuration</title>
+      </Head>
       <PageTitleWrapper>
         <PageTitle
           heading="Configuration"
@@ -202,7 +206,7 @@ function Configuration() {
                       autoComplete="off"
                       id="xAuthToken"
                       name="xAuthToken"
-                      label="X-Auth-Token"
+                      label="Authorization Token"
                       value={sourceConfig?.xAuthToken || ''}
                       onChange={(e) => setSourceConfig({...sourceConfig, xAuthToken: e.target.value})}
                     />
@@ -319,7 +323,7 @@ function Configuration() {
                     <TextField
                       autoComplete="off"
                       name="xAuthToken"
-                      label="X-Auth-Token"
+                      label="Authorization Token"
                       value={targetConfig?.xAuthToken || ''}
                       onChange={(e) => setTargetConfig({...targetConfig, xAuthToken: e.target.value})}
                     />

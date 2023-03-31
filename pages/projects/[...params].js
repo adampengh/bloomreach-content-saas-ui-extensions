@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import Head from 'next/head'
 import { CopyBlock } from 'react-code-blocks'
 import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 import NextLink from 'next/link';
@@ -107,6 +108,9 @@ function ContentTypes({params}) {
 
   return (
     <>
+      <Head>
+        <title>Project: {projectData?.name}</title>
+      </Head>
       <PageTitleWrapper>
         <Grid
           container
