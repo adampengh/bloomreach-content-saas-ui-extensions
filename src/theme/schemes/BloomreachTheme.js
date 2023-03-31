@@ -4,8 +4,8 @@ import '@mui/lab/themeAugmentation';
 // import i18n from 'src/i18n/i18n';
 
 const themeColors = {
-  primary: '#9b52e1',
-  secondary: '#000',
+  primary: '#002840',
+  secondary: '#243B55',
   success: '#57CA22',
   warning: '#FFA319',
   error: '#FF1943',
@@ -44,26 +44,27 @@ const colors = {
       '0px 1px 4px rgba(85, 105, 255, 0.25), 0px 3px 12px 2px rgba(85, 105, 255, 0.35)',
     warning:
       '0px 1px 4px rgba(255, 163, 25, 0.25), 0px 3px 12px 2px rgba(255, 163, 25, 0.35)',
-    card: '0px 0px 1px 1px #d5d0d6',
-    cardSm: '0px 0px 1px 1px #d5d0d6',
+    card: '0px 9px 16px rgba(159, 162, 191, .18), 0px 2px 2px rgba(159, 162, 191, 0.32)',
+    cardSm:
+      '0px 2px 3px rgba(159, 162, 191, .18), 0px 1px 1px rgba(159, 162, 191, 0.32)',
     cardLg:
       '0 5rem 14rem 0 rgb(255 255 255 / 30%), 0 0.8rem 2.3rem rgb(0 0 0 / 60%), 0 0.2rem 0.3rem rgb(0 0 0 / 45%)'
   },
   layout: {
     general: {
-      bodyBg: '#fff'
+      bodyBg: '#f2f5f9'
     },
     sidebar: {
-      background: '#fcfbfc',
+      background: themeColors.primary,
       textColor: themeColors.secondary,
       dividerBg: '#f2f5f9',
-      menuItemColor: themeColors.black,
-      menuItemColorActive: '#00b795',
-      menuItemBg: '#fff',
-      menuItemBgActive: '#f2fbfa',
-      menuItemIconColor: lighten(themeColors.secondary, 0.5),
-      menuItemIconColorActive: '#00b795',
-      menuItemHeadingColor: themeColors.black
+      menuItemColor: '#242E6F',
+      menuItemColorActive: themeColors.primary,
+      menuItemBg: themeColors.white,
+      menuItemBgActive: '#f2f5f9',
+      menuItemIconColor: lighten(themeColors.secondary, 0.3),
+      menuItemIconColorActive: themeColors.primary,
+      menuItemHeadingColor: darken(themeColors.secondary, 0.3)
     }
   },
   alpha: {
@@ -130,7 +131,7 @@ const colors = {
   }
 };
 
-export const PurpleFlowTheme = createTheme({
+export const BloomreachTheme = createTheme({
   // direction: i18n.dir(),
   colors: {
     gradients: {
@@ -223,13 +224,13 @@ export const PurpleFlowTheme = createTheme({
   },
   general: {
     reactFrameworkColor: '#00D8FF',
-    borderRadiusSm: '4px',
-    borderRadius: '6px',
-    borderRadiusLg: '10px',
-    borderRadiusXl: '18px'
+    borderRadiusSm: '6px',
+    borderRadius: '10px',
+    borderRadiusLg: '12px',
+    borderRadiusXl: '16px'
   },
   sidebar: {
-    background: '#fff',
+    background: colors.layout.sidebar.background,
     textColor: colors.layout.sidebar.textColor,
     dividerBg: colors.layout.sidebar.dividerBg,
     menuItemColor: colors.layout.sidebar.menuItemColor,
@@ -239,14 +240,15 @@ export const PurpleFlowTheme = createTheme({
     menuItemIconColor: colors.layout.sidebar.menuItemIconColor,
     menuItemIconColorActive: colors.layout.sidebar.menuItemIconColorActive,
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
-    boxShadow: '1px 1px 1px 0 #e0e0e0',
+    boxShadow:
+      '2px 0 3px rgba(159, 162, 191, .18), 1px 0 1px rgba(159, 162, 191, 0.32)',
     width: '290px'
   },
   header: {
     height: '80px',
-    background: '#fbf9fb',
-    boxShadow: '0 1px 1px #e0e0e0',
-    textColor: themeColors.black
+    background: colors.alpha.white[100],
+    boxShadow: colors.shadows.cardSm,
+    textColor: colors.secondary.main
   },
   spacing: 9,
   palette: {
@@ -304,9 +306,9 @@ export const PurpleFlowTheme = createTheme({
       hoverOpacity: 0.1,
       selected: colors.alpha.black[10],
       selectedOpacity: 0.1,
-      disabled: colors.alpha.black[50],
-      disabledBackground: colors.alpha.black[5],
-      disabledOpacity: 0.38,
+      disabled: colors.alpha.black[70],
+      disabledBackground: colors.alpha.black[10],
+      disabledOpacity: 1,
       focus: colors.alpha.black[10],
       focusOpacity: 0.05,
       activatedOpacity: 0.12
@@ -377,7 +379,7 @@ export const PurpleFlowTheme = createTheme({
           flexDirection: 'column'
         },
         '#nprogress': {
-          pointerEvents: 'none'
+          // pointerEvents: 'none'
         },
         '#nprogress .bar': {
           background: colors.primary.lighter
@@ -397,8 +399,8 @@ export const PurpleFlowTheme = createTheme({
           '--swiper-theme-color': colors.primary.main
         },
         code: {
-          background: colors.info.lighter,
-          color: colors.info.dark,
+          // background: colors.info.lighter,
+          // color: colors.info.dark,
           borderRadius: 4,
           padding: 4
         },
@@ -499,7 +501,7 @@ export const PurpleFlowTheme = createTheme({
     MuiChip: {
       styleOverrides: {
         colorSecondary: {
-          background: colors.alpha.black[5],
+          background: colors.alpha.black[10],
           color: colors.alpha.black[100],
 
           '&:hover': {
@@ -588,7 +590,7 @@ export const PurpleFlowTheme = createTheme({
     },
     MuiButton: {
       defaultProps: {
-        disableRipple: false
+        disableRipple: true
       },
       styleOverrides: {
         root: {
@@ -635,6 +637,9 @@ export const PurpleFlowTheme = createTheme({
         },
         textSizeLarge: {
           padding: '12px 16px'
+        },
+        textPrimary: {
+          color: colors.alpha.white[70]
         }
       }
     },
@@ -650,7 +655,7 @@ export const PurpleFlowTheme = createTheme({
     },
     MuiToggleButton: {
       defaultProps: {
-        disableRipple: false
+        disableRipple: true
       },
       styleOverrides: {
         root: {
@@ -668,11 +673,11 @@ export const PurpleFlowTheme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: {
-          borderRadius: 6,
-          padding: 6,
+          borderRadius: 8,
+          padding: 8,
 
           '& .MuiTouchRipple-root': {
-            borderRadius: 6
+            borderRadius: 8
           }
         },
         sizeSmall: {
@@ -1161,11 +1166,11 @@ export const PurpleFlowTheme = createTheme({
     }
   },
   shape: {
-    borderRadius: 6
+    borderRadius: 10
   },
   typography: {
     fontFamily:
-      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+      '"Bloomreach Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
     h1: {
       fontWeight: 700,
       fontSize: 35

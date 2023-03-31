@@ -47,7 +47,7 @@
     "lint": "next lint",
     "lint-fix": "next lint --fix",
     "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc",
-    "test": "jest"
+    "jest": "jest"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
