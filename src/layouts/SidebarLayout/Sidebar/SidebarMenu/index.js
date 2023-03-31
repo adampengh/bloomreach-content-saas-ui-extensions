@@ -189,23 +189,25 @@ function SidebarMenu() {
   return (
     <>
       <MenuWrapper>
-        {process.env.NODE_ENV === 'development' &&
+
           <List component="div">
             <SubMenuWrapper>
               <List component="div">
-                <ListItem component="div">
-                  <NextLink href="/TEMPLATES" passHref>
-                    <Button
-                      className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
-                      disableRipple
-                      component="a"
-                      onClick={closeSidebar}
-                      startIcon={<SettingsIcon />}
-                    >
-                      TEMPLATES
-                    </Button>
-                  </NextLink>
-                </ListItem>
+                {process.env.NODE_ENV === 'development' &&
+                  <ListItem component="div">
+                    <NextLink href="/TEMPLATES" passHref>
+                      <Button
+                        className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
+                        disableRipple
+                        component="a"
+                        onClick={closeSidebar}
+                        startIcon={<SettingsIcon />}
+                      >
+                        TEMPLATES
+                      </Button>
+                    </NextLink>
+                  </ListItem>
+                }
                 <ListItem component="div">
                   <NextLink href="/getting-started" passHref>
                     <Button
@@ -222,7 +224,7 @@ function SidebarMenu() {
               </List>
             </SubMenuWrapper>
           </List>
-        }
+
 
         <List component="div">
           <SubMenuWrapper>
