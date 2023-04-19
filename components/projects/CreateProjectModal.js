@@ -22,6 +22,7 @@ export default function CreateProjectModal({
   showModal,
   setShowModal,
   projects,
+  setProjects,
   environment,
   xAuthToken,
 }) {
@@ -29,14 +30,26 @@ export default function CreateProjectModal({
     setShowModal(false)
   };
 
-  const handleCreateNewProject = (event) => {
+  const handleCreateNewProject = async (event) => {
     event.preventDefault()
     const name = event.target.querySelector('#projectName').value
     const includeContentTypes = event.target.querySelector('#includeContentTypes').checked
-    createDeveloperProject(environment, xAuthToken, name, includeContentTypes)
+    await createDeveloperProject(environment, xAuthToken, name, includeContentTypes)
       .then(response => {
         setShowModal(false)
       })
+
+    await getAllProjects(environment, xAuthToken)
+      .then((response) => {
+        let projects = response.data
+        console.log('projects', projects)
+        projects.sort((projectA, projectB) => {
+          const timestamp = (project) => new Date(project.system.createdAt).valueOf()
+          return timestamp(projectB) - timestamp(projectA)
+        })
+        setProjects(projects)
+      })
+      .catch((error) => console.error(error.message))
   }
 
   const hasContentTypesProject = !!projects?.filter(project => project.includeContentTypes === true).length

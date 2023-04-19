@@ -50,6 +50,7 @@ function ChannelDetails() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [channel, setChannel] = useState(null)
 
+
   const {
     appConfiguration
   } = useContext(ConfigurationContext)
@@ -134,7 +135,11 @@ function ChannelDetails() {
                     </Tabs>
                   </Box>
                   <TabPanel value={value} index={0}>
-                    <ChannelTab channel={channel} />
+                    <ChannelTab
+                      channel={channel}
+                      environment={environment}
+                      xAuthToken={xAuthToken}
+                    />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     <ComponentsTab channel={channel} />

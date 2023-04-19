@@ -3,8 +3,12 @@ import React, { useContext, useEffect, useState } from 'react'
 // API
 import {
   getAllChannels,
-  getLayout,
-  putLayout,
+  getMenu,
+  putMenu,
+  getMenuItems,
+  putMenuItems,
+  getMenuProperties,
+  putMenuProperties,
 } from 'api'
 
 // Components
@@ -25,6 +29,9 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
+import {
+  LoadingButton
+ } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
@@ -33,13 +40,16 @@ import { ErrorContext } from 'src/contexts/ErrorContext';
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function CopyLayoutModal({
+export default function CopyMenusModal({
   showCopyModal,
   setShowCopyModal,
   selectedItems,
   setSelectedItems,
   channelId,
 }) {
+  // State
+  const [isProcessing, setIsProcessing] = useState(false)
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
@@ -79,61 +89,163 @@ export default function CopyLayoutModal({
 
   const handleCopyItems = async (event) => {
     event.preventDefault()
+    await setIsProcessing(true)
+
     console.log('handleCopyItems', selectedItems)
     console.log('selectedEnvironment', selectedEnvironment)
     console.log('checked', checked)
 
     for await (const channel of checked) {
-      for await (const layout of selectedItems) {
-        console.log('copy layout', layout, 'to channel', channel.id)
+      for await (const menu of selectedItems) {
+        console.log('copy menu', menu, 'to channel', channel.id)
 
-        // Check if layout exists in destination channel
-        const xResourceVersion = await getLayout(
+        // ================================================
+        // Copy Menu
+        // ================================================
+        // Check if Menu exists in destination channel
+        const xResourceVersion = await getMenu(
           appConfiguration?.environments?.[selectedEnvironment]?.environment,
           appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
           channel.id,
-          layout
+          menu
         )
           .then(response => {
-            console.log('Check for Existing Layout Success', response.headers)
+            console.log('Check for Existing Menu Success', response.headers)
             return response.headers['x-resource-version']
           })
-          .catch(error => console.error('Get Layout Error', error.message))
+          .catch(error => console.error('Get Menu Error', error.message))
 
-        // Get Layout
-        const layoutData = await getLayout(
+        // Get Menu
+        const menuData = await getMenu(
           appConfiguration?.environments?.source?.environment,
           appConfiguration?.environments?.source?.xAuthToken,
           channelId,
-          layout
+          menu
         )
           .then(response => {
-            console.log('Get Layout Success', response.headers)
+            console.log('Get Menu Success', response.headers)
             return response.data
           })
-          .catch(error => console.error('Get Layout Error', error.message))
-        console.log('layoutData', layoutData)
+          .catch(error => console.error('Get Menu Error', error.message))
+        console.log('menuData', menuData)
         console.log('xResourceVersion', xResourceVersion)
 
-        // Put Layout
-        if (layoutData) {
-          await putLayout(
+        // Put Menu
+        if (menuData) {
+          await putMenu(
             appConfiguration?.environments?.[selectedEnvironment]?.environment,
             appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
             channel.id,
-            layout,
-            layoutData,
+            menu,
+            menuData,
             xResourceVersion
           )
             .then(response => {
-              console.log('Put Layout Success')
+              console.log('Put Menu Success')
             })
-            .catch(error => console.error('Put Layout Error', error))
+            .catch(error => console.error('Put Menu Error', error))
+        }
+
+        // ================================================
+        // Copy Menu Items
+        // ================================================
+        // Get Menu Items
+        const menuItemsData = await getMenuItems(
+          appConfiguration?.environments?.source?.environment,
+          appConfiguration?.environments?.source?.xAuthToken,
+          channelId,
+          menu
+        )
+          .then(response => {
+            console.log('Get Menu Items Success', response.headers)
+            return response.data
+          })
+          .catch(error => console.error('Get Menu Items Error', error.message))
+        console.log('menuItemsData', menuItemsData)
+
+
+        // Check if Menu Items exists in destination channel
+        // If so, store X-Resource-Version header value
+        const xResourceVersionMenuItems = await getMenuItems(
+          appConfiguration?.environments?.[selectedEnvironment]?.environment,
+          appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+          channel.id,
+          menu
+        )
+          .then(response => {
+            console.log('Check for Existing Menu Items Success', response.headers)
+            return response.headers['x-resource-version']
+          })
+          .catch(error => console.error('Get Menu Items Error', error.message))
+
+
+        // Put Menu Items
+        if (menuItemsData) {
+          await console.log('xResourceVersionMenuItems', xResourceVersionMenuItems)
+          await putMenuItems(
+            appConfiguration?.environments?.[selectedEnvironment]?.environment,
+            appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+            channel.id,
+            menu,
+            menuItemsData,
+            xResourceVersionMenuItems
+          )
+            .then(response => {
+              console.log('Put Menu Items Success')
+            })
+            .catch(error => console.error('Put Menu Items Error', error))
+        }
+
+        // ================================================
+        // Copy Menu Properties
+        // ================================================
+        // Get Menu Properties
+        const menuPropertiesData = await getMenuProperties(
+          appConfiguration?.environments?.source?.environment,
+          appConfiguration?.environments?.source?.xAuthToken,
+          channelId,
+          menu
+        )
+          .then(response => {
+            console.log('Get Menu Success', response.headers)
+            return response.data
+          })
+          .catch(error => console.error('Get Menu Error', error.message))
+        console.log('menuItemsData', menuItemsData)
+
+        // Check if Menu Properties exists in destination channel
+        const xResourceVersionMenuProperties = await getMenuProperties(
+          appConfiguration?.environments?.[selectedEnvironment]?.environment,
+          appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+          channel.id,
+          menu
+        )
+          .then(response => {
+            console.log('Check for Existing Menu Success', response.headers)
+            return response.headers['x-resource-version']
+          })
+          .catch(error => console.error('Get Menu Error', error.message))
+
+        // Put Menu Properties
+        if (menuPropertiesData) {
+          await putMenuProperties(
+            appConfiguration?.environments?.[selectedEnvironment]?.environment,
+            appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+            channel.id,
+            menu,
+            menuPropertiesData,
+            xResourceVersionMenuProperties
+          )
+            .then(response => {
+              console.log('Put Menu Properties Success')
+            })
+            .catch(error => console.error('Put Menu Properties Error', error))
         }
       }
     }
 
-    await handleShowSnackbar('success', 'Layouts Copied')
+    await setIsProcessing(false)
+    await handleShowSnackbar('success', 'Menus Copied')
     await setChecked([])
     await setSelectedItems([])
     await setShowCopyModal(false)
@@ -184,7 +296,7 @@ export default function CopyLayoutModal({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <p>Layouts to Copy ({selectedItems.length}):</p>
+            <p>Menus to Copy ({selectedItems.length}):</p>
             <ul>
               {selectedItems.map(component => (
                 <li key={component}>{component}</li>
@@ -229,10 +341,23 @@ export default function CopyLayoutModal({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
+          <LoadingButton
+            loading={isProcessing}
+            loadingPosition="start"
             variant="contained"
             type="submit"
-          >Copy Layouts</Button>
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                paddingLeft: 2
+              },
+              '& .MuiLoadingButton-loadingIndicatorStart': {
+                position: 'relative',
+                left: '-6px'
+              }
+            }}
+          >
+            Copy Menus
+          </LoadingButton>
         </DialogActions>
       </Box>
     </Dialog>

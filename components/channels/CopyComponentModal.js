@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 // API
 import {
   getAllChannels,
-  getRoute,
-  putRoute,
+  getComponent,
+  putComponent,
 } from 'api'
 
 // Components
@@ -25,6 +25,9 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
+import {
+  LoadingButton
+ } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
@@ -33,13 +36,16 @@ import { ErrorContext } from 'src/contexts/ErrorContext';
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function CopyRoutesModal({
-  showCopyModal,
-  setShowCopyModal,
-  selectedItems,
-  setSelectedItems,
+export default function CopyComponentModal({
+  showCopyComponentsModal,
+  setShowCopyComponentsModal,
+  selectedComponents,
+  setSelectedComponents,
   channelId,
 }) {
+  // State
+  const [isProcessing, setIsProcessing] = useState(false)
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
@@ -60,7 +66,7 @@ export default function CopyRoutesModal({
   }, [selectedEnvironment])
 
   const handleClose = () => {
-    setShowCopyModal(false)
+    setShowCopyComponentsModal(false)
   };
 
   const handleEnvironmentChange = (event) => {
@@ -77,66 +83,77 @@ export default function CopyRoutesModal({
       })
   }
 
-  const handleCopyItems = async (event) => {
+  const handleCopyComponents = async (event) => {
     event.preventDefault()
-    console.log('handleCopyItems', selectedItems)
+    await setIsProcessing(true)
+
+    console.log('handleCopyComponents', selectedComponents)
     console.log('selectedEnvironment', selectedEnvironment)
     console.log('checked', checked)
 
-    for await (const channel of checked) {
-      for await (const route of selectedItems) {
-        console.log('copy route', route, 'to channel', channel.id)
 
-        // Check if route exists in destination channel
-        const xResourceVersion = await getRoute(
+    for await (const channel of checked) {
+      for await (const component of selectedComponents) {
+        console.log('copy component', component, 'to channel', channel.id)
+        const componentGroup = component.split('/')[0]
+        console.log('componentGroup', componentGroup)
+        const componentName = component.split('/')[1]
+        console.log('componentName', componentName)
+
+        // Check if component exists in destination channel
+        const xResourceVersion = await getComponent(
           appConfiguration?.environments?.[selectedEnvironment]?.environment,
           appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
           channel.id,
-          route
+          componentGroup,
+          componentName
         )
           .then(response => {
-            console.log('Check for Existing Route Success', response.headers)
+            console.log('Check for Existing Component Success', response.headers)
             return response.headers['x-resource-version']
           })
-          .catch(error => console.error('Get Route Error', error.message))
+          .catch(error => console.error('Get Component Error', error.message))
 
-        // Get Route
-        const routeData = await getRoute(
+        // Get component
+        const componentData = await getComponent(
           appConfiguration?.environments?.source?.environment,
           appConfiguration?.environments?.source?.xAuthToken,
           channelId,
-          route
+          componentGroup,
+          componentName
         )
           .then(response => {
-            console.log('Get Route Success', response.headers)
+            console.log('Get Component Success', response.headers)
             return response.data
           })
-          .catch(error => console.error('Get Route Error', error.message))
-        console.log('routeData', routeData)
+          .catch(error => console.error('Get Component Error', error.message))
+        console.log('componentData', componentData)
         console.log('xResourceVersion', xResourceVersion)
 
-        // Put Route
-        if (routeData) {
-          await putRoute(
+        // Put component
+        if (componentData) {
+          await putComponent(
             appConfiguration?.environments?.[selectedEnvironment]?.environment,
             appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
             channel.id,
-            route,
-            routeData,
+            componentGroup,
+            componentName,
+            componentData,
             xResourceVersion
           )
             .then(response => {
-              console.log('Put Route Success')
+              console.log('Put Component Success')
             })
-            .catch(error => console.error('Put Route Error', error))
+            .catch(error => console.error('Put Component Error', error))
         }
       }
     }
 
-    await handleShowSnackbar('success', 'Routes Copied')
+    await setIsProcessing(false)
+    await handleShowSnackbar('success', 'Components Copied')
     await setChecked([])
-    await setSelectedItems([])
-    await setShowCopyModal(false)
+    await setSelectedComponents([])
+    await setShowCopyComponentsModal(false)
   }
 
   const handleToggle = (value) => () => {
@@ -156,7 +173,7 @@ export default function CopyRoutesModal({
     <Dialog
       fullWidth={true}
       maxWidth={'sm'}
-      open={showCopyModal}
+      open={showCopyComponentsModal}
       onClose={handleClose}
     >
       <Box
@@ -165,7 +182,7 @@ export default function CopyRoutesModal({
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         autoComplete="off"
-        onSubmit={handleCopyItems}
+        onSubmit={handleCopyComponents}
       >
         <DialogTitle>
           Copy Confirmation
@@ -184,12 +201,13 @@ export default function CopyRoutesModal({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <p>Routes to Copy ({selectedItems.length}):</p>
+            <p>Components to Copy ({selectedComponents.length}):</p>
             <ul>
-              {selectedItems.map(component => (
+              {selectedComponents.map(component => (
                 <li key={component}>{component}</li>
               ))}
             </ul>
+
             <FormControl
               required
               variant="outlined"
@@ -228,11 +246,27 @@ export default function CopyRoutesModal({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
           <Button
+            onClick={handleClose}
+            disabled={isProcessing}
+          >Cancel</Button>
+          <LoadingButton
+            loading={isProcessing}
+            loadingPosition="start"
             variant="contained"
             type="submit"
-          >Copy Routes</Button>
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                paddingLeft: 2
+              },
+              '& .MuiLoadingButton-loadingIndicatorStart': {
+                position: 'relative',
+                left: '-6px'
+              }
+            }}
+          >
+            Copy Components
+          </LoadingButton>
         </DialogActions>
       </Box>
     </Dialog>

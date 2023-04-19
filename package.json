@@ -1,6 +1,6 @@
 {
   "name": "bloomreach-content-saas-ui-extensions",
-  "version": "0.1.0-alpha",
+  "version": "0.1.1-alpha",
   "title": "Bloomreach Content SaaS UI Extensions",
   "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes",
   "author": {
@@ -48,11 +48,14 @@
     "lint": "next lint",
     "lint-fix": "next lint --fix",
     "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc",
-    "jest": "jest"
+    "jest": "jest",
+    "test": "node -r dotenv/config $(which jest)",
+    "test:watch": "node -r dotenv/config $(which jest) --watchAll"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
+    "dotenv": "^16.0.3",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "8.5.0",

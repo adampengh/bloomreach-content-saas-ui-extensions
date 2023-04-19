@@ -7,7 +7,7 @@ import {
 } from '/api'
 
 // Components
-import CopyLayoutModal from 'components/CopyLayoutModal'
+import CopyLayoutModal from 'components/channels/CopyLayoutModal'
 import {
   Box,
   Button,
@@ -20,7 +20,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
 
+// Constants
+import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'lib/constants'
+
 // Icons
+import AddIcon from '@mui/icons-material/Add';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
@@ -46,7 +50,6 @@ export const LayoutsTab = ({ channel }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   useEffect(() => {
-    console.log('useEffect getAllLayouts()')
     getAllLayouts(environment, xAuthToken, channel.id)
       .then(response => {
         console.log('layouts', response.data)
@@ -162,6 +165,11 @@ export const LayoutsTab = ({ channel }) => {
           >
           <ButtonGroup aria-label="outlined primary button group">
             <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              disabled // TODO: Add ability to create layouts
+            >New Layout</Button>
+            <Button
               disabled={!selectedItems.length}
               onClick={setShowCopyModal}
               startIcon={<ContentCopyIcon />}
@@ -178,7 +186,7 @@ export const LayoutsTab = ({ channel }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box sx={{ height: 'calc(100vh - 320px)', width: '100%' }}>
+          <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT_CHANNELS_TABS})`, width: '100%' }}>
             {!!layouts?.length &&
               <DataGrid
                 rows={layouts}
@@ -212,6 +220,8 @@ export const LayoutsTab = ({ channel }) => {
         setSelectedItems={setSelectedItems}
         channelId={channel.id}
       />
+
+      {/* TODO: Add ability to delete layouts */}
     </>
   )
 }

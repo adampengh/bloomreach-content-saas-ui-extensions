@@ -8,8 +8,8 @@ import {
 } from '/api'
 
 // Components
-import CopyComponentModal from 'components/CopyComponentModal'
-import DeleteComponentModal from 'components/DeleteComponentModal'
+import CopyComponentModal from 'components/channels/CopyComponentModal'
+import DeleteComponentModal from 'components/channels/DeleteComponentModal'
 import {
   Box,
   Button,
@@ -26,6 +26,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
 
+// Constants
+import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'lib/constants'
+
 // Icons
 import AddIcon from '@mui/icons-material/Add';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -36,7 +39,6 @@ export const ComponentsTab = ({ channel }) => {
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
-
   const {
     environment,
     xAuthToken,
@@ -56,7 +58,6 @@ export const ComponentsTab = ({ channel }) => {
   const [showDeleteComponentsModal, setShowDeleteComponentsModal] = useState(false)
 
   useEffect(() => {
-    console.log('useEffect getAllComponentGroups()')
     getAllComponentGroups(environment, xAuthToken, channel.id)
       .then(response => {
         setComponentGroups(response.data)
@@ -71,7 +72,6 @@ export const ComponentsTab = ({ channel }) => {
   }, [channel])
 
   useEffect(() => {
-    console.log('useEffect getAllComponents()')
     if (selectedComponentGroup) {
       getAllComponents(environment, xAuthToken, channel.id, selectedComponentGroup.name)
         .then(response => {
@@ -209,6 +209,7 @@ export const ComponentsTab = ({ channel }) => {
                 </Select>
               </FormControl>
               <Button
+                disabled // TODO: Add ability to create component groups
                 variant="outlined"
                 startIcon={<AddIcon />}
               >Component Group</Button>
@@ -220,6 +221,7 @@ export const ComponentsTab = ({ channel }) => {
                 <Button
                   variant="contained"
                   startIcon={<AddIcon />}
+                  disabled // TODO: Add ability to create components
                 >New Component</Button>
                 <Button
                   disabled={!selectedComponents.length}
@@ -239,7 +241,7 @@ export const ComponentsTab = ({ channel }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box sx={{ height: 'calc(100vh - 320px)', width: '100%' }}>
+          <Box sx={{ height: 'calc(100vh - 522px)', width: '100%' }}>
             {!!components?.length &&
               <DataGrid
                 rows={components}
