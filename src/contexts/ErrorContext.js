@@ -25,6 +25,7 @@ export function ErrorProvider({ children }) {
     }
   }, [snackPack, messageInfo, open])
 
+  // TODO: Pass in error and handle the error here instead of individual components
   const handleShowSnackbar = (severity, message) => {
     setMessageSeverity(severity)
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }])
@@ -60,7 +61,7 @@ export function ErrorProvider({ children }) {
 
       <Snackbar
         key={messageInfo ? messageInfo.key : undefined}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={open}
         autoHideDuration={4000}
         onClose={handleClose}

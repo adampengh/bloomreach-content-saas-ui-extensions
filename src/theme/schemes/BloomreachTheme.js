@@ -1,5 +1,6 @@
 import { alpha, createTheme, lighten, darken } from '@mui/material';
 import '@mui/lab/themeAugmentation';
+import { red } from '@mui/material/colors';
 
 // import i18n from 'src/i18n/i18n';
 
@@ -646,8 +647,13 @@ export const BloomreachTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: 6
-        }
+          borderRadius: 6,
+
+          '&.Mui-disabled': {
+            cursor: 'not-allowed',
+            pointerEvents: 'auto',
+          }
+        },
       }
     },
     MuiToggleButton: {
@@ -805,6 +811,9 @@ export const BloomreachTheme = createTheme({
           },
           '& .MuiMenuItem-root.MuiButtonBase-root .MuiTouchRipple-root': {
             opacity: 0.2
+          },
+          '& .MuiListItem-container:nth-of-type(odd)': {
+            backgroundColor: alpha(themeColors.black, 0.05)
           }
         },
         padding: {
@@ -820,21 +829,25 @@ export const BloomreachTheme = createTheme({
     MuiTabs: {
       styleOverrides: {
         root: {
-          height: 38,
           minHeight: 38,
-          overflow: 'visible'
-        },
-        indicator: {
-          height: 38,
-          minHeight: 38,
-          borderRadius: 6,
-          border: '1px solid ' + colors.primary.dark,
-          boxShadow: '0px 2px 10px ' + colors.primary.light
+          overflow: 'visible',
+          '& .Mui-selected': {
+            backgroundColor: colors.alpha.black[10]
+          }
         },
         scrollableX: {
           overflow: 'visible !important'
+        },
+        vertical: {
+          '& .MuiTabs-flexContainer': {
+            minWidth: '200px'
+          },
+          '& .MuiTab-root': {
+            margin: '0',
+            alignItems: 'flex-start',
+          }
         }
-      }
+      },
     },
     MuiTab: {
       styleOverrides: {
@@ -853,7 +866,7 @@ export const BloomreachTheme = createTheme({
             marginRight: 4
           },
           '&.Mui-selected, &.Mui-selected:hover': {
-            color: colors.alpha.white[100],
+            // color: colors.alpha.white[100],
             zIndex: 5
           },
           '&:hover': {

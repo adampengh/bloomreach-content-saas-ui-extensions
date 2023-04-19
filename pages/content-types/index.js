@@ -12,8 +12,8 @@ import {
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
-import CopyContentTypeModal from 'components/CopyContentTypeModal';
-import DeleteContentTypeModal from '../../components/DeleteContentTypeModal';
+import CopyContentTypeModal from 'components/content-types/CopyContentTypeModal';
+import DeleteContentTypeModal from 'components/content-types/DeleteContentTypeModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
@@ -28,6 +28,9 @@ import {
   Tooltip,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+
+// Constants
+import { DATA_GRID_HEIGHT } from 'lib/constants'
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
@@ -186,22 +189,20 @@ function ContentTypes() {
           </Grid>
           <Grid item xs={12} display="inline-flex" justifyContent="flex-end">
             <ButtonGroup aria-label="outlined primary button group">
-
               <Button
+                disabled // TODO: Add ability to create new content types
                 variant="contained"
                 startIcon={<AddIcon />}
               >Content Type</Button>
-
               {!(selectedRows.length && isTargetProjectIncludeContentTypes)
                 ?
-                <Tooltip title="Delete">
+                <Tooltip title="Copy">
                   <Button
                     disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
                     onClick={setShowCopyModal}
                     startIcon={<ContentCopyIcon />}
                   >Copy</Button>
                 </Tooltip>
-
                 :
                 <Button
                   disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
@@ -209,9 +210,6 @@ function ContentTypes() {
                   startIcon={<ContentCopyIcon />}
                 >Copy</Button>
               }
-
-
-
               {/* <Button
                 color="error"
                 variant="outlined"
@@ -236,7 +234,7 @@ function ContentTypes() {
           <Grid item xs={12}>
             <Card>
               <CardContent>
-                <Box sx={{ height: 'calc(100vh - 220px)', width: '100%' }}>
+                <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT})`, width: '100%' }}>
                   <DataGrid
                     rows={pageData}
                     columns={columns}
@@ -264,6 +262,7 @@ function ContentTypes() {
         </Grid>
       </Container>
 
+      {/* TODO: Copy content types modal */}
       {/* <CopyContentTypeModal
         showCopyModal={showCopyModal}
         setShowCopyModal={setShowCopyModal}
@@ -272,6 +271,7 @@ function ContentTypes() {
         // channelId={channel.id}
       /> */}
 
+      {/* TODO: Delete content types modal */}
       {/* <DeleteContentTypeModal
         showDeleteModal={showDeleteModal}
         setShowDeleteModal={setShowDeleteModal}

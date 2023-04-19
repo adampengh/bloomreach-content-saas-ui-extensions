@@ -7,7 +7,7 @@ import {
 } from '/api'
 
 // Components
-import CopyRoutesModal from 'components/CopyRoutesModal'
+import CopyRoutesModal from 'components/channels/CopyRoutesModal'
 import {
   Box,
   Button,
@@ -19,6 +19,9 @@ import { DataGrid } from '@mui/x-data-grid';
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
+
+// Constants
+import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'lib/constants'
 
 // Icons
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -172,7 +175,7 @@ export const RoutesTab = ({ channel }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box sx={{ height: 'calc(100vh - 320px)', width: '100%' }}>
+          <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT_CHANNELS_TABS})`, width: '100%' }}>
             {!!routes?.length &&
               <DataGrid
                 rows={routes}

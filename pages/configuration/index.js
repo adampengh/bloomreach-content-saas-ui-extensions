@@ -9,9 +9,10 @@ import {
 } from 'api'
 
 // Components
-import CreateProjectModal from 'components/CreateProjectModal';
+import CreateProjectModal from 'components/projects/CreateProjectModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import StatusIndicator from 'components/StatusIndicator';
 import {
   Box,
   Button,
@@ -25,7 +26,9 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   TextField,
+  Tooltip,
 } from '@mui/material';
 
 // Contexts
@@ -33,6 +36,7 @@ import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
 
 // Icons
+import AddIcon from '@mui/icons-material/Add';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 function Configuration() {
@@ -177,96 +181,17 @@ function Configuration() {
           spacing={3}
         >
           <Grid item xs={5}>
-            <Card>
-              <CardHeader title="Source Environment" />
-              <Divider />
-              <CardContent>
-                <Box
-                  component="form"
-                  sx={{
-                    '& .MuiTextField-root': { m: 1, width: '90%' }
-                  }}
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={handleSubmitSourceChannel}
-                >
-                  <div>
-                    <TextField
-                      required
-                      autoComplete="off"
-                      id="environment"
-                      name="environment"
-                      label="Environment"
-                      helperText="https://<environment>.bloomreach.io"
-                      value={sourceConfig?.environment || ''}
-                      onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
-                    />
-                    <TextField
-                      required
-                      autoComplete="off"
-                      id="xAuthToken"
-                      name="xAuthToken"
-                      label="Authorization Token"
-                      value={sourceConfig?.xAuthToken || ''}
-                      onChange={(e) => setSourceConfig({...sourceConfig, xAuthToken: e.target.value})}
-                    />
-                    { appConfiguration.environments?.source?.environment && appConfiguration.environments?.source?.xAuthToken &&
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="stretch"
-                        spacing={3}
-                        sx={{ width: '100%' }}
-                      >
-                        <Grid item>
-                          <FormControl
-                            onMouseDown={handleSourceProjectIdClick}
-                            variant="outlined"
-                            sx={{ m: 1, minWidth: 160, marginTop: 3 }}
-                          >
-                            <InputLabel id="sourceProjectId">Project ID</InputLabel>
-                            <Select
-                              id="sourceProjectId"
-                              labelId="sourceProjectId"
-                              label="Source Project ID"
-                              value={sourceConfig?.projectId || 'core'}
-                              onChange={(e) => setSourceConfig({...sourceConfig, projectId: e.target.value})}
-                            >
-                              <MenuItem value='core'><strong>Core</strong></MenuItem>
-                              <Divider />
-                              {sourceDeveloperProjects.map(project => (
-                                <MenuItem key={project.id} value={project.id}>
-                                  {project.name} ({project.id})
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item sx={{ m: 1, marginTop: 3 }}>
-                          <Button
-                            sx={{ margin: 1 }}
-                            variant="outlined"
-                            onClick={() => handleShowModal('source')}
-                          >
-                            Create New Project
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    }
-                  </div>
-                  <div>
-                    <Button
-                      sx={{ margin: 1 }}
-                      variant="contained"
-                      type="submit"
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </Box>
-              </CardContent>
-            </Card>
+            <Environment
+              environment={appConfiguration?.environments?.source?.environment}
+              xAuthToken={appConfiguration?.environments?.source?.xAuthToken}
+              config={sourceConfig}
+              setConfig={setSourceConfig}
+              developerProjects={sourceDeveloperProjects}
+              setDeveloperProjects={setSourceDeveloperProjects}
+              handleSubmit={handleSubmitSourceChannel}
+              handleProjectClick={handleSourceProjectIdClick}
+              handleShowModal={handleShowModal}
+            />
           </Grid>
 
           <Grid item
@@ -298,98 +223,17 @@ function Configuration() {
           </Grid>
 
           <Grid item xs={5}>
-            <Card>
-              <CardHeader title="Target Environment" />
-              <Divider />
-              <CardContent>
-                <Box
-                  component="form"
-                  sx={{
-                    '& .MuiTextField-root': { m: 1, width: '90%' }
-                  }}
-                  noValidate
-                  autoComplete="off"
-                  onSubmit={handleSubmitTargetChannel}
-                >
-                  <div>
-                    <TextField
-                      autoComplete="off"
-                      name="environment"
-                      label="Environment"
-                      helperText="https://<environment>.bloomreach.io"
-                      value={targetConfig?.environment || ''}
-                      onChange={(e) => setTargetConfig({...targetConfig, environment: e.target.value})}
-                    />
-                    <TextField
-                      autoComplete="off"
-                      name="xAuthToken"
-                      label="Authorization Token"
-                      value={targetConfig?.xAuthToken || ''}
-                      onChange={(e) => setTargetConfig({...targetConfig, xAuthToken: e.target.value})}
-                    />
-                    { appConfiguration.environments?.target?.environment && appConfiguration.environments?.target?.xAuthToken &&
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      alignContent="center"
-                      rowSpacing={3}
-                      sx={{ width: '100%' }}
-                    >
-                      <Grid
-                        item
-                        display="flex"
-                        flexDirection="row"
-                        alignContent="center"
-                        alignItems="center"
-                        sx={{ marginTop: 3 }}
-                      >
-                        <FormControl
-                          onMouseDown={handleTargetProjectIdClick}
-                          variant="outlined"
-                          sx={{ ml: 1, minWidth: 240 }}
-                        >
-                          <InputLabel id="targetProjectId">Project ID</InputLabel>
-                          <Select
-                            id="targetProjectId"
-                            labelId="targetProjectId"
-                            label="Target Project ID"
-                            value={targetConfig?.projectId || ''}
-                            onChange={(e) => setTargetConfig({...targetConfig, projectId: e.target.value})}
-                          >
-                            {targetDeveloperProjects.map(project => (
-                              <MenuItem key={project.id} value={project.id}>
-                                {project.name} ({project.id})
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        </Grid>
-                        <Grid item>
-                          <Button
-                            sx={{ margin: 1 }}
-                            variant="outlined"
-                            onClick={() => handleShowModal('target')}
-                          >
-                            Create New Project
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    }
-                  </div>
-                  <div>
-                    <Button
-                      sx={{ margin: 1 }}
-                      variant="contained"
-                      type="submit"
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </Box>
-              </CardContent>
-            </Card>
+            <Environment
+              environment={appConfiguration?.environments?.target?.environment}
+              xAuthToken={appConfiguration?.environments?.target?.xAuthToken}
+              config={targetConfig}
+              setConfig={setTargetConfig}
+              developerProjects={targetDeveloperProjects}
+              setDeveloperProjects={setTargetDeveloperProjects}
+              handleSubmit={handleSubmitTargetChannel}
+              handleProjectClick={handleTargetProjectIdClick}
+              handleShowModal={handleShowModal}
+            />
           </Grid>
         </Grid>
       </Container>
@@ -414,6 +258,112 @@ function Configuration() {
       }
     </>
   );
+}
+
+const Environment = ({
+  environment,
+  xAuthToken,
+  config,
+  setConfig,
+  developerProjects,
+  handleSubmit,
+  handleProjectClick,
+  handleShowModal
+}) => {
+  return (
+    <Card>
+      <CardHeader title="Source Environment" />
+      <Divider />
+      <CardContent>
+        <Box
+          component="form"
+          sx={{
+            '& .MuiTextField-root': { width: '100%' }
+          }}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit}
+        >
+          <Stack spacing={3}>
+            <TextField
+              required
+              autoComplete="off"
+              id="environment"
+              name="environment"
+              label="Environment"
+              helperText="https://<environment>.bloomreach.io"
+              value={config?.environment || ''}
+              onChange={(e) => setConfig({...config, environment: e.target.value})}
+            />
+            <TextField
+              required
+              autoComplete="off"
+              id="xAuthToken"
+              name="xAuthToken"
+              label="Authorization Token"
+              value={config?.xAuthToken || ''}
+              onChange={(e) => setConfig({...config, xAuthToken: e.target.value})}
+            />
+            { environment && xAuthToken &&
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ width: '100%' }}
+              >
+                <Grid
+                  item
+                  flexGrow="1"
+                  sx={{ paddingRight: 2 }}>
+                  <FormControl
+                    onMouseDown={handleProjectClick}
+                    variant="outlined"
+                    sx={{ width: '100%', marginRight: 1 }}
+                  >
+                    <InputLabel id="sourceProjectId">Project ID</InputLabel>
+                    <Select
+                      id="sourceProjectId"
+                      labelId="sourceProjectId"
+                      label="Source Project ID"
+                      value={config?.projectId || 'core'}
+                      onChange={(e) => setConfig({...config, projectId: e.target.value})}
+                    >
+                      <MenuItem value='core'><strong>Core</strong></MenuItem>
+                      <Divider />
+                      {developerProjects.map(project => (
+                        <MenuItem key={project.id} value={project.id} sx={{ justifyContent: 'space-between', fontWeight: 'bold' }}>
+                          {project.name}
+                          <StatusIndicator status={project.state.status} message={project.state.message} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item>
+                  <Tooltip title="Add Project">
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleShowModal('source')}
+                    sx={{ height: '57px' }}
+                  >
+                    <AddIcon />
+                  </Button>
+                  </Tooltip>
+                </Grid>
+              </Grid>
+            }
+            <Button
+              variant="contained"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Stack>
+        </Box>
+      </CardContent>
+    </Card>
+  )
 }
 
 Configuration.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;

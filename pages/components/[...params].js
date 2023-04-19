@@ -130,7 +130,7 @@ function ContentTypes() {
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                       <Tab label="Configuration" />
-                      <Tab label="Parameters" />
+                      <Tab label="Properties" />
                       <Tab label="JSON" />
                     </Tabs>
                   </Box>

@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 // API
 import {
   getAllChannels,
-  getComponent,
-  putComponent,
+  getLayout,
+  putLayout,
 } from 'api'
 
 // Components
@@ -20,22 +20,32 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
 } from '@mui/material'
+import {
+  LoadingButton
+ } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
 
-export default function CopyComponentModal({
-  showCopyComponentsModal,
-  setShowCopyComponentsModal,
-  selectedComponents,
-  setSelectedComponents,
+// Icons
+import CloseIcon from '@mui/icons-material/Close';
+
+export default function CopyLayoutModal({
+  showCopyModal,
+  setShowCopyModal,
+  selectedItems,
+  setSelectedItems,
   channelId,
 }) {
+  // State
+  const [isProcessing, setIsProcessing] = useState(false)
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
@@ -56,7 +66,7 @@ export default function CopyComponentModal({
   }, [selectedEnvironment])
 
   const handleClose = () => {
-    setShowCopyComponentsModal(false)
+    setShowCopyModal(false)
   };
 
   const handleEnvironmentChange = (event) => {
@@ -73,73 +83,68 @@ export default function CopyComponentModal({
       })
   }
 
-  const handleCopyComponents = async (event) => {
+  const handleCopyItems = async (event) => {
     event.preventDefault()
-    console.log('handleCopyComponents', selectedComponents)
+    await setIsProcessing(true)
+    console.log('handleCopyItems', selectedItems)
     console.log('selectedEnvironment', selectedEnvironment)
     console.log('checked', checked)
 
     for await (const channel of checked) {
-      for await (const component of selectedComponents) {
-        console.log('copy component', component, 'to channel', channel.id)
-        const componentGroup = component.split('/')[0]
-        console.log('componentGroup', componentGroup)
-        const componentName = component.split('/')[1]
-        console.log('componentName', componentName)
+      for await (const layout of selectedItems) {
+        console.log('copy layout', layout, 'to channel', channel.id)
 
-        // Check if component exists in destination channel
-        const xResourceVersion = await getComponent(
+        // Check if layout exists in destination channel
+        const xResourceVersion = await getLayout(
           appConfiguration?.environments?.[selectedEnvironment]?.environment,
           appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
           channel.id,
-          componentGroup,
-          componentName
+          layout
         )
           .then(response => {
-            console.log('Check for Existing Component Success', response.headers)
+            console.log('Check for Existing Layout Success', response.headers)
             return response.headers['x-resource-version']
           })
-          .catch(error => console.error('Get Component Error', error.message))
+          .catch(error => console.error('Get Layout Error', error.message))
 
-        // Get component
-        const componentData = await getComponent(
+        // Get Layout
+        const layoutData = await getLayout(
           appConfiguration?.environments?.source?.environment,
           appConfiguration?.environments?.source?.xAuthToken,
           channelId,
-          componentGroup,
-          componentName
+          layout
         )
           .then(response => {
-            console.log('Get Component Success', response.headers)
+            console.log('Get Layout Success', response.headers)
             return response.data
           })
-          .catch(error => console.error('Get Component Error', error.message))
-        console.log('componentData', componentData)
+          .catch(error => console.error('Get Layout Error', error.message))
+        console.log('layoutData', layoutData)
         console.log('xResourceVersion', xResourceVersion)
 
-        // Put component
-        if (componentData) {
-          await putComponent(
+        // Put Layout
+        if (layoutData) {
+          await putLayout(
             appConfiguration?.environments?.[selectedEnvironment]?.environment,
             appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
             channel.id,
-            componentGroup,
-            componentName,
-            componentData,
+            layout,
+            layoutData,
             xResourceVersion
           )
             .then(response => {
-              console.log('Put Component Success')
+              console.log('Put Layout Success')
             })
-            .catch(error => console.error('Put Component Error', error))
+            .catch(error => console.error('Put Layout Error', error))
         }
       }
     }
 
-    await handleShowSnackbar('success', 'Components Coppied')
+    await setIsProcessing(false)
+    await handleShowSnackbar('success', 'Layouts Copied')
     await setChecked([])
-    await setSelectedComponents([])
-    await setShowCopyComponentsModal(false)
+    await setSelectedItems([])
+    await setShowCopyModal(false)
   }
 
   const handleToggle = (value) => () => {
@@ -159,7 +164,7 @@ export default function CopyComponentModal({
     <Dialog
       fullWidth={true}
       maxWidth={'sm'}
-      open={showCopyComponentsModal}
+      open={showCopyModal}
       onClose={handleClose}
     >
       <Box
@@ -168,18 +173,31 @@ export default function CopyComponentModal({
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         autoComplete="off"
-        onSubmit={handleCopyComponents}
+        onSubmit={handleCopyItems}
       >
-        <DialogTitle>Copy Confirmation</DialogTitle>
+        <DialogTitle>
+          Copy Confirmation
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <p>Components to Copy ({selectedComponents.length}):</p>
+            <p>Layouts to Copy ({selectedItems.length}):</p>
             <ul>
-              {selectedComponents.map(component => (
+              {selectedItems.map(component => (
                 <li key={component}>{component}</li>
               ))}
             </ul>
-
             <FormControl
               required
               variant="outlined"
@@ -219,10 +237,23 @@ export default function CopyComponentModal({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
+          <LoadingButton
+            loading={isProcessing}
+            loadingPosition="start"
             variant="contained"
             type="submit"
-          >Copy Components</Button>
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                paddingLeft: 2
+              },
+              '& .MuiLoadingButton-loadingIndicatorStart': {
+                position: 'relative',
+                left: '-6px'
+              }
+            }}
+          >
+            Copy Layouts
+          </LoadingButton>
         </DialogActions>
       </Box>
     </Dialog>
