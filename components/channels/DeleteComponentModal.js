@@ -15,12 +15,19 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  IconButton,
   Typography,
 } from '@mui/material';
+import {
+  LoadingButton
+ } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
+
+// Icons
+import CloseIcon from '@mui/icons-material/Close';
 
 const DeleteComponentModal = ({
   showDeleteComponentsModal,
@@ -32,6 +39,9 @@ const DeleteComponentModal = ({
   setComponents,
   setPageSize,
 }) => {
+  // State
+  const [isProcessing, setIsProcessing] = useState(false)
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
@@ -47,7 +57,7 @@ const DeleteComponentModal = ({
 
   const handleDeleteComponents = async (event) => {
     event.preventDefault()
-    await setShowDeleteComponentsModal(false)
+    await setIsProcessing(true)
 
     for await (const component of selectedComponents) {
       const componentGroup = component.split('/')[0]
@@ -74,7 +84,9 @@ const DeleteComponentModal = ({
         setPageSize(columns.length)
       })
 
+    await setIsProcessing(false)
     await setSelectedComponents([])
+    await setShowDeleteComponentsModal(false)
   }
 
   return (
@@ -94,6 +106,18 @@ const DeleteComponentModal = ({
       >
         <DialogTitle id="alert-dialog-title">
           <Typography variant="h3" component="h3">Confirm Deletion</Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent sx={{ pb: '64px' }}>
           <DialogContentText id="alert-dialog-description">
@@ -106,14 +130,28 @@ const DeleteComponentModal = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
           <Button
+            onClick={handleClose}
+            disabled={isProcessing}
+          >Cancel</Button>
+          <LoadingButton
+            loading={isProcessing}
             color="error"
+            loadingPosition="start"
             variant="contained"
             type="submit"
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                paddingLeft: 2
+              },
+              '& .MuiLoadingButton-loadingIndicatorStart': {
+                position: 'relative',
+                left: '-6px'
+              }
+            }}
           >
             Delete Components
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Box>
     </Dialog>

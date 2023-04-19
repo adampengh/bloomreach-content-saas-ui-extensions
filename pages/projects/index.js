@@ -9,7 +9,7 @@ import { getAllProjects } from 'api';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Components
-import CreateProjectModal from 'components/CreateProjectModal';
+import CreateProjectModal from 'components/projects/CreateProjectModal';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import StatusIndicator from 'components/StatusIndicator';
@@ -46,6 +46,10 @@ function Projects() {
   const [sourceProjects, setSourceProjects] = useState([])
   const [targetProjects, setTargetProjects] = useState([])
 
+  const [showModal, setShowModal] = useState(false)
+  const [showCreateSourceProjectModal, setShowCreateSourceProjectModal] = useState(false)
+  const [showCreateTargetProjectModal, setShowCreateTargetProjectModal] = useState(false)
+
   const {
     appConfiguration
   } = useContext(ConfigurationContext)
@@ -55,6 +59,9 @@ function Projects() {
     xAuthToken,
   } = appConfiguration.environments?.source
 
+  const timestamp = (project) => new Date(project.system.createdAt).valueOf()
+  const sortFunction = (projectA, projectB) => timestamp(projectB) - timestamp(projectA)
+
   useEffect(() => {
     if (environment && xAuthToken) {
       // Get source projects
@@ -62,10 +69,7 @@ function Projects() {
         .then((response) => {
           let projects = response.data
           console.log('projects', projects)
-          projects.sort((projectA, projectB) => {
-            const timestamp = (project) => new Date(project.system.createdAt).valueOf()
-            return timestamp(projectB) - timestamp(projectA)
-          })
+          projects.sort(sortFunction)
           setSourceProjects(projects)
           setIsLoaded(true)
         })
@@ -79,10 +83,7 @@ function Projects() {
       getAllProjects(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
         .then((response) => {
           let projects = response.data
-          projects.sort((projectA, projectB) => {
-            const timestamp = (project) => new Date(project.system.createdAt).valueOf()
-            return timestamp(projectB) - timestamp(projectA)
-          })
+          projects.sort(sortFunction)
           setTargetProjects(projects)
           setIsLoaded(true)
         })
@@ -91,6 +92,16 @@ function Projects() {
         })
     }
   }, [appConfiguration])
+
+  const handleShowModal = (environment) => {
+    if (environment === 'source') {
+      setShowCreateSourceProjectModal(true)
+    }
+    if (environment === 'target') {
+      setShowCreateTargetProjectModal(true)
+    }
+    setShowModal(true)
+  }
 
   return (
     <>
@@ -129,111 +140,113 @@ function Projects() {
               </Card>
             </Grid>
           : <>
-              <Grid item xs={6} >
-                <Card>
-                  <CardHeader
-                    title={
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        alignContent="center">
-                          <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
-                            <Typography variant="h4" component="span" >Source Projects</Typography>
-                            <Chip label={appConfiguration.environments?.source?.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
-                          </Grid>
-                          <Grid item xs={6} textAlign="right">
-                            <Button
-                              variant="outlined"
-                              startIcon={<AddIcon />}
-                            >New Project</Button>
-                          </Grid>
-                      </Grid>
-                    }
-                  />
-                  <Divider />
-                  <CardContent>
-                    <List>
-                      { sourceProjects.map((project) => (
-                        <ListItem key={project.id} component="div">
-                          <NextLink href={`/projects/source/${project.id}`} passHref>
-                            <ListItemButton>
-                              <ListItemAvatar>
-                               {project.includeContentTypes
-                                ? <>
-                                  <LanguageIcon />
-                                  <Tooltip title="Includes Content Types">
-                                    <DifferenceIcon />
-                                  </Tooltip>
-                                </>
-                                : <LanguageIcon />
-                               }
-
-                              </ListItemAvatar>
-                              <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
-                              <StatusIndicator status={project.state.status} message={project.state.message} />
-                            </ListItemButton>
-                          </NextLink>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-
-              <Grid item xs={6} >
-                <Card>
-                  <CardHeader
-                    title={
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        alignContent="center">
-                          <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
-                            <Typography variant="h4" component="span" >Target Projects</Typography>
-                            { appConfiguration?.environments?.target?.environment &&
-                              <Chip label={appConfiguration.environments.target.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
-                            }
-                          </Grid>
-                          <Grid item xs={6} textAlign="right">
-                            <Button
-                              variant="outlined"
-                              startIcon={<AddIcon />}
-                            >New Project</Button>
-                          </Grid>
-                      </Grid>
-                    }
-                  />
-                  <Divider />
-                  <CardContent>
-                    <List>
-                      { targetProjects.map((project) => (
-                        <ListItem key={project.id} component="div">
-                          <NextLink href={`/projects/target/${project.id}`} passHref>
-                            <ListItemButton>
-                              <ListItemAvatar>
-                                <LanguageIcon />
-                              </ListItemAvatar>
-                              <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
-                              <StatusIndicator status={project.state.status} message={project.state.message} />
-                            </ListItemButton>
-                          </NextLink>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <ProjectsList
+                appConfiguration={appConfiguration?.environments?.source}
+                projects={sourceProjects}
+                header='Source Projects'
+                handleShowModal={handleShowModal}
+                environment='source'
+              />
+              <ProjectsList
+                appConfiguration={appConfiguration?.environments?.target}
+                projects={targetProjects}
+                header='Target Projects'
+                handleShowModal={handleShowModal}
+                environment='target'
+              />
             </>
           }
         </Grid>
       </Container>
+
+      { showCreateSourceProjectModal &&
+        <CreateProjectModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          projects={sourceProjects}
+          setProjects={setSourceProjects}
+          environment={appConfiguration?.environments?.source?.environment}
+          xAuthToken={appConfiguration?.environments?.source?.xAuthToken}
+        />
+      }
+      { showCreateTargetProjectModal &&
+        <CreateProjectModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          projects={targetProjects}
+          setProjects={setTargetProjects}
+          environment={appConfiguration?.environments?.target?.environment}
+          xAuthToken={appConfiguration?.environments?.target?.xAuthToken}
+        />
+      }
     </>
   );
+}
+
+const ProjectsList = ({
+  appConfiguration,
+  projects,
+  header,
+  handleShowModal,
+  environment,
+}) => {
+  return (
+    <Grid item xs={6} >
+      <Card>
+        <CardHeader
+          title={
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              alignContent="center">
+                <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
+                  <Typography variant="h4" component="span">{header}</Typography>
+                  { appConfiguration?.environment &&
+                    <Chip label={appConfiguration.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
+                  }
+                </Grid>
+                <Grid item xs={6} textAlign="right">
+                  <Button
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    onClick={() => handleShowModal(environment)}
+                  >New Project</Button>
+                </Grid>
+            </Grid>
+          }
+        />
+        <Divider />
+        <CardContent>
+          <List>
+            { projects.map((project) => (
+              <ListItem key={project.id} component="div">
+                <NextLink href={`/projects/${environment}/${project.id}`} passHref>
+                  <ListItemButton>
+                    <ListItemAvatar>
+                      {project.includeContentTypes
+                        ?
+                          <>
+                            <LanguageIcon />
+                            <Tooltip title="Includes Content Types">
+                              <DifferenceIcon />
+                            </Tooltip>
+                          </>
+                        : <LanguageIcon />
+                      }
+                    </ListItemAvatar>
+                    <ListItemText primary={`${project.name} (${project.id})`} secondary={project.description} />
+                    <StatusIndicator status={project.state.status} message={project.state.message} />
+                  </ListItemButton>
+                </NextLink>
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
+      </Card>
+    </Grid>
+  )
 }
 
 Projects.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;

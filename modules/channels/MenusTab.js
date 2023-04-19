@@ -7,7 +7,7 @@ import {
 } from '/api'
 
 // Components
-import CopyMenusModal from 'components/CopyMenusModal'
+import CopyMenusModal from 'components/channels/CopyMenusModal'
 import {
   Box,
   Button,
@@ -20,7 +20,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
 
+// Constants
+import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'lib/constants'
+
 // Icons
+import AddIcon from '@mui/icons-material/Add';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
@@ -144,6 +148,11 @@ export const MenusTab = ({ channel }) => {
           >
           <ButtonGroup aria-label="outlined primary button group">
             <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              disabled // TODO: Add ability to create menu
+            >New Menu</Button>
+            <Button
               disabled={!selectedItems.length}
               onClick={setShowCopyModal}
               startIcon={<ContentCopyIcon />}
@@ -151,7 +160,7 @@ export const MenusTab = ({ channel }) => {
             <Button
               color="error"
               variant="outlined"
-              disabled
+              disabled // TODO: Add ability to delete menus
               // disabled={!selectedItems.length}
               startIcon={<DeleteOutlineIcon />}
               // onClick={setShowDeleteModal}
@@ -160,7 +169,7 @@ export const MenusTab = ({ channel }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box sx={{ height: 'calc(100vh - 320px)', width: '100%' }}>
+          <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT_CHANNELS_TABS})`, width: '100%' }}>
             {!!menus?.length &&
               <DataGrid
                 rows={menus}

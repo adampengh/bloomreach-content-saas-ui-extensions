@@ -106,6 +106,12 @@ function ContentTypes({params}) {
     setShowDeleteChannelModal(true)
   }
 
+  const handleDeleteProject = async (event) => {
+    event.preventDefault();
+    console.log('Delete project');
+    // await deleteProject(environment, xAuthToken, projectId)
+  }
+
   return (
     <>
       <Head>
@@ -115,19 +121,33 @@ function ContentTypes({params}) {
         <Grid
           container
           alignContent='center'
+          justifyContent='space-between'
         >
-          <Grid item>
-            <PageTitle
-              heading={projectData?.name}
-              subHeading={`Project ID: ${id}`}
-            />
+          <Grid item display="flex">
+            <Grid item>
+              <PageTitle
+                heading={projectData?.name}
+                subHeading={`Project ID: ${id}`}
+              />
+            </Grid>
+            <Grid item sx={{ marginLeft: '1rem', paddingTop: '0.5rem'}}>
+              <StatusIndicator
+                message={projectData?.state?.message}
+                size='medium'
+                status={projectData?.state?.status}
+              />
+            </Grid>
           </Grid>
-          <Grid item sx={{ marginLeft: '1rem', paddingTop: '0.5rem'}}>
-            <StatusIndicator
-              message={projectData?.state?.message}
-              size='medium'
-              status={projectData?.state?.status}
-            />
+          <Grid item>
+            <Button
+              sx={{ margin: 1 }}
+              variant="outlined"
+              color="error"
+              onClick={handleDeleteProject}
+              disabled // TODO: Add ability to delete project
+            >
+              Delete Project
+            </Button>
           </Grid>
         </Grid>
       </PageTitleWrapper>
