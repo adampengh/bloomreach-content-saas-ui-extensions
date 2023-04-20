@@ -9,6 +9,7 @@ import {
 
 // Components
 import CopyComponentModal from 'components/channels/CopyComponentModal'
+import CreateComponentGroupModal from 'components/channels/CreateComponentGroupModal'
 import DeleteComponentModal from 'components/channels/DeleteComponentModal'
 import {
   Box,
@@ -16,9 +17,11 @@ import {
   ButtonGroup,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
+  Tooltip,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -55,6 +58,7 @@ export const ComponentsTab = ({ channel }) => {
   const [selectedComponents, setSelectedComponents] = useState([])
 
   const [showCopyComponentsModal, setShowCopyComponentsModal] = useState(false)
+  const [showCreateComponentGroupModal, setShowCreateComponentGroupModal] = useState(false)
   const [showDeleteComponentsModal, setShowDeleteComponentsModal] = useState(false)
 
   useEffect(() => {
@@ -208,11 +212,28 @@ export const ComponentsTab = ({ channel }) => {
                   ))}
                 </Select>
               </FormControl>
-              <Button
-                disabled // TODO: Add ability to create component groups
-                variant="outlined"
-                startIcon={<AddIcon />}
-              >Component Group</Button>
+              <ButtonGroup aria-label="outlined primary button group">
+                {/* Add Component Group */}
+                <Tooltip
+                  leaveDelay={0}
+                  title="Add Component Group"
+                >
+                  <IconButton onClick={() => setShowCreateComponentGroupModal(true)}>
+                    <AddIcon fontSize="small"/>
+                  </IconButton>
+                </Tooltip>
+                {/* Delete Component Group */}
+                {!components?.length &&
+                  <Tooltip
+                    leaveDelay={0}
+                    title="Delete Component Group"
+                  >
+                    <IconButton color="error">
+                      <DeleteOutlineIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                }
+              </ButtonGroup>
             </Grid>
 
           {!selectedComponentGroup?.system &&
@@ -267,6 +288,18 @@ export const ComponentsTab = ({ channel }) => {
           </Box>
         </Grid>
       </Grid>
+
+      <CreateComponentGroupModal
+        showModal={showCreateComponentGroupModal}
+        setShowModal={setShowCreateComponentGroupModal}
+        componentGroups={componentGroups}
+        setComponentGroups={setComponentGroups}
+        selectedComponentGroup={selectedComponentGroup}
+        setSelectedComponentGroup={setSelectedComponentGroup}
+        channelId={channel.id}
+        environment={environment}
+        xAuthToken={xAuthToken}
+      />
 
       <CopyComponentModal
         showCopyComponentsModal={showCopyComponentsModal}
