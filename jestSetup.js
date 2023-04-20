@@ -1,9 +1,9 @@
-global.environment = process.env.ENVIRONMENT || ''
-global.xAuthToken = process.env.X_AUTH_TOKEN || ''
+global.environment = process.env.ENVIRONMENT
+global.xAuthToken = process.env.X_AUTH_TOKEN
 
 // Site Management API Tests
-global.channelId = process.env.CHANNEL_ID || ''
-// global.componentGroup = process.env.COMPONENT_GROUP
+global.channelId = process.env.CHANNEL_ID
+global.componentGroup = process.env.COMPONENT_GROUP
 // global.component = process.env.COMPONENT
 // global.route = process.env.ROUTE
 // global.layout = process.env.LAYOUT
