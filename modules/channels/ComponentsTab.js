@@ -11,6 +11,7 @@ import {
 import CopyComponentModal from 'components/channels/CopyComponentModal'
 import CreateComponentGroupModal from 'components/channels/CreateComponentGroupModal'
 import DeleteComponentModal from 'components/channels/DeleteComponentModal'
+import DeleteComponentGroupModal from 'components/channels/DeleteComponentGroupModal'
 import {
   Box,
   Button,
@@ -57,8 +58,10 @@ export const ComponentsTab = ({ channel }) => {
   const [components, setComponents] = useState([])
   const [selectedComponents, setSelectedComponents] = useState([])
 
-  const [showCopyComponentsModal, setShowCopyComponentsModal] = useState(false)
   const [showCreateComponentGroupModal, setShowCreateComponentGroupModal] = useState(false)
+  const [showDeleteComponentGroupModal, setShowDeleteComponentGroupModal] = useState(false)
+
+  const [showCopyComponentsModal, setShowCopyComponentsModal] = useState(false)
   const [showDeleteComponentsModal, setShowDeleteComponentsModal] = useState(false)
 
   useEffect(() => {
@@ -228,7 +231,7 @@ export const ComponentsTab = ({ channel }) => {
                     leaveDelay={0}
                     title="Delete Component Group"
                   >
-                    <IconButton color="error">
+                    <IconButton color="error" onClick={() => setShowDeleteComponentGroupModal(true)}>
                       <DeleteOutlineIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -292,6 +295,18 @@ export const ComponentsTab = ({ channel }) => {
       <CreateComponentGroupModal
         showModal={showCreateComponentGroupModal}
         setShowModal={setShowCreateComponentGroupModal}
+        componentGroups={componentGroups}
+        setComponentGroups={setComponentGroups}
+        selectedComponentGroup={selectedComponentGroup}
+        setSelectedComponentGroup={setSelectedComponentGroup}
+        channelId={channel.id}
+        environment={environment}
+        xAuthToken={xAuthToken}
+      />
+
+      <DeleteComponentGroupModal
+        showModal={showDeleteComponentGroupModal}
+        setShowModal={setShowDeleteComponentGroupModal}
         componentGroups={componentGroups}
         setComponentGroups={setComponentGroups}
         selectedComponentGroup={selectedComponentGroup}

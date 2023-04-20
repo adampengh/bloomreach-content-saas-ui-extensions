@@ -44,12 +44,21 @@ export const createComponentGroup = async (environment, xAuthToken, channelId, c
 }
 
 export const deleteComponentGroup = async (environment, xAuthToken, channelId, componentGroup) => {
+    console.groupCollapsed('API: deleteComponentGroup()')
+    console.log('environment:', environment)
+    console.log('xAuthToken:', xAuthToken)
+    console.log('channelId:', channelId)
+    console.log('componentGroup:', componentGroup)
+
     const response = await axios(`https://${environment}.bloomreach.io/${SITE_MANAGEMENT_API_PATH}/channels/${channelId}/component_groups/${componentGroup}`, {
         method: 'DELETE',
         headers: {
             'x-auth-token': xAuthToken
         }
     })
+
+    console.log('response', response.data)
+    console.groupEnd()
 
     return response
 }

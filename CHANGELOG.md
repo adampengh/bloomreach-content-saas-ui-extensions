@@ -2,6 +2,7 @@
 All notable changes to this project will be documented in below
 
 ### 0.1.2-alpha (April 20, 2023)
+- Added ability to delete Component Groups
 - Added ability to create new Component Groups
 
 ### 0.1.1-alpha (April 18, 2023)
