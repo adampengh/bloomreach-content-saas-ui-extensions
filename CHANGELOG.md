@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in below
 
+### 0.1.2-alpha (April 20, 2023)
+- Added ability to create new Component Groups
+
 ### 0.1.1-alpha (April 18, 2023)
 - Fixed bug with links in Projects list
 - Added ability to modify channel details
