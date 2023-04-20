@@ -56,6 +56,7 @@ Runs the built production-ready app from the `build` folder. You need to run `ya
 1. Pull the latest changes from the `develop` branch
 1. Create a new branch based off the `develop` branch
 1. Make any necessary code changes
+1. Run `yarn build` to ensure the project builds properly
 1. Update the `CHANGELOG.md` file with the latest changes
 1. Update the version number in the package.json file using correct semantic versioning
 1. Create a Pull Request for the `develop` branch
