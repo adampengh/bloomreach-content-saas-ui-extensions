@@ -5,12 +5,20 @@ import {
 
 export const StyledMarkdownContainer = styled(Container)(
   ({ theme }) => `
+  h4 {
+    margin-bottom: 0;
+    margin-top: .5rem;
+  }
   a {
     color: ${theme.colors.primary.main};
   }
   code {
     background-color: ${theme.colors.primary.light};
     color: ${theme.colors.alpha.trueWhite[100]};
+  }
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
   }
   p,
   ul,

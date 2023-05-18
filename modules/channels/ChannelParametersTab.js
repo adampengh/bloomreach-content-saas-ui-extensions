@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react'
 import { getChannelParameters } from 'api'
 
 // Components
+import CreateChannelParameterModal from 'components/channels/CreateChannelParameterModal'
+import DeleteChannelParameterModal from 'components/channels/DeleteChannelParameterModal'
+import EditChannelParameterModal from 'components/channels/EditChannelParameterModal'
 import {
   Avatar,
   Box,
@@ -34,6 +37,11 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 
 const ChannelParametersTab = ({ channel, environment, xAuthToken }) => {
   const [parameters, setParameters] = useState(null)
+  const [showCreateModal, setShowCreateModal] = useState(false)
+
+  const [selectedParameter, setSelectedParameter] = useState(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
 
   useEffect(() => {
     getChannelParameters(environment, xAuthToken, channel.id)
@@ -41,81 +49,114 @@ const ChannelParametersTab = ({ channel, environment, xAuthToken }) => {
       .catch(error => console.error(error))
   }, [channel])
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-  }
-
   return (
-    <Box
-      component="form"
-      noValidate
-      autoComplete="off"
-      onSubmit={handleSubmit}
-      display="flex"
-      sx={{ margin: 0 }}
-    >
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="stretch"
-        rowSpacing={3}
-        columnSpacing={0}
-        sx={{ width: '100%', marginTop: -4.5 }}
+    <>
+      <Box
+        component="div"
+        display="flex"
+        sx={{ margin: 0 }}
       >
         <Grid
           container
-          display="flex"
-          justifyContent="space-between"
-          alignContent="center"
-          alignItems="flex-end"
-          spacing={0}
-          sx={{ width: '100%', paddingBottom: 3, margin: 0 }}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="stretch"
+          rowSpacing={3}
+          columnSpacing={0}
+          sx={{ width: '100%', marginTop: -4.5 }}
         >
-          <Grid item>
-            <Typography variant="h4">Properties</Typography>
+          <Grid
+            container
+            display="flex"
+            justifyContent="space-between"
+            alignContent="center"
+            alignItems="flex-end"
+            spacing={0}
+            sx={{ width: '100%', paddingBottom: 3, margin: 0 }}
+          >
+            <Grid item>
+              <Typography variant="h4">Properties</Typography>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={() => setShowCreateModal(true)}
+              >Property</Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Button
-              variant="outlined"
-              startIcon={<AddIcon />}
-              disabled // TODO: add channel parameter
-            >Property</Button>
-          </Grid>
+          <List sx={{ width: '100%', padding: 0 }}>
+            {parameters?.map((parameter, index) => (
+              <ListItem key={index} sx={{ paddingTop: 1, paddingBottom: 1 }}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <TextFieldsIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={parameter.displayName}
+                  secondary={parameter.name}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="start"
+                    aria-label="delete"
+                    onClick={() => {
+                      setSelectedParameter(parameter)
+                      setShowDeleteModal(true)
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => {
+                      setSelectedParameter(parameter)
+                      setShowEditModal(true)
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
         </Grid>
-        <List sx={{ width: '100%', padding: 0 }}>
-          {parameters?.map((parameter, index) => (
-            <ListItem key={index} sx={{ paddingTop: 1, paddingBottom: 1 }}>
-              <ListItemAvatar>
-                <Avatar>
-                  <TextFieldsIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={parameter.displayName}
-                secondary={parameter.name}
-              />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="start"
-                  aria-label="delete"
-                  disabled // TODO: delete channel parameter
-                >
-                  <DeleteIcon />
-                </IconButton>
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  disabled // TODO: edit channel parameter
-                >
-                  <EditIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
-      </Grid>
-    </Box>
+      </Box>
+
+      <CreateChannelParameterModal
+        showModal={showCreateModal}
+        setShowModal={setShowCreateModal}
+        parameters={parameters}
+        setParameters={setParameters}
+        environment={environment}
+        xAuthToken={xAuthToken}
+        channelId={channel.id}
+      />
+      <DeleteChannelParameterModal
+        showModal={showDeleteModal}
+        setShowModal={setShowDeleteModal}
+        selectedParameter={selectedParameter}
+        setSelectedParameter={setSelectedParameter}
+        parameters={parameters}
+        setParameters={setParameters}
+        environment={environment}
+        xAuthToken={xAuthToken}
+        channelId={channel.id}
+      />
+      <EditChannelParameterModal
+        showModal={showEditModal}
+        setShowModal={setShowEditModal}
+        selectedParameter={selectedParameter}
+        setSelectedParameter={setSelectedParameter}
+        parameters={parameters}
+        setParameters={setParameters}
+        environment={environment}
+        xAuthToken={xAuthToken}
+        channelId={channel.id}
+      />
+    </>
   )
 }
 

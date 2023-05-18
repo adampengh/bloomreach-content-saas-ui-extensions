@@ -17,6 +17,7 @@ import DeleteContentTypeModal from 'components/content-types/DeleteContentTypeMo
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
+  Alert,
   Box,
   ButtonGroup,
   Button,
@@ -67,7 +68,7 @@ function ContentTypes() {
 
   useEffect(() => {
     if (environment && xAuthToken) {
-      getAllContentTypes(environment, xAuthToken)
+      getAllContentTypes(environment, xAuthToken, 'development')
         .then((response) => {
           const columns = response.data.map(item => {
             return {
@@ -88,9 +89,20 @@ function ContentTypes() {
       setIsLoaded(true)
     }
 
-    console.log('appConfiguration?.environments?.target?.environment', appConfiguration?.environments?.target?.environment)
-    console.log('appConfiguration?.environments?.target?.xAuthToken', appConfiguration?.environments?.target?.xAuthToken)
-    console.log('appConfiguration?.environments?.target?.projectId', appConfiguration?.environments?.target?.projectId)
+    if (appConfiguration?.environments?.source?.environment &&
+      appConfiguration?.environments?.source?.xAuthToken &&
+      appConfiguration?.environments?.source?.projectId) {
+        getDeveloperProject(
+          appConfiguration?.environments?.source?.environment,
+          appConfiguration?.environments?.source?.xAuthToken,
+          appConfiguration?.environments?.source?.projectId)
+          .then(response => {
+            console.log('isSourceProjectIncludeContentTypes', response.data.includeContentTypes)
+            setIsSourceProjectIncludeContentTypes(response.data.includeContentTypes)
+          })
+          .catch(error => console.error(error))
+    }
+
     if (appConfiguration?.environments?.target?.environment &&
       appConfiguration?.environments?.target?.xAuthToken &&
       appConfiguration?.environments?.target?.projectId) {
@@ -99,7 +111,7 @@ function ContentTypes() {
           appConfiguration?.environments?.target?.xAuthToken,
           appConfiguration?.environments?.target?.projectId)
           .then(response => {
-            console.log('response.data', response.data)
+            console.log('isTargetProjectIncludeContentTypes', response.data.includeContentTypes)
             setIsTargetProjectIncludeContentTypes(response.data.includeContentTypes)
           })
           .catch(error => console.error(error))
@@ -129,16 +141,15 @@ function ContentTypes() {
             >
               <ContentCopyIcon fontSize="small" />
             </Button>
-            {/* <Button
+            <Button
               color="error"
-              disabled
               onClick={() => {
                 setSelectedRows([params.row.id])
                 setShowDeleteModal(true)
               }}
               sx={{ padding: padding}}>
               <DeleteOutlineIcon fontSize="small" />
-            </Button> */}
+            </Button>
           </ButtonGroup>
         )
       }
@@ -188,39 +199,31 @@ function ContentTypes() {
             <PageTitle heading="Content Types" />
           </Grid>
           <Grid item xs={12} display="inline-flex" justifyContent="flex-end">
-            <ButtonGroup aria-label="outlined primary button group">
-              <Button
-                disabled // TODO: Add ability to create new content types
-                variant="contained"
-                startIcon={<AddIcon />}
-              >Content Type</Button>
-              {!(selectedRows.length && isTargetProjectIncludeContentTypes)
-                ?
-                <Tooltip title="Copy">
+            {isSourceProjectIncludeContentTypes &&
+              <ButtonGroup aria-label="outlined primary button group">
+                <Button
+                  disabled // TODO: Add ability to create new content types
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                >Content Type</Button>
+                {!(selectedRows.length && isTargetProjectIncludeContentTypes) &&
                   <Button
                     disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
                     onClick={setShowCopyModal}
                     startIcon={<ContentCopyIcon />}
                   >Copy</Button>
-                </Tooltip>
-                :
+                }
                 <Button
-                  disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
-                  onClick={setShowCopyModal}
-                  startIcon={<ContentCopyIcon />}
-                >Copy</Button>
-              }
-              {/* <Button
-                color="error"
-                variant="outlined"
-                disabled
-                // disabled={!selectedRows.length}
-                startIcon={<DeleteOutlineIcon />}
-                onClick={setShowDeleteModal}
-              >Delete</Button> */}
-            </ButtonGroup>
+                  color="error"
+                  variant="outlined"
+                  disabled={!selectedRows.length}
+                  startIcon={<DeleteOutlineIcon />}
+                  onClick={setShowDeleteModal}
+                >Delete</Button>
+              </ButtonGroup>
+            }
           </Grid>
-      </Grid>
+        </Grid>
       </PageTitleWrapper>
 
       <Container maxWidth="xl">
@@ -234,28 +237,32 @@ function ContentTypes() {
           <Grid item xs={12}>
             <Card>
               <CardContent>
-                <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT})`, width: '100%' }}>
-                  <DataGrid
-                    rows={pageData}
-                    columns={columns}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    rowsPerPageOptions={[10, 20, 30, pageData?.length]}
-                    pagination
-                    checkboxSelection
-                    disableSelectionOnClick
-                    onSelectionModelChange={(ids) => setSelectedRows(ids)}
-                    selectionModel={selectedRows}
-                    initialState={{
-                      sorting: {
-                        sortModel: [{
-                          field: 'id',
-                          sort: 'asc'
-                        }]
-                      }
-                    }}
-                  />
-                </Box>
+
+                {!isSourceProjectIncludeContentTypes
+                  ? <Alert severity="warning">The currently selected project ({projectId}) does not include Content Type changes</Alert>
+                  : <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT})`, width: '100%' }}>
+                      <DataGrid
+                        rows={pageData}
+                        columns={columns}
+                        pageSize={pageSize}
+                        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                        rowsPerPageOptions={[10, 20, 30, pageData?.length]}
+                        pagination
+                        checkboxSelection
+                        disableSelectionOnClick
+                        onSelectionModelChange={(ids) => setSelectedRows(ids)}
+                        selectionModel={selectedRows}
+                        initialState={{
+                          sorting: {
+                            sortModel: [{
+                              field: 'id',
+                              sort: 'asc'
+                            }]
+                          }
+                        }}
+                      />
+                    </Box>
+                }
               </CardContent>
             </Card>
           </Grid>
@@ -271,14 +278,14 @@ function ContentTypes() {
         // channelId={channel.id}
       /> */}
 
-      {/* TODO: Delete content types modal */}
-      {/* <DeleteContentTypeModal
-        showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
+      <DeleteContentTypeModal
+        showModal={showDeleteModal}
+        setShowModal={setShowDeleteModal}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
-        // channelId={channel.id}
-      /> */}
+        pageData={pageData}
+        setPageData={setPageData}
+      />
     </>
   );
 }
