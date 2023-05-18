@@ -18,4 +18,4 @@ global.componentGroup = process.env.COMPONENT_GROUP
 // global.resourceBundlePath = process.env.RESOURCE_BUNDLE_PATH
 
 // Content Type Management API Tests
-// global.contentType = process.env.CONTENT_TYPE
+global.contentType = process.env.CONTENT_TYPE

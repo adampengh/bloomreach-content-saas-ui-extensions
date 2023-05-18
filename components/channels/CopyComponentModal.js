@@ -2,7 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 
 // API
 import {
+  createComponentGroup,
   getAllChannels,
+  getAllComponentGroups,
   getComponent,
   putComponent,
 } from 'api'
@@ -15,7 +17,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControl,
   FormControlLabel,
@@ -25,9 +26,7 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
-import {
-  LoadingButton
- } from '@mui/lab';
+import { LoadingButton } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
@@ -60,9 +59,7 @@ export default function CopyComponentModal({
         const data = response.data.filter(channel => channel.branch === appConfiguration.environments?.[selectedEnvironment]?.projectId)
         setChannels(data)
       })
-      .catch((error) => {
-        console.error('error', error.message)
-      })
+      .catch((error) => console.error('error', error.message))
   }, [selectedEnvironment])
 
   const handleClose = () => {
@@ -78,27 +75,52 @@ export default function CopyComponentModal({
         const data = response.data.filter(channel => channel.branch === appConfiguration.environments?.[event.target.value]?.projectId)
         setChannels(data)
       })
-      .catch((error) => {
-        console.error('error', error.message)
-      })
+      .catch((error) => console.error('error', error.message))
   }
 
   const handleCopyComponents = async (event) => {
     event.preventDefault()
     await setIsProcessing(true)
 
-    console.log('handleCopyComponents', selectedComponents)
-    console.log('selectedEnvironment', selectedEnvironment)
-    console.log('checked', checked)
-
-
+    // Loop through selected channels
     for await (const channel of checked) {
+      // Get all Component Groups in target channel
+      let componentGroups = await getAllComponentGroups(
+        appConfiguration?.environments?.[selectedEnvironment]?.environment,
+        appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+        channel.id
+      )
+        .then(response => response.data)
+        .catch(error => console.error(error))
+
+      // Loop through selected components
       for await (const component of selectedComponents) {
         console.log('copy component', component, 'to channel', channel.id)
         const componentGroup = component.split('/')[0]
-        console.log('componentGroup', componentGroup)
         const componentName = component.split('/')[1]
-        console.log('componentName', componentName)
+
+        // Check if Component Group exists, if not, create a new Component Group
+        if (!componentGroups.find(group => group.name === componentGroup)) {
+          await createComponentGroup(
+            appConfiguration?.environments?.[selectedEnvironment]?.environment,
+            appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
+            channel.id,
+            componentGroup,
+            {
+              name: componentGroup,
+              hidden: "false",
+              system: "false"
+            })
+            .then(response => {
+              console.log('createComponentGroup', response)
+              componentGroups = [...componentGroups, {
+                name: componentGroup,
+                hidden: "false",
+                system: "false"
+              }]
+            })
+            .catch(error => console.error('Error creating component group', error))
+        }
 
         // Check if component exists in destination channel
         const xResourceVersion = await getComponent(
@@ -126,7 +148,7 @@ export default function CopyComponentModal({
             console.log('Get Component Success', response.headers)
             return response.data
           })
-          .catch(error => console.error('Get Component Error', error.message))
+          .catch(error => console.error('Get Component Error', error))
         console.log('componentData', componentData)
         console.log('xResourceVersion', xResourceVersion)
 
@@ -141,9 +163,7 @@ export default function CopyComponentModal({
             componentData,
             xResourceVersion
           )
-            .then(response => {
-              console.log('Put Component Success')
-            })
+            .then(response => console.log('Put Component Success'))
             .catch(error => console.error('Put Component Error', error))
         }
       }
@@ -200,50 +220,48 @@ export default function CopyComponentModal({
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <p>Components to Copy ({selectedComponents.length}):</p>
-            <ul>
-              {selectedComponents.map(component => (
-                <li key={component}>{component}</li>
-              ))}
-            </ul>
+          <p>Components to Copy ({selectedComponents.length}):</p>
+          <ul>
+            {selectedComponents.map(component => (
+              <li key={component}>{component}</li>
+            ))}
+          </ul>
 
-            <FormControl
-              required
-              variant="outlined"
-              sx={{ m: 1, width: '100%', marginTop: 3 }}
+          <FormControl
+            required
+            variant="outlined"
+            sx={{ m: 1, width: '100%', marginTop: 3 }}
+          >
+            <InputLabel id="targetProjectId">Environment</InputLabel>
+            <Select
+
+              id="environment"
+              labelId="Environment"
+              label="Environment"
+              value={selectedEnvironment}
+              onChange={handleEnvironmentChange}
             >
-              <InputLabel id="targetProjectId">Environment</InputLabel>
-              <Select
+              <MenuItem value={'source'}>
+                {appConfiguration?.environments?.source?.environment} (Source)
+              </MenuItem>
+              <MenuItem value={'target'}>
+                {appConfiguration?.environments?.target?.environment} (Target)
+              </MenuItem>
+            </Select>
+          </FormControl>
 
-                id="environment"
-                labelId="Environment"
-                label="Environment"
-                value={selectedEnvironment}
-                onChange={handleEnvironmentChange}
-              >
-                <MenuItem key={0} value={'source'}>
-                  {appConfiguration?.environments?.source?.environment} (Source)
-                </MenuItem>
-                <MenuItem key={0} value={'target'}>
-                  {appConfiguration?.environments?.target?.environment} (Target)
-                </MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormGroup sx={{ m: 1, width: '100%', marginTop: 3 }}>
-              <strong>Channels:</strong>
-              {channels.map((channel, index) => {
-                return (
-                  <FormControlLabel
-                    key={index}
-                    onClick={handleToggle ? handleToggle(channel) : null}
-                    control={ <Checkbox checked={checked.indexOf(channel) !== -1} /> }
-                    label={channel.name} />
-                )
-              })}
-            </FormGroup>
-          </DialogContentText>
+          <FormGroup sx={{ m: 1, width: '100%', marginTop: 3 }}>
+            <strong>Channels:</strong>
+            {channels.map((channel, index) => {
+              return (
+                <FormControlLabel
+                  key={index}
+                  onClick={handleToggle ? handleToggle(channel) : null}
+                  control={ <Checkbox checked={checked.indexOf(channel) !== -1} /> }
+                  label={channel.name} />
+              )
+            })}
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button
