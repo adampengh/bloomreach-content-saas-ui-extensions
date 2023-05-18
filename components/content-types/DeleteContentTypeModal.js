@@ -1,77 +1,157 @@
 import { useContext, useEffect, useState } from 'react'
 
+// API
 import {
+  deleteContentType,
+  getAllContentTypes,
+} from 'api'
+
+// Components
+import {
+  Box,
   Button,
   Dialog,
   DialogTitle,
   DialogActions,
   DialogContent,
   DialogContentText,
+  IconButton,
+  Typography,
 } from '@mui/material';
+import {
+  LoadingButton
+ } from '@mui/lab';
+
+// Contexts
+import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ErrorContext } from 'src/contexts/ErrorContext';
+
+// Icons
+import CloseIcon from '@mui/icons-material/Close';
 
 const DeleteContentTypeModal = ({
-  showDeleteModal,
-  setShowDeleteModal,
+  showModal,
+  setShowModal,
   selectedRows,
   setSelectedRows,
-  channelId,
+  pageData,
+  setPageData,
 }) => {
+  // State
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  // Context
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { handleShowSnackbar } = useContext(ErrorContext)
+  const {
+    environment,
+    xAuthToken,
+  } = appConfiguration.environments?.source
 
   const handleClose = () => {
-    setShowDeleteModal(false)
+    setShowModal(false)
     setSelectedRows([])
   };
 
-  const handleDeleteItems = async (items) => {
-    console.log('handleDeleteItems', items)
-    // await Promise.all(items.map(async (item) => {
-    //   const componentGroup = component.split('/')[0]
-    //   const componentName = component.split('/')[1]
-    //   await deleteComponent(environment, xAuthToken, channel.id, componentGroup, componentName)
-    //     .then(response => console.log('deleteComponent', response))
-    //     .catch(error => {
-    //       console.log('deleteComponent', error)
-    //       handleShowSnackbar('error', `Error deleting ${component.id}`)
-    //     })
-    // }))
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    await setIsProcessing(true)
 
-    // await getAllComponents(environment, xAuthToken, channel.id, selectedComponentGroup.name)
-    //   .then(response => {
-    //     const columns = response.data.map(item => {
-    //       return {
-    //         id: item.id,
-    //         ctype: item.ctype,
-    //         label: item.label,
-    //       }
-    //     })
-    //     console.log('new columns', columns)
-    //     handleShowSnackbar('success', 'Components deleted')
-    //     setComponents(columns)
-    //     setPageSize(columns.length)
-    //   })
+    for await (const contentType of selectedRows) {
+      console.log('contentType', contentType)
+      await deleteContentType(environment, xAuthToken, contentType)
+        .then(response => handleShowSnackbar('success', `Deleted ${contentType}`))
+        .catch(error => {
+          console.error('deleteContentType', error)
+          handleShowSnackbar('error', error.message)
+        })
+    }
+
+    getAllContentTypes(environment, xAuthToken, 'development')
+      .then((response) => {
+        const columns = response.data.map(item => {
+          return {
+            type: item.type,
+            id: item.name,
+            displayName: item.presentation.displayName,
+            fields: item.fields.length,
+            enabled: item.enabled,
+          }
+        })
+        setPageData(columns)
+      })
+      .catch((error) => {
+        console.error('getAllContentTypes', error)
+      })
+
+    await setIsProcessing(false)
+    await setSelectedRows([])
+    await setShowModal(false)
   }
 
   return (
     <Dialog
-      open={showDeleteModal}
+      open={showModal}
       onClose={handleClose}
       fullWidth={true}
       maxWidth={'sm'}
     >
-      <DialogTitle id="alert-dialog-title">
-        {"Confirm Deletion"}
-      </DialogTitle>
-      <DialogContent sx={{ pb: '64px' }}>
-        <DialogContentText id="alert-dialog-description">
-          Delete {selectedRows} from {channelId}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button color="error" variant="contained" autoFocus>
-          Delete
-        </Button>
-      </DialogActions>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '100%' }
+        }}
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Typography variant="h3" component="p">Confirm Deletion</Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ pb: '64px' }}>
+            Delete content types:
+            <ul>
+              {selectedRows?.map((contentType, index) =>
+                <li key={index}>{contentType}</li>
+              )}
+            </ul>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            disabled={isProcessing}
+          >Cancel</Button>
+          <LoadingButton
+            loading={isProcessing}
+            color="error"
+            // loadingPosition="start"
+            variant="contained"
+            type="submit"
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                paddingLeft: 2
+              },
+              '& .MuiLoadingButton-loadingIndicatorStart': {
+                position: 'relative',
+                left: '-6px'
+              }
+            }}
+          >
+            Delete
+          </LoadingButton>
+        </DialogActions>
+      </Box>
     </Dialog>
   )
 }

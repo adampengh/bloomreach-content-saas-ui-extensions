@@ -1,9 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in below
 
+### 0.2.0-alpha (May 17, 2023)
+#### New features
+- Added ability to delete content types
+- Added ability to modify channel settings
+- Added ability to add/modify/delete channel properties
+#### Bugs
+- When copying components, added a check for the component group. If the component group doesn't exist, it will be created
+
 ### 0.1.2-alpha (April 20, 2023)
-- Added ability to delete Component Groups
-- Added ability to create new Component Groups
+- Added ability to delete component groups
+- Added ability to create new component groups
 
 ### 0.1.1-alpha (April 18, 2023)
 - Fixed bug with links in Projects list

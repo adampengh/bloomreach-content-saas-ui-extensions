@@ -7,6 +7,7 @@ import {
 
 // Components
 import {
+  Autocomplete,
   Button,
   Box,
   Checkbox,
@@ -23,6 +24,8 @@ import { ErrorContext } from 'src/contexts/ErrorContext';
 // Icons
 import ChannelIcon from 'components/ChannelIcon'
 
+// Lib
+import { locales } from 'lib/locales'
 
 const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
   // Context
@@ -160,18 +163,25 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
                     </InputAdornment>
                 }}
               />
-              <TextField
+              <Autocomplete
+                disablePortal
                 id="locale"
                 name="locale"
-                label="Locale"
-                value={channelData.locale}
+                options={locales}
                 fullWidth
-                onChange={(e) =>
+                value={channelData.locale}
+                renderInput={(params) => <TextField {...params} label="Locale" />}
+                renderOption={(props, option) => (
+                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                    {option.displayName} - {option.locale}
+                  </Box>
+                )}
+                onChange={(event, value) => {
                   setChannelData(prevState => ({
                     ...prevState,
-                    locale: e.target.value
+                    locale: value.locale
                   }))
-                }
+                }}
               />
               <TextField
                 disabled
