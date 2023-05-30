@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in below
 
+### 0.2.1-alpha (May 30, 2023)
+- Finished layouts tab in channel configuration
+
 ### 0.2.0-alpha (May 17, 2023)
 #### New features
 - Added ability to delete content types

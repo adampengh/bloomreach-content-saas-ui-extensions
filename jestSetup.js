@@ -6,7 +6,7 @@ global.channelId = process.env.CHANNEL_ID
 global.componentGroup = process.env.COMPONENT_GROUP
 // global.component = process.env.COMPONENT
 // global.route = process.env.ROUTE
-// global.layout = process.env.LAYOUT
+global.layout = process.env.LAYOUT
 // global.menu = process.env.MENU
 
 // Folder Management API Tests

@@ -8,6 +8,7 @@ import {
 
 // Components
 import CopyLayoutModal from 'components/channels/CopyLayoutModal'
+import DeleteLayoutModal from 'components/channels/DeleteLayoutModal'
 import {
   Box,
   Button,
@@ -79,14 +80,14 @@ export const LayoutsTab = ({ channel }) => {
         const padding = '0.25rem 0.5rem';
         return (
           <ButtonGroup size="small" variant="outlined">
-            <Button
+            {/* <Button
               disabled
               sx={{ padding: padding}}
               >
               <NextLink href={`/layouts/${channel.id}/${params.row.id}`}>
                 <EditIcon fontSize="small" />
               </NextLink>
-            </Button>
+            </Button> */}
             <Button
               sx={{ padding: padding}}
               onClick={() => {
@@ -97,11 +98,10 @@ export const LayoutsTab = ({ channel }) => {
               <ContentCopyIcon fontSize="small" />
             </Button>
             <Button
-              disabled
               color="error"
               onClick={() => {
                 setSelectedItems([params.row.id])
-                // setShowDeleteModal(true)
+                setShowDeleteModal(true)
               }}
               sx={{ padding: padding}}>
               <DeleteOutlineIcon fontSize="small" />
@@ -164,11 +164,11 @@ export const LayoutsTab = ({ channel }) => {
           xs={12}
           >
           <ButtonGroup aria-label="outlined primary button group">
-            <Button
+            {/* <Button
               variant="contained"
               startIcon={<AddIcon />}
               disabled // TODO: Add ability to create layouts
-            >New Layout</Button>
+            >New Layout</Button> */}
             <Button
               disabled={!selectedItems.length}
               onClick={setShowCopyModal}
@@ -177,10 +177,9 @@ export const LayoutsTab = ({ channel }) => {
             <Button
               color="error"
               variant="outlined"
-              disabled
-              // disabled={!selectedItems.length}
+              disabled={!selectedItems.length}
               startIcon={<DeleteOutlineIcon />}
-              // onClick={setShowDeleteModal}
+              onClick={setShowDeleteModal}
             >Delete</Button>
           </ButtonGroup>
         </Grid>
@@ -214,14 +213,25 @@ export const LayoutsTab = ({ channel }) => {
       </Grid>
 
       <CopyLayoutModal
-        showCopyModal={showCopyModal}
-        setShowCopyModal={setShowCopyModal}
+        showModal={showCopyModal}
+        setShowModal={setShowCopyModal}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
         channelId={channel.id}
       />
 
       {/* TODO: Add ability to delete layouts */}
+      <DeleteLayoutModal
+        showModal={showDeleteModal}
+        setShowModal={setShowDeleteModal}
+        layouts={layouts}
+        setLayouts={setLayouts}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        channelId={channel.id}
+        environment={environment}
+        xAuthToken={xAuthToken}
+      />
     </>
   )
 }

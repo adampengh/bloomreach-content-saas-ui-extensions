@@ -37,8 +37,8 @@ import { ErrorContext } from 'src/contexts/ErrorContext';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function CopyLayoutModal({
-  showCopyModal,
-  setShowCopyModal,
+  showModal,
+  setShowModal,
   selectedItems,
   setSelectedItems,
   channelId,
@@ -66,7 +66,7 @@ export default function CopyLayoutModal({
   }, [selectedEnvironment])
 
   const handleClose = () => {
-    setShowCopyModal(false)
+    setShowModal(false)
   };
 
   const handleEnvironmentChange = (event) => {
@@ -144,7 +144,7 @@ export default function CopyLayoutModal({
     await handleShowSnackbar('success', 'Layouts Copied')
     await setChecked([])
     await setSelectedItems([])
-    await setShowCopyModal(false)
+    await setShowModal(false)
   }
 
   const handleToggle = (value) => () => {
@@ -164,7 +164,7 @@ export default function CopyLayoutModal({
     <Dialog
       fullWidth={true}
       maxWidth={'sm'}
-      open={showCopyModal}
+      open={showModal}
       onClose={handleClose}
     >
       <Box
