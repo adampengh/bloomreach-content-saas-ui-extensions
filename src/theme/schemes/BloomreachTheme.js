@@ -1,6 +1,5 @@
 import { alpha, createTheme, lighten, darken } from '@mui/material';
 import '@mui/lab/themeAugmentation';
-import { red } from '@mui/material/colors';
 
 // import i18n from 'src/i18n/i18n';
 
@@ -243,7 +242,7 @@ export const BloomreachTheme = createTheme({
     menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
     boxShadow:
       '2px 0 3px rgba(159, 162, 191, .18), 1px 0 1px rgba(159, 162, 191, 0.32)',
-    width: '290px'
+    width: '260px'
   },
   header: {
     height: '80px',
@@ -1135,8 +1134,7 @@ export const BloomreachTheme = createTheme({
       styleOverrides: {
         root: {
           paddingTop: 20,
-          paddingBottom: 20,
-          background: colors.alpha.black[5]
+          paddingBottom: 20
         }
       }
     },
