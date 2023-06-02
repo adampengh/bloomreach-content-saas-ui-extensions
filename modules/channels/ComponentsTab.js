@@ -109,38 +109,36 @@ export const ComponentsTab = ({ channel }) => {
       width: 150,
       renderCell: (params) => {
         const padding = '0.25rem 0.5rem';
-        return (
-          !selectedComponentGroup?.system
-            ?
-            <ButtonGroup size="small" variant="outlined">
-              <Button
-                sx={{ padding: padding}}
-                >
-                <NextLink href={`/components/${channel.id}/${params.row.id}`}>
-                  <EditIcon fontSize="small" />
-                </NextLink>
-              </Button>
-              <Button
-                sx={{ padding: padding}}
-                onClick={() => {
-                  setSelectedComponents([params.row.id])
-                  setShowCopyComponentsModal(true)
-                }}
+        return !selectedComponentGroup?.system
+          ?
+          <ButtonGroup size="small" variant="outlined">
+            <Button
+              sx={{ padding: padding}}
               >
-                <ContentCopyIcon fontSize="small" />
-              </Button>
-              <Button
-                color="error"
-                onClick={() => {
-                  setSelectedComponents([params.row.id])
-                  setShowDeleteComponentsModal(true)
-                }}
-                sx={{ padding: padding}}>
-                <DeleteOutlineIcon fontSize="small" />
-              </Button>
-            </ButtonGroup>
-          : null
-        )
+              <NextLink href={`/components/${channel.id}/${params.row.id}`} legacyBehavior>
+                <EditIcon fontSize="small" />
+              </NextLink>
+            </Button>
+            <Button
+              sx={{ padding: padding}}
+              onClick={() => {
+                setSelectedComponents([params.row.id])
+                setShowCopyComponentsModal(true)
+              }}
+            >
+              <ContentCopyIcon fontSize="small" />
+            </Button>
+            <Button
+              color="error"
+              onClick={() => {
+                setSelectedComponents([params.row.id])
+                setShowDeleteComponentsModal(true)
+              }}
+              sx={{ padding: padding}}>
+              <DeleteOutlineIcon fontSize="small" />
+            </Button>
+          </ButtonGroup>
+        : null;
       }
     },
     {
@@ -155,9 +153,9 @@ export const ComponentsTab = ({ channel }) => {
       renderCell: (params) => {
         const href = `/components/${channel.id}/${params.row.id}`
         if (params.row.label) {
-          return <NextLink href={href}>{params.row.label}</NextLink>
+          return <NextLink href={href} legacyBehavior>{params.row.label}</NextLink>;
         } else {
-          return <NextLink href={href}>{params.row.id}</NextLink>
+          return <NextLink href={href} legacyBehavior>{params.row.id}</NextLink>;
         }
       }
     },

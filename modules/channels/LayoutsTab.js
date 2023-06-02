@@ -127,9 +127,9 @@ export const LayoutsTab = ({ channel }) => {
       renderCell: (params) => {
         const href = `/layouts/${params.row.id}`
         if (params.row.label) {
-          return <NextLink href={'/status/coming-soon'}>{params.row.label}</NextLink>
+          return <NextLink href={'/status/coming-soon'} legacyBehavior>{params.row.label}</NextLink>;
         } else {
-          return <NextLink href={'/status/coming-soon'}>{params.row.id}</NextLink>
+          return <NextLink href={'/status/coming-soon'} legacyBehavior>{params.row.id}</NextLink>;
         }
       }
     },

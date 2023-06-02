@@ -186,59 +186,37 @@ function SidebarMenu() {
     setMenuItemsEnabled(!hasMissingRequiredConfigProperties)
   }, [appConfiguration])
 
-  return (
-    <>
-      <MenuWrapper>
-
-          <List component="div">
-            <SubMenuWrapper>
-              <List component="div">
-                {process.env.NODE_ENV === 'development' &&
-                  <ListItem component="div">
-                    <NextLink href="/TEMPLATES" passHref>
-                      <Button
-                        className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
-                        disableRipple
-                        component="a"
-                        onClick={closeSidebar}
-                        startIcon={<SettingsIcon />}
-                      >
-                        TEMPLATES
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                }
-                <ListItem component="div">
-                  <NextLink href="/getting-started" passHref>
-                    <Button
-                      className={currentRoute.startsWith('/getting-started') ? 'active' : ''}
-                      disableRipple
-                      component="a"
-                      onClick={closeSidebar}
-                      startIcon={<InfoIcon />}
-                    >
-                      Getting Started
-                    </Button>
-                  </NextLink>
-                </ListItem>
-              </List>
-            </SubMenuWrapper>
-          </List>
-
+  return <>
+    <MenuWrapper>
 
         <List component="div">
           <SubMenuWrapper>
             <List component="div">
+              {process.env.NODE_ENV === 'development' &&
+                <ListItem component="div">
+                  <NextLink href="/TEMPLATES" passHref legacyBehavior>
+                    <Button
+                      className={currentRoute.startsWith('/TEMPLATES') ? 'active' : ''}
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<SettingsIcon />}
+                    >
+                      TEMPLATES
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              }
               <ListItem component="div">
-                <NextLink href="/configuration" passHref>
+                <NextLink href="/getting-started" passHref legacyBehavior>
                   <Button
-                    className={currentRoute.startsWith('/configuration') ? 'active' : ''}
+                    className={currentRoute.startsWith('/getting-started') ? 'active' : ''}
                     disableRipple
                     component="a"
                     onClick={closeSidebar}
-                    startIcon={<SettingsIcon />}
+                    startIcon={<InfoIcon />}
                   >
-                    Configuration
+                    Getting Started
                   </Button>
                 </NextLink>
               </ListItem>
@@ -246,143 +224,163 @@ function SidebarMenu() {
           </SubMenuWrapper>
         </List>
 
-        { menuItemsEnabled &&
-          <>
-            <List
-              component="div"
-              subheader={
-                <ListSubheader component="div" disableSticky>
-                  Project Management
-                </ListSubheader>
-              }
-            >
-              <SubMenuWrapper>
-                <List component="div">
-                  <ListItem component="div">
-                    <NextLink href="/projects" passHref>
-                      <Button
-                        className={
-                          currentRoute.startsWith('/projects') ? 'active' : ''
-                        }
-                        disableRipple
-                        component="a"
-                        onClick={closeSidebar}
-                        startIcon={<AssignmentIcon />}
-                      >
-                        Projects
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                </List>
-              </SubMenuWrapper>
-            </List>
 
-            <List
-              component="div"
-              subheader={
-                <ListSubheader component="div" disableSticky>
-                  Site Management
-                </ListSubheader>
-              }
-            >
-              <SubMenuWrapper>
-                <List component="div">
-                  <ListItem component="div">
-                    <NextLink href="/channels" passHref>
-                      <Button
-                        className={
-                          currentRoute.startsWith('/channels') ? 'active' : ''
-                        }
-                        disableRipple
-                        component="a"
-                        onClick={closeSidebar}
-                        startIcon={<FormatListBulletedIcon />}
-                      >
-                        Channels
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                </List>
-              </SubMenuWrapper>
-            </List>
+      <List component="div">
+        <SubMenuWrapper>
+          <List component="div">
+            <ListItem component="div">
+              <NextLink href="/configuration" passHref legacyBehavior>
+                <Button
+                  className={currentRoute.startsWith('/configuration') ? 'active' : ''}
+                  disableRipple
+                  component="a"
+                  onClick={closeSidebar}
+                  startIcon={<SettingsIcon />}
+                >
+                  Configuration
+                </Button>
+              </NextLink>
+            </ListItem>
+          </List>
+        </SubMenuWrapper>
+      </List>
 
-            <List
-              component="div"
-              subheader={
-                <ListSubheader component="div" disableSticky>
-                  Content Management
-                </ListSubheader>
-              }
-            >
-              <SubMenuWrapper>
-                <List component="div">
-                  <ListItem component="div">
-                    <NextLink href="/pages" passHref>
-                      <Button
-                        className={
-                          currentRoute.startsWith('/pages') ? 'active' : ''
-                        }
-                        disableRipple
-                        component="a"
-                        onClick={closeSidebar}
-                        startIcon={<PlagiarismIcon />}
-                      >
-                        Pages
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                  <ListItem component="div">
-                    <NextLink href="/export-import" passHref>
-                      <Button
-                          className={
-                            currentRoute.startsWith('/export-import') ? 'active' : ''
-                          }
-                          disableRipple
-                          component="a"
-                          onClick={closeSidebar}
-                          startIcon={<ImportExportIcon />}
-                      >
-                        Export & Import
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                </List>
-              </SubMenuWrapper>
-            </List>
+      { menuItemsEnabled &&
+        <>
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Project Management
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/projects" passHref legacyBehavior>
+                    <Button
+                      className={
+                        currentRoute.startsWith('/projects') ? 'active' : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<AssignmentIcon />}
+                    >
+                      Projects
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
 
-            <List
-              component="div"
-              subheader={
-                <ListSubheader component="div" disableSticky>
-                  Content Types
-                </ListSubheader>
-              }
-            >
-              <SubMenuWrapper>
-                <List component="div">
-                  <ListItem component="div">
-                    <NextLink href="/content-types" passHref>
-                      <Button
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Site Management
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/channels" passHref legacyBehavior>
+                    <Button
+                      className={
+                        currentRoute.startsWith('/channels') ? 'active' : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<FormatListBulletedIcon />}
+                    >
+                      Channels
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Content Management
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/pages" passHref legacyBehavior>
+                    <Button
+                      className={
+                        currentRoute.startsWith('/pages') ? 'active' : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<PlagiarismIcon />}
+                    >
+                      Pages
+                    </Button>
+                  </NextLink>
+                </ListItem>
+                <ListItem component="div">
+                  <NextLink href="/export-import" passHref legacyBehavior>
+                    <Button
                         className={
-                          currentRoute.startsWith('/content-types') ? 'active' : ''
+                          currentRoute.startsWith('/export-import') ? 'active' : ''
                         }
                         disableRipple
                         component="a"
                         onClick={closeSidebar}
-                        startIcon={<AssignmentIcon />}
-                      >
-                        Content Types
-                      </Button>
-                    </NextLink>
-                  </ListItem>
-                </List>
-              </SubMenuWrapper>
-            </List>
-          </>
-        }
-      </MenuWrapper>
-    </>
-  );
+                        startIcon={<ImportExportIcon />}
+                    >
+                      Export & Import
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                Content Types
+              </ListSubheader>
+            }
+          >
+            <SubMenuWrapper>
+              <List component="div">
+                <ListItem component="div">
+                  <NextLink href="/content-types" passHref legacyBehavior>
+                    <Button
+                      className={
+                        currentRoute.startsWith('/content-types') ? 'active' : ''
+                      }
+                      disableRipple
+                      component="a"
+                      onClick={closeSidebar}
+                      startIcon={<AssignmentIcon />}
+                    >
+                      Content Types
+                    </Button>
+                  </NextLink>
+                </ListItem>
+              </List>
+            </SubMenuWrapper>
+          </List>
+        </>
+      }
+    </MenuWrapper>
+  </>;
 }
 
 export default SidebarMenu;

@@ -81,7 +81,7 @@ export const MenusTab = ({ channel }) => {
               disabled
               sx={{ padding: padding}}
               >
-              <NextLink href={`/status/coming-soon`}>
+              <NextLink href={`/status/coming-soon`} legacyBehavior>
                 <EditIcon fontSize="small" />
               </NextLink>
             </Button>
@@ -105,7 +105,7 @@ export const MenusTab = ({ channel }) => {
               <DeleteOutlineIcon fontSize="small" />
             </Button>
           </ButtonGroup>
-        )
+        );
       }
     },
     {
@@ -115,9 +115,9 @@ export const MenusTab = ({ channel }) => {
       renderCell: (params) => {
         const href = `/menus/${params.row.id}`
         if (params.row.label) {
-          return <NextLink href={'/status/coming-soon'}>{params.row.label}</NextLink>
+          return <NextLink href={'/status/coming-soon'} legacyBehavior>{params.row.label}</NextLink>;
         } else {
-          return <NextLink href={'/status/coming-soon'}>{params.row.id}</NextLink>
+          return <NextLink href={'/status/coming-soon'} legacyBehavior>{params.row.id}</NextLink>;
         }
       }
     },
