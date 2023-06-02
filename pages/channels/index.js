@@ -63,81 +63,79 @@ function Channels() {
     }
   }, [appConfiguration])
 
-  return (
-    <>
-      <Head>
-        <title>Channels</title>
-      </Head>
-      <PageTitleWrapper>
-        <PageTitle
-          heading="Channels"
-        />
-      </PageTitleWrapper>
-      <Container maxWidth="xl">
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
-          sx={{
-            '& .MuiGrid-item': {
-              textAlign: 'center'
-            },
-            '& .MuiCircularProgress-root': {
-              margin: '24px'
-            }
-          }}
-        >
-        { !isLoaded
-          ?
-            <Grid
-              item
-              xs={12}
-              justifyContent="center"
-              alignItems="stretch"
-              alignContent="stretch"
-            >
-              <Card>
-                <CircularProgress />
-              </Card>
-            </Grid>
-          :
-            <>
-              {projects.map((project) => (
-                <Grid item xs={12} key={project}>
-                  <Card>
-                    <CardHeader title={project} sx={{ textAlign: 'left' }} />
-                    <Divider />
-                    <CardContent>
-                      <List>
-                        { channels
-                          .filter(channel => channel.projectName === project)
-                          .map((channel) => {
-                            return (
-                              <ListItem key={channel.id} component="div">
-                                <NextLink href={`/channels/${channel.id}`} passHref>
-                                  <ListItemButton>
-                                    <ListItemAvatar>
-                                      <ChannelIcon icon={channel.icon} />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={channel.name} secondary={channel.id} />
-                                  </ListItemButton>
-                                </NextLink>
-                              </ListItem>
-                            )
-                        })}
-                      </List>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </>
+  return <>
+    <Head>
+      <title>Channels</title>
+    </Head>
+    <PageTitleWrapper>
+      <PageTitle
+        heading="Channels"
+      />
+    </PageTitleWrapper>
+    <Container maxWidth="xl">
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="stretch"
+        alignContent="stretch"
+        sx={{
+          '& .MuiGrid-item': {
+            textAlign: 'center'
+          },
+          '& .MuiCircularProgress-root': {
+            margin: '24px'
           }
-        </Grid>
-      </Container>
-    </>
-  );
+        }}
+      >
+      { !isLoaded
+        ?
+          <Grid
+            item
+            xs={12}
+            justifyContent="center"
+            alignItems="stretch"
+            alignContent="stretch"
+          >
+            <Card>
+              <CircularProgress />
+            </Card>
+          </Grid>
+        :
+          <>
+            {projects.map((project) => (
+              <Grid item xs={12} key={project}>
+                <Card>
+                  <CardHeader title={project} sx={{ textAlign: 'left' }} />
+                  <Divider />
+                  <CardContent>
+                    <List>
+                      { channels
+                        .filter(channel => channel.projectName === project)
+                        .map((channel) => {
+                          return (
+                            <ListItem key={channel.id} component="div">
+                              <NextLink href={`/channels/${channel.id}`} passHref legacyBehavior>
+                                <ListItemButton>
+                                  <ListItemAvatar>
+                                    <ChannelIcon icon={channel.icon} />
+                                  </ListItemAvatar>
+                                  <ListItemText primary={channel.name} secondary={channel.id} />
+                                </ListItemButton>
+                              </NextLink>
+                            </ListItem>
+                          );
+                      })}
+                    </List>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </>
+        }
+      </Grid>
+    </Container>
+  </>;
 }
 
 Channels.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;

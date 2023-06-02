@@ -1,5 +1,9 @@
 # Changelog
-All notable changes to this project will be documented in below
+## All notable changes to this project will be documented below
+### 1.0.0-beta (June 2, 2023)
+- Set the project to Beta status
+- Upgraded NextJS to version 13
+- Upgraded React to version 18
 
 ### 0.2.1-alpha (May 30, 2023)
 - Finished layouts tab in channel configuration

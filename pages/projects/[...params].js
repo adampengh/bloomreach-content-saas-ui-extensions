@@ -112,165 +112,163 @@ function ContentTypes({params}) {
     // await deleteProject(environment, xAuthToken, projectId)
   }
 
-  return (
-    <>
-      <Head>
-        <title>Project: {projectData?.name}</title>
-      </Head>
-      <PageTitleWrapper>
-        <Grid
-          container
-          alignContent='center'
-          justifyContent='space-between'
-        >
-          <Grid item display="flex">
-            <Grid item>
-              <PageTitle
-                heading={projectData?.name}
-                subHeading={`Project ID: ${id}`}
-              />
-            </Grid>
-            <Grid item sx={{ marginLeft: '1rem', paddingTop: '0.5rem'}}>
-              <StatusIndicator
-                message={projectData?.state?.message}
-                size='medium'
-                status={projectData?.state?.status}
-              />
-            </Grid>
-          </Grid>
+  return <>
+    <Head>
+      <title>Project: {projectData?.name}</title>
+    </Head>
+    <PageTitleWrapper>
+      <Grid
+        container
+        alignContent='center'
+        justifyContent='space-between'
+      >
+        <Grid item display="flex">
           <Grid item>
-            <Button
-              sx={{ margin: 1 }}
-              variant="outlined"
-              color="error"
-              onClick={handleDeleteProject}
-              disabled // TODO: Add ability to delete project
-            >
-              Delete Project
-            </Button>
+            <PageTitle
+              heading={projectData?.name}
+              subHeading={`Project ID: ${id}`}
+            />
+          </Grid>
+          <Grid item sx={{ marginLeft: '1rem', paddingTop: '0.5rem'}}>
+            <StatusIndicator
+              message={projectData?.state?.message}
+              size='medium'
+              status={projectData?.state?.status}
+            />
           </Grid>
         </Grid>
-      </PageTitleWrapper>
-
-      <Container maxWidth="xl">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem'}}>
-          <Link
-            color="inherit"
-            href="/projects"
-            underline="hover"
+        <Grid item>
+          <Button
+            sx={{ margin: 1 }}
+            variant="outlined"
+            color="error"
+            onClick={handleDeleteProject}
+            disabled // TODO: Add ability to delete project
           >
-            Projects
-          </Link>
-          <Typography color="text.primary">{projectData?.name}</Typography>
-        </Breadcrumbs>
-
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
-          sx={{
-            '& .MuiCircularProgress-root': {
-              margin: '24px'
-            }
-          }}
-        >
-        { !isLoaded
-          ?
-            <Grid
-              item
-              xs={12}
-              justifyContent="center"
-              alignItems="stretch"
-              alignContent="stretch"
-            >
-              <Card>
-                <CircularProgress />
-              </Card>
-            </Grid>
-          :
-            <Grid item xs={12}>
-              <Card>
-                <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
-                      <Tab label="Channels" />
-                      <Tab label="JSON" />
-                    </Tabs>
-                  </Box>
-                  <TabPanel tab={tab} index={0}>
-                    <Button
-                      sx={{ margin: 1 }}
-                      variant="outlined"
-                      onClick={() => setShowAddChannelModal(true)}
-                    >
-                      Add Channels
-                    </Button>
-
-                    <List sx={{ padding: 0 }}>
-                      {channels?.map(channel =>
-                        <ListItem key={channel.id} component="div"
-                          secondaryAction={
-                            <IconButton
-                              edge="end"
-                              aria-label="delete"
-                              onClick={() => handleClickDeleteIcon(channel.id)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          }>
-                          <NextLink href={`/channels/${channel.id}`} passHref>
-                            <ListItemButton>
-                              <ListItemAvatar>
-                                <ChannelIcon icon={channel.icon} />
-                              </ListItemAvatar>
-                              <ListItemText primary={`${channel.name} (${channel.id})`} />
-                            </ListItemButton>
-                          </NextLink>
-                        </ListItem>
-                      )}
-                    </List>
-                  </TabPanel>
-                  <TabPanel tab={tab} index={1}>
-                    { projectData &&
-                      <CopyBlock
-                        text={JSON.stringify(projectData, null, 4)}
-                        language='json'
-                        wrapLines
-                        theme={bloomreachTheme}
-                        showLineNumbers={true}
-                        codeBlock
-                      />
-                    }
-                  </TabPanel>
-                </CardContent>
-              </Card>
-            </Grid>
-          }
+            Delete Project
+          </Button>
         </Grid>
-      </Container>
+      </Grid>
+    </PageTitleWrapper>
 
-      <AddChannelModal
-        showAddChannelModal={showAddChannelModal}
-        setShowAddChannelModal={setShowAddChannelModal}
-        channels={channels}
-        setChannels={setChannels}
-        coreChannels={coreChannels}
-        instance={instance}
-        projectId={id}
-      />
+    <Container maxWidth="xl">
+      <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem'}}>
+        <Link
+          color="inherit"
+          href="/projects"
+          underline="hover"
+        >
+          Projects
+        </Link>
+        <Typography color="text.primary">{projectData?.name}</Typography>
+      </Breadcrumbs>
 
-      <DeleteChannelModal
-        showDeleteChannelModal={showDeleteChannelModal}
-        setShowDeleteChannelModal={setShowDeleteChannelModal}
-        channels={channels}
-        setChannels={setChannels}
-        channelToDelete={channelToDelete}
-        instance={instance}
-      />
-    </>
-  );
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="stretch"
+        alignContent="stretch"
+        sx={{
+          '& .MuiCircularProgress-root': {
+            margin: '24px'
+          }
+        }}
+      >
+      { !isLoaded
+        ?
+          <Grid
+            item
+            xs={12}
+            justifyContent="center"
+            alignItems="stretch"
+            alignContent="stretch"
+          >
+            <Card>
+              <CircularProgress />
+            </Card>
+          </Grid>
+        :
+          <Grid item xs={12}>
+            <Card>
+              <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Channels" />
+                    <Tab label="JSON" />
+                  </Tabs>
+                </Box>
+                <TabPanel tab={tab} index={0}>
+                  <Button
+                    sx={{ margin: 1 }}
+                    variant="outlined"
+                    onClick={() => setShowAddChannelModal(true)}
+                  >
+                    Add Channels
+                  </Button>
+
+                  <List sx={{ padding: 0 }}>
+                    {channels?.map(channel =>
+                      <ListItem key={channel.id} component="div"
+                        secondaryAction={
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => handleClickDeleteIcon(channel.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        }>
+                        <NextLink href={`/channels/${channel.id}`} passHref legacyBehavior>
+                          <ListItemButton>
+                            <ListItemAvatar>
+                              <ChannelIcon icon={channel.icon} />
+                            </ListItemAvatar>
+                            <ListItemText primary={`${channel.name} (${channel.id})`} />
+                          </ListItemButton>
+                        </NextLink>
+                      </ListItem>
+                    )}
+                  </List>
+                </TabPanel>
+                <TabPanel tab={tab} index={1}>
+                  { projectData &&
+                    <CopyBlock
+                      text={JSON.stringify(projectData, null, 4)}
+                      language='json'
+                      wrapLines
+                      theme={bloomreachTheme}
+                      showLineNumbers={true}
+                      codeBlock
+                    />
+                  }
+                </TabPanel>
+              </CardContent>
+            </Card>
+          </Grid>
+        }
+      </Grid>
+    </Container>
+
+    <AddChannelModal
+      showAddChannelModal={showAddChannelModal}
+      setShowAddChannelModal={setShowAddChannelModal}
+      channels={channels}
+      setChannels={setChannels}
+      coreChannels={coreChannels}
+      instance={instance}
+      projectId={id}
+    />
+
+    <DeleteChannelModal
+      showDeleteChannelModal={showDeleteChannelModal}
+      setShowDeleteChannelModal={setShowDeleteChannelModal}
+      channels={channels}
+      setChannels={setChannels}
+      channelToDelete={channelToDelete}
+      instance={instance}
+    />
+  </>;
 }
 
 function TabPanel(props) {

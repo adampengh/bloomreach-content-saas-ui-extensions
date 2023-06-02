@@ -144,7 +144,7 @@ const Listing = () => {
         <List>
           { items.map((item) => (
             <ListItem key={item.id} component="div">
-              <NextLink href={`/projects/${item.id}`} passHref>
+              <NextLink href={`/projects/${item.id}`} passHref legacyBehavior>
                 <ListItemButton>
                   <ListItemAvatar>
                     <LanguageIcon />
@@ -158,7 +158,7 @@ const Listing = () => {
         </List>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 Projects.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;
