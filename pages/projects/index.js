@@ -222,7 +222,7 @@ const ProjectsList = ({
           <List>
             { projects.map((project) => (
               <ListItem key={project.id} component="div">
-                <NextLink href={`/projects/${environment}/${project.id}`} passHref>
+                <NextLink href={`/projects/${environment}/${project.id}`} passHref legacyBehavior>
                   <ListItemButton>
                     <ListItemAvatar>
                       {project.includeContentTypes
@@ -246,7 +246,7 @@ const ProjectsList = ({
         </CardContent>
       </Card>
     </Grid>
-  )
+  );
 }
 
 Projects.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;

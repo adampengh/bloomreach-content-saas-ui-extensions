@@ -128,7 +128,7 @@ function ContentTypes() {
         return (
           <ButtonGroup size="small" variant="outlined">
             <Button sx={{ padding: padding}}>
-              <NextLink href={`/content-types/${params.row.id}`}>
+              <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
                 <EditIcon fontSize="small" />
               </NextLink>
             </Button>
@@ -151,7 +151,7 @@ function ContentTypes() {
               <DeleteOutlineIcon fontSize="small" />
             </Button>
           </ButtonGroup>
-        )
+        );
       }
     },
     {
@@ -163,7 +163,7 @@ function ContentTypes() {
       headerName: 'Name',
       width: 360,
       renderCell: (params) => {
-        return <NextLink href={`/content-types/${params.row.id}`}>{params.row.id}</NextLink>
+        return <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>{params.row.id}</NextLink>;
       }
     },
     {
