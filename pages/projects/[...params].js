@@ -9,6 +9,9 @@ import {
   getAllCoreChannels,
   getAllChannels,
   getDeveloperProject,
+  mergeProject,
+  rebaseProject,
+  reopenProject,
 } from 'api';
 
 // Layouts
@@ -17,6 +20,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 // Components
 import AddChannelModal from 'components/projects/AddChannelModal';
 import DeleteChannelModal from 'components/projects/DeleteChannelModal';
+import DeleteProjectModal from 'components/projects/DeleteProjectModal';
 import ChannelIcon from 'components/ChannelIcon'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -25,6 +29,7 @@ import {
   Breadcrumbs,
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardContent,
   CircularProgress,
@@ -44,60 +49,65 @@ import {
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ErrorContext } from 'src/contexts/ErrorContext';
 
 // Icons
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function ContentTypes({params}) {
+  // State
   const [isLoaded, setIsLoaded] = useState(false)
   const [showAddChannelModal, setShowAddChannelModal] = useState(false)
   const [showDeleteChannelModal, setShowDeleteChannelModal] = useState(false)
   const [channelToDelete, setChannelToDelete] = useState(null)
+  const [showDeleteProjectModal, setShowDeleteProjectModal] = useState(false)
 
   const [instance, id] = params
   const [tab, setTab] = useState(0);
 
   const [channels, setChannels] = useState([])
   const [coreChannels, setCoreChannels] = useState([])
+  const [availableChannels, setAvailableChannels] = useState([])
   const [projectData, setProjectData] = useState([])
+
+  // Context
+  const { handleShowSnackbar } = useContext(ErrorContext)
 
   const {
     appConfiguration
   } = useContext(ConfigurationContext)
 
-  useEffect(async () => {
-    if (instance === 'source' && appConfiguration?.environments?.source?.environment && appConfiguration?.environments?.source?.xAuthToken) {
-      await getDeveloperProject(appConfiguration?.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken, id)
-        .then(response => setProjectData(response.data))
-        .catch(err => console.log(err))
+  useEffect(() => {
+    getDeveloperProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+      .then(response => {
+        console.log('projectData', response.data)
+        setProjectData(response.data)
+      })
+      .catch(err => console.log(err))
 
-      await getAllCoreChannels(appConfiguration?.environments?.source?.environment)
-        .then(response => setCoreChannels(response.data))
-        .catch(err => console.log(err))
+    getAllCoreChannels(appConfiguration?.environments?.[instance]?.environment)
+      .then(response => setCoreChannels(response.data))
+      .catch(err => console.log(err))
 
-      await getAllChannels(appConfiguration?.environments?.source?.environment, appConfiguration?.environments?.source?.xAuthToken)
-        .then(response => setChannels(response?.data?.filter(project => project.branch === id)))
-        .catch(err => console.log(err))
-    }
-
-    if (instance === 'target' && appConfiguration?.environments?.target?.environment && appConfiguration?.environments?.target?.xAuthToken) {
-      await getDeveloperProject(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken, id)
-        .then(response => setProjectData(response.data))
-        .catch(err => console.log(err))
-
-      await getAllCoreChannels(appConfiguration?.environments?.target?.environment)
-        .then(response => setCoreChannels(response.data))
-        .catch(err => console.log(err))
-
-      await getAllChannels(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
-        .then(response => setChannels(response?.data?.filter(project => project.branch === id)))
-        .catch(err => console.log(err))
-    }
+    getAllChannels(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken)
+      .then(response => setChannels(response?.data?.filter(project => project.branch === id)))
+      .catch(err => console.log(err))
 
     setIsLoaded(true)
   }, [instance, id, appConfiguration])
 
-  const handleChange = (event, newValue) => {
+  useEffect(() => {
+    // Filter out core channels that have already been added to the project
+    if (channels) {
+      const channelsNotInProject = coreChannels?.filter(coreChannel => {
+        return channels?.find(channel => channel.branchOf === coreChannel.name) ? false : true
+      })
+      console.log('availableChannels', channelsNotInProject)
+      setAvailableChannels(channelsNotInProject)
+    }
+  }, [channels])
+
+  const handleChange = (_, newValue) => {
     setTab(newValue);
   };
 
@@ -106,10 +116,40 @@ function ContentTypes({params}) {
     setShowDeleteChannelModal(true)
   }
 
-  const handleDeleteProject = async (event) => {
-    event.preventDefault();
-    console.log('Delete project');
-    // await deleteProject(environment, xAuthToken, projectId)
+  const handleMergeProject = async () => {
+    console.log('MERGE PROJECT')
+    await mergeProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+    await getDeveloperProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+      .then(response => {
+        console.log('projectData', response.data)
+        setProjectData(response.data)
+      })
+      .catch(err => console.log(err))
+    await handleShowSnackbar('success', 'Project Merged')
+  }
+
+  const handleRebaseProject = async () => {
+    console.log('REBASE PROJECT')
+    await rebaseProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+    await getDeveloperProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+      .then(response => {
+        console.log('projectData', response.data)
+        setProjectData(response.data)
+      })
+      .catch(err => console.log(err))
+    await handleShowSnackbar('success', 'Project Rebased')
+  }
+
+  const handleReopenProject = async () => {
+    console.log('REOPEN PROJECT')
+    await reopenProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+    await getDeveloperProject(appConfiguration?.environments?.[instance]?.environment, appConfiguration?.environments?.[instance]?.xAuthToken, id)
+      .then(response => {
+        console.log('projectData', response.data)
+        setProjectData(response.data)
+      })
+      .catch(err => console.log(err))
+    await handleShowSnackbar('success', 'Project Reopened')
   }
 
   return <>
@@ -138,15 +178,50 @@ function ContentTypes({params}) {
           </Grid>
         </Grid>
         <Grid item>
-          <Button
-            sx={{ margin: 1 }}
-            variant="outlined"
-            color="error"
-            onClick={handleDeleteProject}
-            disabled // TODO: Add ability to delete project
-          >
-            Delete Project
-          </Button>
+          <ButtonGroup aria-label="outlined primary button group">
+            {/* IN PROGRESS */}
+            { projectData?.state?.status === 'IN_PROGRESS' &&
+              projectData?.state?.availableActions?.includes('REBASE_PROJECT') &&
+              <Button
+                sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
+                color="primary"
+                onClick={() => handleRebaseProject()}
+              >
+                Update
+              </Button>
+            }
+
+            {/* APPROVED or MERGED */}
+            { (projectData?.state?.status === 'APPROVED' || projectData?.state?.status === 'MERGED') &&
+              <>
+                <Button
+                  sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
+                  color="primary"
+                  onClick={() => handleReopenProject()}
+                >
+                  Re-Open
+                </Button>
+              </>
+            }
+
+            { projectData?.state?.status !== 'MERGED' &&
+              <Button
+                sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
+                color="primary"
+                onClick={() => handleMergeProject()}
+              >
+                Merge
+              </Button>
+            }
+            <Button
+              disabled={!(projectData?.state?.status === 'IN_PROGRESS' || projectData?.state?.status === 'MERGED')}
+              sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
+              color="error"
+              onClick={() => setShowDeleteProjectModal(true)}
+            >
+              Delete Project
+            </Button>
+          </ButtonGroup>
         </Grid>
       </Grid>
     </PageTitleWrapper>
@@ -200,13 +275,13 @@ function ContentTypes({params}) {
                 </Box>
                 <TabPanel tab={tab} index={0}>
                   <Button
+                    disabled={!availableChannels.length > 0}
                     sx={{ margin: 1 }}
                     variant="outlined"
                     onClick={() => setShowAddChannelModal(true)}
                   >
                     Add Channels
                   </Button>
-
                   <List sx={{ padding: 0 }}>
                     {channels?.map(channel =>
                       <ListItem key={channel.id} component="div"
@@ -266,6 +341,13 @@ function ContentTypes({params}) {
       channels={channels}
       setChannels={setChannels}
       channelToDelete={channelToDelete}
+      instance={instance}
+    />
+
+    <DeleteProjectModal
+      showModal={showDeleteProjectModal}
+      setShowModal={setShowDeleteProjectModal}
+      projectData={projectData}
       instance={instance}
     />
   </>;
