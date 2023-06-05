@@ -1,5 +1,8 @@
 # Changelog
 ## All notable changes to this project will be documented below
+
+### 1.0.1-beta (June 5, 2023)
+- Added ability to Reopen, Rebase, Merge, and Delete Projects
 ### 1.0.0-beta (June 2, 2023)
 - Set the project to Beta status
 - Upgraded NextJS to version 13
