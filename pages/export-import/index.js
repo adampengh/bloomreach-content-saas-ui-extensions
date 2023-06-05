@@ -7,7 +7,9 @@ import {
   downloadExportedFiles,
   getAllProjects,
   getOperationDetails,
-  requestAnExport
+  requestAnExport,
+  getFolder,
+  getAllCoreChannels,
 } from 'api';
 
 // Components
@@ -72,6 +74,7 @@ function ExportImport() {
 
   const [projectsList, setProjectsList] = useState([])
   const [selectedProject, setSelectedProject] = useState(null)
+  const [sourceFolder, setSourceFolders] = useState(null)
 
   useEffect(() => {
     setSelectedProject(projectId)
@@ -89,6 +92,17 @@ function ExportImport() {
           setProjectsList(response.data)
           setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
+
+      getAllCoreChannels(environment)
+        .then((response) => {
+          console.log('Core Channels', response.data)
+        })
+        .catch((error) => console.error(error))
+      // getFolder(environment, xAuthToken, folderPath, depth = '5')
+      //   .then(response => {
+      //     console.log(response.data)
+      //   })
+      //   .catch()
     }
 
     // Get target projects list

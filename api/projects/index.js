@@ -164,12 +164,11 @@ export const deleteProject = async (environment, xAuthToken, projectId) => {
     console.log('xAuthToken:', xAuthToken)
     console.log('projectId:', projectId)
 
-    const response = await axios(`https://${environment}.bloomreach.io/${PROJECTS_API_PATH}/${projectId}`, {
-        method: 'DELETE',
-        headers: {
-            'x-auth-token': xAuthToken,
-            'Content-Type': 'application/json',
-        }
+    const response = await axios(`/api/projects/${projectId}?environment=${environment}`, {
+      method: 'DELETE',
+      headers: {
+        'x-auth-token': xAuthToken
+      }
     })
 
     console.log('response', response.data)
