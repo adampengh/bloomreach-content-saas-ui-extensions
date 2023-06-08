@@ -11,7 +11,7 @@ const CONTENT_API_PATH = 'management/content/v1'
  * @param {string} projectId
  * @returns
  */
-export const getPage = async (environment, xAuthToken, channel, path, projectId = 'core') => {
+export const getPage = async (environment, xAuthToken, channel, path, projectId) => {
     console.groupCollapsed('API: getPage()')
     console.log('environment:', environment)
     console.log('xAuthToken:', xAuthToken)

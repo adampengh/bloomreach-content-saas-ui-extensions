@@ -157,7 +157,7 @@ function Pages() {
     await createFoldersRecursively(path, targetChannel)
 
     // Get Page from Source Channel
-    const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path)
+    const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path, projectId)
       .then(response => response.data)
       .catch((err) => {
         console.error('Get page error', err);

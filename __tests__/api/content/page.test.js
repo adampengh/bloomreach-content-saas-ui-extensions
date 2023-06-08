@@ -2,7 +2,7 @@ import { getPage } from 'api/content/page'
 
 describe('getPage', () => {
     it('returns a page object', async () => {
-        await getPage(global.environment, global.xAuthToken, global.channelId, global.path)
+        await getPage(global.environment, global.xAuthToken, global.channelId, global.path, 'core')
             .then(response => {
                 const page = response.data
                 expect(typeof page).toBe('object')
