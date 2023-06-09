@@ -11,7 +11,7 @@ const CONTENT_API_PATH = 'management/content/v1'
  * @param {string} projectId
  * @returns
  */
-export const getPage = async (environment, xAuthToken, channel, path, projectId = 'core') => {
+export const getPage = async (environment, xAuthToken, channel, path, projectId) => {
     console.groupCollapsed('API: getPage()')
     console.log('environment:', environment)
     console.log('xAuthToken:', xAuthToken)
@@ -42,7 +42,7 @@ export const getPage = async (environment, xAuthToken, channel, path, projectId 
  * @param {string} pageData
  * @returns
  */
-export const putPage = async (environment, xAuthToken, projectId, channel, path, pageData) => {
+export const putPage = async (environment, xAuthToken, projectId, channel, path, pageData, opt_xResourceVersion) => {
     console.groupCollapsed('API: putPage()')
     console.log('environment:', environment)
     console.log('xAuthToken:', xAuthToken)
@@ -50,13 +50,15 @@ export const putPage = async (environment, xAuthToken, projectId, channel, path,
     console.log('channel:', channel)
     console.log('path:', path)
     console.log('pageData', pageData)
+    console.log('opt_xResourceVersion', opt_xResourceVersion)
 
     const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_API_PATH}/project/${projectId}/channel/${channel}/page/${path}`, {
         method: 'PUT',
         headers: {
             'x-auth-token': xAuthToken,
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...(opt_xResourceVersion && {'x-resource-version': opt_xResourceVersion}),
         },
         data: pageData
     })
