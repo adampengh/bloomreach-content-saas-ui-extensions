@@ -41,12 +41,14 @@ import {
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ErrorContext } from 'src/contexts/ErrorContext';
 
 // Icons
 import CheckIcon from '@mui/icons-material/Check';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EastIcon from '@mui/icons-material/East';
 import FolderIcon from '@mui/icons-material/Folder';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 function Pages() {
   const [checked, setChecked] = React.useState([])
@@ -65,6 +67,10 @@ function Pages() {
   const {
     appConfiguration
   } = useContext(ConfigurationContext)
+
+  const {
+      handleShowSnackbar
+  } = useContext(ErrorContext)
 
   const {
     environment,
@@ -140,6 +146,7 @@ function Pages() {
   }
 
   const copyPages = async () => {
+    setPagesCopied({pages: []})
     for await (const targetChannel of targetChannels) {
       for await (const page of checked) {
         await copyPage(page, targetChannel)
@@ -158,25 +165,60 @@ function Pages() {
 
     // Get Page from Source Channel
     const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path, projectId)
-      .then(response => response.data)
-      .catch((err) => {
-        console.error('Get page error', err);
-      })
+        .then(response => response.data)
+        .catch(async (err) => {
+          if (err.response.status === 404) {
+            return await getPage(environment, xAuthToken, sourceChannel.branchOf, path, 'core')
+              .then(response => response.data)
+          } else {
+            console.error('Get page error', err);
+          }
+        })
 
     // Put Page into Target Channel
     if (pageData) {
-      await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, true)
+      await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
         .then(response => {
           setPagesCopied(prevState => ({
             pages: [...prevState.pages, {
               channel: targetChannel,
-              page: pageData
+              page: pageData,
+              status: 'new'
             }]
           }))
         })
-        .catch((err) => {
-            console.error('Copy Page Error:', err);
-        })
+      .catch(async (err) => {
+        if (err.response.status === 409) {
+          console.warn('Page already exists in this project. Getting x-resource-version and trying again.')
+          await getPage(environment, xAuthToken, targetChannel.branchOf, path, projectId)
+            .then(async (response) => {
+              const xResourceVersion = response.headers['x-resource-version']
+              await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, xResourceVersion)
+                .then(response => {
+                  setPagesCopied(prevState => ({
+                    pages: [...prevState.pages, {
+                        channel: targetChannel,
+                        page: pageData,
+                        status: 'updated'
+                    }]
+                  }))
+                })
+                .catch((err) => {
+                  console.error('Failed to putPage existing page:', err);
+                })
+              })
+        } else {
+          console.error('Failed to putPage:', err.response);
+          setPagesCopied(prevState => ({
+            pages: [...prevState.pages, {
+              channel: targetChannel,
+              page: pageData,
+              status: 'failed',
+              error: err.response.data
+            }]
+          }))
+        }
+      })
     }
   }
 
@@ -350,12 +392,34 @@ function Pages() {
                       <List>
                         {pagesCopied?.pages?.map((page, index) =>
                           <ListItem key={index} sx={{padding: 0.5 }}>
-                            <ListItemIcon>
-                              <CheckIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                              <strong>{page?.page?.name}</strong> copied to <strong>{page?.channel?.id}</strong>
-                            </ListItemText>
+                            {page.status !== 'failed' ?
+                              <>
+                                <ListItemIcon>
+                                  <CheckIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                  {page.status === 'new' &&
+                                    <>
+                                      <strong>{page?.page?.name}</strong> added to <strong>{page?.channel?.id}</strong>
+                                    </>
+                                  }
+                                  {page.status === 'updated' &&
+                                    <>
+                                      <strong>{page?.page?.name}</strong> updated in <strong>{page?.channel?.id}</strong>
+                                    </>
+                                  }
+                                </ListItemText>
+                              </>
+                              :
+                              <>
+                                <ListItemIcon>
+                                  <ErrorOutlineIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                  <strong>{page?.page?.name}</strong> failed in <strong>{page?.channel?.id}</strong> because {page.error}
+                                </ListItemText>
+                              </>
+                            }
                           </ListItem>
                         )}
                       </List>
