@@ -165,7 +165,7 @@ function Pages() {
 
     // Put Page into Target Channel
     if (pageData) {
-      await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
+      await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, true)
         .then(response => {
           setPagesCopied(prevState => ({
             pages: [...prevState.pages, {
@@ -175,7 +175,7 @@ function Pages() {
           }))
         })
         .catch((err) => {
-          console.error('Copy Page Error:', err);
+            console.error('Copy Page Error:', err);
         })
     }
   }
