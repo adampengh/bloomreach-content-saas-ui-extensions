@@ -182,6 +182,7 @@ function Configuration() {
         >
           <Grid item xs={5}>
             <Environment
+              title='Source Environment'
               environment={appConfiguration?.environments?.source?.environment}
               xAuthToken={appConfiguration?.environments?.source?.xAuthToken}
               config={sourceConfig}
@@ -224,6 +225,7 @@ function Configuration() {
 
           <Grid item xs={5}>
             <Environment
+              title='Target Environment'
               environment={appConfiguration?.environments?.target?.environment}
               xAuthToken={appConfiguration?.environments?.target?.xAuthToken}
               config={targetConfig}
@@ -261,6 +263,7 @@ function Configuration() {
 }
 
 const Environment = ({
+  title,
   environment,
   xAuthToken,
   config,
@@ -272,7 +275,7 @@ const Environment = ({
 }) => {
   return (
     <Card>
-      <CardHeader title="Source Environment" />
+      <CardHeader title={title} />
       <Divider />
       <CardContent>
         <Box
