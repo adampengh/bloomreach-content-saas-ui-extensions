@@ -63,7 +63,7 @@ function ContentTypes() {
   const [isTargetProjectIncludeContentTypes, setIsTargetProjectIncludeContentTypes] = useState(false)
 
   // DataGrid State
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(15);
   const [selectedRows, setSelectedRows] = useState([])
 
   useEffect(() => {
@@ -122,35 +122,42 @@ function ContentTypes() {
     {
       field: 'actions',
       headerName: '',
-      width: 150,
+      width: (!isSourceProjectIncludeContentTypes) ? 0 : 150,
       renderCell: (params) => {
         const padding = '0.25rem 0.5rem';
         return (
-          <ButtonGroup size="small" variant="outlined">
-            <Button sx={{ padding: padding}}>
-              <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
-                <EditIcon fontSize="small" />
-              </NextLink>
-            </Button>
-            <Button
-              sx={{ padding: padding}}
-              onClick={() => {
-                setSelectedRows([params.row.id])
-                setShowCopyModal(true)
-              }}
-            >
-              <ContentCopyIcon fontSize="small" />
-            </Button>
-            <Button
-              color="error"
-              onClick={() => {
-                setSelectedRows([params.row.id])
-                setShowDeleteModal(true)
-              }}
-              sx={{ padding: padding}}>
-              <DeleteOutlineIcon fontSize="small" />
-            </Button>
-          </ButtonGroup>
+          <>
+            {isSourceProjectIncludeContentTypes &&
+              <ButtonGroup size="small" variant="outlined">
+                <Button sx={{ padding: padding}}>
+                  <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
+                    <EditIcon fontSize="small" />
+                  </NextLink>
+                </Button>
+                {isTargetProjectIncludeContentTypes &&
+                <Button
+                  sx={{ padding: padding}}
+                  onClick={() => {
+                    setSelectedRows([params.row.id])
+                    setShowCopyModal(true)
+                  }}
+                  disabled={!(isTargetProjectIncludeContentTypes)}
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </Button>
+          }
+                <Button
+                  color="error"
+                  onClick={() => {
+                    setSelectedRows([params.row.id])
+                    setShowDeleteModal(true)
+                  }}
+                  sx={{ padding: padding}}>
+                  <DeleteOutlineIcon fontSize="small" />
+                </Button>
+              </ButtonGroup>
+            }
+          </>
         );
       }
     },
@@ -233,36 +240,51 @@ function ContentTypes() {
           justifyContent="center"
           alignItems="stretch"
           alignContent="stretch"
+          spacing={2}
         >
-          <Grid item xs={12}>
+          {!isSourceProjectIncludeContentTypes &&
+            <Grid item xs={12}>
+              <Card>
+                <CardContent sx={{ paddingBottom: '16px !important' }}>
+                  <Alert severity="warning">The currently selected Source Environment Develop Project ({appConfiguration?.environments?.source?.projectId}) does not include Content Type changes</Alert>
+                </CardContent>
+              </Card>
+            </Grid>
+          }
+          {!isTargetProjectIncludeContentTypes &&
+            <Grid item xs={12}>
+              <Card>
+                <CardContent sx={{ paddingBottom: '16px !important' }}>
+                  <Alert severity="warning">The currently selected Target Environment Develop Project ({appConfiguration?.environments?.target?.projectId}) does not include Content Type changes</Alert>
+                </CardContent>
+              </Card>
+            </Grid>
+          }
+          <Grid item xs={12} sx={{ paddingBottom: '16px !important' }}>
             <Card>
               <CardContent>
-
-                {!isSourceProjectIncludeContentTypes
-                  ? <Alert severity="warning">The currently selected project ({projectId}) does not include Content Type changes</Alert>
-                  : <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT})`, width: '100%' }}>
-                      <DataGrid
-                        rows={pageData}
-                        columns={columns}
-                        pageSize={pageSize}
-                        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                        rowsPerPageOptions={[10, 20, 30, pageData?.length]}
-                        pagination
-                        checkboxSelection
-                        disableSelectionOnClick
-                        onSelectionModelChange={(ids) => setSelectedRows(ids)}
-                        selectionModel={selectedRows}
-                        initialState={{
-                          sorting: {
-                            sortModel: [{
-                              field: 'id',
-                              sort: 'asc'
-                            }]
-                          }
-                        }}
-                      />
-                    </Box>
-                }
+                  <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT})`, width: '100%' }}>
+                    <DataGrid
+                      rows={pageData}
+                      columns={columns}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                      rowsPerPageOptions={[10, 20, 30, pageData?.length]}
+                      pagination
+                      checkboxSelection
+                      disableSelectionOnClick
+                      onSelectionModelChange={(ids) => setSelectedRows(ids)}
+                      selectionModel={selectedRows}
+                      initialState={{
+                        sorting: {
+                          sortModel: [{
+                            field: 'id',
+                            sort: 'asc'
+                          }]
+                        }
+                      }}
+                    />
+                  </Box>
               </CardContent>
             </Card>
           </Grid>

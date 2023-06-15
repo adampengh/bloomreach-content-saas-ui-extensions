@@ -8,6 +8,7 @@ import {
 
 // Components
 import CopyRoutesModal from 'components/channels/CopyRoutesModal'
+import DeleteRoutesModal from 'components/channels/DeleteRoutesModal'
 import {
   Box,
   Button,
@@ -96,11 +97,10 @@ export const RoutesTab = ({ channel }) => {
               <ContentCopyIcon fontSize="small" />
             </Button>
             <Button
-              disabled
               color="error"
               onClick={() => {
                 setSelectedItems([params.row.id])
-                // setShowDeleteModal(true)
+                setShowDeleteModal(true)
               }}
               sx={{ padding: padding}}>
               <DeleteOutlineIcon fontSize="small" />
@@ -166,10 +166,9 @@ export const RoutesTab = ({ channel }) => {
             <Button
               color="error"
               variant="outlined"
-              disabled
-              // disabled={!selectedItems.length}
+              disabled={!selectedItems.length}
               startIcon={<DeleteOutlineIcon />}
-              // onClick={setShowDeleteModal}
+              onClick={() => setShowDeleteModal(true)}
             >Delete</Button>
           </ButtonGroup>
         </Grid>
@@ -207,6 +206,15 @@ export const RoutesTab = ({ channel }) => {
         setShowCopyModal={setShowCopyModal}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        channelId={channel.id}
+      />
+
+      <DeleteRoutesModal
+        showModal={showDeleteModal}
+        setShowModal={setShowDeleteModal}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        setRoutes={setRoutes}
         channelId={channel.id}
       />
     </>
