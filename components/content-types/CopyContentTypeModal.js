@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from 'react'
 // API
 import {
   getAllChannels,
-  getComponent,
-  putComponent,
+  getContentType,
+  putContentType,
 } from 'api'
 
 // Components
@@ -24,142 +24,92 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
+import {
+  LoadingButton
+ } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
 
 export default function CopyContentTypeModal({
-  showCopyModal,
-  setShowCopyModal,
+  showModal,
+  setShowModal,
   selectedRows,
   setSelectedRows,
-  // channelId,
 }) {
+  // State
+  const [isProcessing, setIsProcessing] = useState(false)
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
 
-  const [selectedEnvironment, setSelectedEnvironment] = useState('source')
-  const [channels, setChannels] = useState([])
-  const [checked, setChecked] = useState([]);
-
-  // useEffect(() => {
-  //   getAllDeveloperChannels(appConfiguration.environments?.[selectedEnvironment]?.environment, appConfiguration.environments?.[selectedEnvironment]?.xAuthToken)
-  //     .then((response) => {
-  //       const data = response.data.filter(channel => channel.branch === appConfiguration.environments?.[selectedEnvironment]?.projectId)
-  //       setChannels(data)
-  //     })
-  //     .catch((error) => {
-  //       console.error('error', error.message)
-  //     })
-  // }, [selectedEnvironment])
-
   const handleClose = () => {
-    setShowCopyModal(false)
+    setShowModal(false)
   };
 
-  const handleEnvironmentChange = (event) => {
-    // event.preventDefault()
-    // setSelectedEnvironment(event.target.value)
+  const handleCopyContentTypes = async (event) => {
+    event.preventDefault()
+    await setIsProcessing(true)
+    console.log('handleCopyContentTypes', selectedRows)
 
-    // getAllDeveloperChannels(appConfiguration.environments?.[event.target.value]?.environment, appConfiguration.environments?.[event.target.value]?.xAuthToken)
-    //   .then((response) => {
-    //     const data = response.data.filter(channel => channel.branch === appConfiguration.environments?.[event.target.value]?.projectId)
-    //     setChannels(data)
-    //   })
-    //   .catch((error) => {
-    //     console.error('error', error.message)
-    //   })
-  }
+    for await (const contentType of selectedRows) {
+      console.log('copy Content Type', contentType, 'to Target Environment')
 
-  const handleCopyComponents = async (event) => {
-    // event.preventDefault()
-    // console.log('handleCopyComponents', selectedRows)
-    // console.log('selectedEnvironment', selectedEnvironment)
-    // console.log('checked', checked)
+      // Check if content type exists in target environment
+      const xResourceVersion = await getContentType(
+        appConfiguration?.environments?.target?.environment,
+        appConfiguration?.environments?.target?.xAuthToken,
+        contentType
+      )
+        .then(response => {
+          console.log('Check for Existing Content Type Success', response.headers)
+          return response.headers['x-resource-version']
+        })
+        .catch(error => console.error('Get Content Type Error', error.message))
 
-    // for await (const channel of checked) {
-    //   for await (const component of selectedRows) {
-    //     console.log('copy component', component, 'to channel', channel.id)
-    //     const componentGroup = component.split('/')[0]
-    //     console.log('componentGroup', componentGroup)
-    //     const componentName = component.split('/')[1]
-    //     console.log('componentName', componentName)
+      // Get content type
+      const data = await getContentType(
+        appConfiguration?.environments?.source?.environment,
+        appConfiguration?.environments?.source?.xAuthToken,
+        contentType
+      )
+        .then(response => {
+          console.log('Get Content Type Success', response.headers)
+          return response.data
+        })
+        .catch(error => console.error('Get Content Type Error', error.message))
+      console.log('data', data)
+      console.log('xResourceVersion', xResourceVersion)
 
-    //     // Check if component exists in destination channel
-    //     const xResourceVersion = await getComponent(
-    //       appConfiguration?.environments?.[selectedEnvironment]?.environment,
-    //       appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
-    //       channel.id,
-    //       componentGroup,
-    //       componentName
-    //     )
-    //       .then(response => {
-    //         console.log('Check for Existing Component Success', response.headers)
-    //         return response.headers['x-resource-version']
-    //       })
-    //       .catch(error => console.error('Get Component Error', error.message))
-
-    //     // Get component
-    //     const componentData = await getComponent(
-    //       appConfiguration?.environments?.source?.environment,
-    //       appConfiguration?.environments?.source?.xAuthToken,
-    //       channelId,
-    //       componentGroup,
-    //       componentName
-    //     )
-    //       .then(response => {
-    //         console.log('Get Component Success', response.headers)
-    //         return response.data
-    //       })
-    //       .catch(error => console.error('Get Component Error', error.message))
-    //     console.log('componentData', componentData)
-    //     console.log('xResourceVersion', xResourceVersion)
-
-    //     // Put component
-    //     if (componentData) {
-    //       await putComponent(
-    //         appConfiguration?.environments?.[selectedEnvironment]?.environment,
-    //         appConfiguration?.environments?.[selectedEnvironment]?.xAuthToken,
-    //         channel.id,
-    //         componentGroup,
-    //         componentName,
-    //         componentData,
-    //         xResourceVersion
-    //       )
-    //         .then(response => {
-    //           console.log('Put Component Success')
-    //         })
-    //         .catch(error => console.error('Put Component Error', error))
-    //     }
-    //   }
-    // }
-
-    // await handleShowSnackbar('success', 'Components Coppied')
-    // await setChecked([])
-    // await setSelectedRows([])
-    // await setShowCopyModal(false)
-  }
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
+      // Put component
+      if (data) {
+        await putContentType(
+          appConfiguration?.environments?.target?.environment,
+          appConfiguration?.environments?.target?.xAuthToken,
+          contentType,
+          data,
+          xResourceVersion
+        )
+          .then(response => {
+            console.log('Put Content Type Success')
+          })
+          .catch(error => console.error('Put Content Type Error', error))
+      }
     }
 
-    setChecked(newChecked);
-  };
+    await setIsProcessing(false)
+    await handleShowSnackbar('success', 'Content Type(s) Copied')
+    await setSelectedRows([])
+    await setShowModal(false)
+  }
 
   return (
     <Dialog
       fullWidth={true}
       maxWidth={'sm'}
-      open={showCopyModal}
+      open={showModal}
       onClose={handleClose}
     >
       <Box
@@ -168,61 +118,55 @@ export default function CopyContentTypeModal({
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         autoComplete="off"
-        onSubmit={handleCopyComponents}
+        onSubmit={handleCopyContentTypes}
       >
         <DialogTitle>Copy Confirmation</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <p>Components to Copy ({selectedRows.length}):</p>
-            <ul>
-              {selectedRows.map(component => (
-                <li key={component}>{component}</li>
-              ))}
-            </ul>
+          <p>Content Types to Copy ({selectedRows.length}):</p>
+          <ul>
+            {selectedRows.map(contentType => (
+              <li key={contentType}>{contentType}</li>
+            ))}
+          </ul>
 
-            <FormControl
-              required
-              variant="outlined"
-              sx={{ m: 1, width: '100%', marginTop: 3 }}
+          <FormControl
+            required
+            variant="outlined"
+            sx={{ m: 1, width: '100%', marginTop: 3 }}
+          >
+            <InputLabel id="targetProjectId">Environment</InputLabel>
+            <Select
+              disabled
+              id="environment"
+              labelId="Environment"
+              label="Environment"
+              value={'target'}
             >
-              <InputLabel id="targetProjectId">Environment</InputLabel>
-              <Select
-
-                id="environment"
-                labelId="Environment"
-                label="Environment"
-                value={selectedEnvironment}
-                onChange={handleEnvironmentChange}
-              >
-                <MenuItem key={0} value={'source'}>
-                  {appConfiguration?.environments?.source?.environment} (Source)
-                </MenuItem>
-                <MenuItem key={0} value={'target'}>
-                  {appConfiguration?.environments?.target?.environment} (Target)
-                </MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormGroup sx={{ m: 1, width: '100%', marginTop: 3 }}>
-              <strong>Channels:</strong>
-              {channels.map((channel, index) => {
-                return (
-                  <FormControlLabel
-                    key={index}
-                    onClick={handleToggle ? handleToggle(channel) : null}
-                    control={ <Checkbox checked={checked.indexOf(channel) !== -1} /> }
-                    label={channel.name} />
-                )
-              })}
-            </FormGroup>
-          </DialogContentText>
+              <MenuItem key={0} value={'target'}>
+                {appConfiguration?.environments?.target?.environment} (Target)
+              </MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button
+          <LoadingButton
+            loading={isProcessing}
+            loadingPosition="start"
             variant="contained"
             type="submit"
-          >Copy Components</Button>
+            sx={{
+              '&.MuiLoadingButton-loading': {
+                paddingLeft: 2
+              },
+              '& .MuiLoadingButton-loadingIndicatorStart': {
+                position: 'relative',
+                left: '-6px'
+              }
+            }}
+          >
+            Copy
+          </LoadingButton>
         </DialogActions>
       </Box>
     </Dialog>

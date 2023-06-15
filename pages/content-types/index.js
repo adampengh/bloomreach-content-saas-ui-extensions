@@ -134,18 +134,16 @@ function ContentTypes() {
                     <EditIcon fontSize="small" />
                   </NextLink>
                 </Button>
-                {isTargetProjectIncludeContentTypes &&
                 <Button
                   sx={{ padding: padding}}
                   onClick={() => {
                     setSelectedRows([params.row.id])
                     setShowCopyModal(true)
                   }}
-                  disabled={!(isTargetProjectIncludeContentTypes)}
+                  disabled={(!isTargetProjectIncludeContentTypes)}
                 >
                   <ContentCopyIcon fontSize="small" />
                 </Button>
-          }
                 <Button
                   color="error"
                   onClick={() => {
@@ -213,7 +211,7 @@ function ContentTypes() {
                   variant="contained"
                   startIcon={<AddIcon />}
                 >Content Type</Button>
-                {!(selectedRows.length && isTargetProjectIncludeContentTypes) &&
+                {isTargetProjectIncludeContentTypes &&
                   <Button
                     disabled={!(selectedRows.length && isTargetProjectIncludeContentTypes)}
                     onClick={setShowCopyModal}
@@ -292,13 +290,12 @@ function ContentTypes() {
       </Container>
 
       {/* TODO: Copy content types modal */}
-      {/* <CopyContentTypeModal
-        showCopyModal={showCopyModal}
-        setShowCopyModal={setShowCopyModal}
+      <CopyContentTypeModal
+        showModal={showCopyModal}
+        setShowModal={setShowCopyModal}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
-        // channelId={channel.id}
-      /> */}
+      />
 
       <DeleteContentTypeModal
         showModal={showDeleteModal}
