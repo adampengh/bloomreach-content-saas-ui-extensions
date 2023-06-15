@@ -39,7 +39,7 @@ export const getContentType = async (environment, xAuthToken, contentTypeName, o
   console.log('contentTypeName:', contentTypeName)
   console.log('contentType:', contentType)
 
-  const response = await axios(`/api/contenttypes/${contentType}?environment=${environment}`, {
+  const response = await axios(`https://${environment}.bloomreach.io/${CONTENT_TYPE_API_PATH}/${projectId}/${contentType}`, {
     method: 'GET',
     headers: {
       'x-auth-token': xAuthToken
@@ -72,7 +72,7 @@ export const putContentType = async (environment, xAuthToken, contentTypeName, d
       'x-auth-token': xAuthToken,
       'accept': 'application/json',
       'content-type': 'application/json',
-      // ...(opt_xResourceVersion && {'x-resource-version': opt_xResourceVersion}),
+      ...(opt_xResourceVersion && {'x-resource-version': opt_xResourceVersion}),
     },
     data: data
   })
