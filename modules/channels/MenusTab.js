@@ -8,6 +8,7 @@ import {
 
 // Components
 import CopyMenusModal from 'components/channels/CopyMenusModal'
+import DeleteMenusModal from 'components/channels/DeleteMenusModal'
 import {
   Box,
   Button,
@@ -95,11 +96,10 @@ export const MenusTab = ({ channel }) => {
               <ContentCopyIcon fontSize="small" />
             </Button>
             <Button
-              disabled
               color="error"
               onClick={() => {
                 setSelectedItems([params.row.id])
-                // setShowDeleteModal(true)
+                setShowDeleteModal(true)
               }}
               sx={{ padding: padding}}>
               <DeleteOutlineIcon fontSize="small" />
@@ -160,10 +160,9 @@ export const MenusTab = ({ channel }) => {
             <Button
               color="error"
               variant="outlined"
-              disabled // TODO: Add ability to delete menus
-              // disabled={!selectedItems.length}
+              disabled={!selectedItems.length}
               startIcon={<DeleteOutlineIcon />}
-              // onClick={setShowDeleteModal}
+              onClick={() => setShowDeleteModal(true)}
             >Delete</Button>
           </ButtonGroup>
         </Grid>
@@ -201,6 +200,15 @@ export const MenusTab = ({ channel }) => {
         setShowCopyModal={setShowCopyModal}
         selectedItems={selectedItems}
         setSelectedItems={setSelectedItems}
+        channelId={channel.id}
+      />
+
+      <DeleteMenusModal
+        showModal={showDeleteModal}
+        setShowModal={setShowDeleteModal}
+        selectedItems={selectedItems}
+        setSelectedItems={setSelectedItems}
+        setMenus={setMenus}
         channelId={channel.id}
       />
     </>
