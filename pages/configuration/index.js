@@ -41,7 +41,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 function Configuration() {
   const { query } = useRouter();
-  const { environment, apiToken } = query;
+  const { environment, apiKey } = query;
 
   // Context
   const {
@@ -62,11 +62,14 @@ function Configuration() {
   const [targetDeveloperProjects, setTargetDeveloperProjects] = useState([])
 
   useEffect(() => {
-    if (environment && apiToken) {
+    if (environment && apiKey) {
+      console.log('environment', environment)
+      console.log('apiKey', apiKey)
+
       const config = {
         ...sourceConfig,
         environment: environment,
-        xAuthToken: apiToken
+        xAuthToken: apiKey
       }
       setSourceConfig(config)
       storeApplicationConfiguration({
@@ -77,7 +80,7 @@ function Configuration() {
         }
       })
     }
-  }, [environment, apiToken])
+  }, [environment, apiKey])
 
   useEffect(() => {
     setSourceConfig(appConfiguration.environments?.source)
