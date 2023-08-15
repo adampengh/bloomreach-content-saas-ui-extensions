@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { DepGraph } from 'dependency-graph'
 
 // API
 import {
@@ -37,6 +38,8 @@ export default function CopyContentTypeModal({
   setShowModal,
   selectedRows,
   setSelectedRows,
+  contentTypes,
+  dependencyGraph,
 }) {
   // State
   const [isProcessing, setIsProcessing] = useState(false)
@@ -52,9 +55,20 @@ export default function CopyContentTypeModal({
   const handleCopyContentTypes = async (event) => {
     event.preventDefault()
     await setIsProcessing(true)
-    console.log('handleCopyContentTypes', selectedRows)
 
-    for await (const contentType of selectedRows) {
+    // Get all content types and dependencies
+    // Flatten the array of arrays
+    const contentTypeAndDependencies = selectedRows.map(selectedRow =>
+      [...dependencyGraph.dependantsOf(selectedRow), selectedRow]).flat()
+
+    // Get all content types to copy and ensure the order is correct based on
+    // the full dependency graph
+    const contentTypesToCopy = dependencyGraph.overallOrder()
+      .filter(contentType => contentTypeAndDependencies.includes(contentType))
+      .reverse()
+
+    // Copy content types
+    for await (const contentType of contentTypesToCopy) {
       console.log('copy Content Type', contentType, 'to Target Environment')
 
       // Check if content type exists in target environment

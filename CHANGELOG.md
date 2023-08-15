@@ -1,6 +1,8 @@
 # Changelog
 ## All notable changes to this project will be documented below
 
+### 1.2.0-beta (August 15, 2023)
+- Added ability to copy content types, along with logic to determine dependencies of content types to be copied
 ### 1.1.0-beta (June 15, 2023)
 - Added ability to delete Routes
 - Added ability to delete Menus
