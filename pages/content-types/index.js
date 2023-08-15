@@ -42,6 +42,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import { DepGraph } from 'dependency-graph';
 
 function ContentTypes() {
   // Context
@@ -55,12 +56,14 @@ function ContentTypes() {
   } = appConfiguration.environments?.source
 
   // State
+  const [contentTypes, setContentTypes] = useState([])
   const [pageData, setPageData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
   const [showCopyModal, setShowCopyModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [isSourceProjectIncludeContentTypes, setIsSourceProjectIncludeContentTypes] = useState(false)
   const [isTargetProjectIncludeContentTypes, setIsTargetProjectIncludeContentTypes] = useState(false)
+  const [dependencyGraph, setDependencyGraph] = useState(new DepGraph({ circular: true }));
 
   // DataGrid State
   const [pageSize, setPageSize] = useState(15);
@@ -69,14 +72,34 @@ function ContentTypes() {
   useEffect(() => {
     if (environment && xAuthToken) {
       getAllContentTypes(environment, xAuthToken, 'development')
-        .then((response) => {
+        .then(async (response) => {
+          const contentTypes = response.data
+
+          // Add all content types to the dependency graph
+          const graph = new DepGraph({ circular: true })
+          contentTypes.forEach(async (contentType) => {
+            await graph.addNode(contentType.name)
+          })
+
+          // Loop through content types and add dependencies
+          contentTypes.forEach(async (contentType) => {
+            await contentType.fields.forEach(field =>
+              field.fieldGroupType && graph.addDependency(field.fieldGroupType, contentType.name)
+            )
+          })
+          console.log('ProductRecommendations', graph.dependantsOf('ProductRecommendations'))
+          await setDependencyGraph(graph)
+
+          await setContentTypes(response.data)
+
           const columns = response.data.map(item => {
+            console.log(item.name, graph.dependenciesOf(item.name))
             return {
               type: item.type,
               id: item.name,
               displayName: item.presentation.displayName,
               fields: item.fields.length,
-              enabled: item.enabled,
+              dependencies: graph.dependantsOf(item.name),
             }
           })
           setPageData(columns)
@@ -166,7 +189,7 @@ function ContentTypes() {
     {
       field: 'id',
       headerName: 'Name',
-      width: 360,
+      width: 240,
       renderCell: (params) => {
         return <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>{params.row.id}</NextLink>;
       }
@@ -177,14 +200,14 @@ function ContentTypes() {
       width: 360,
     },
     {
-      field: 'enabled',
-      headerName: 'Enabled',
-      type: 'boolean',
+      field: 'fields',
+      headerName: 'Fields',
+      type: 'number',
     },
     {
-      field: 'fields',
-      headerName: '# of Fields',
-      type: 'number',
+      field: 'dependencies',
+      headerName: 'Dependencies',
+      width: 400,
     }
   ];
 
@@ -281,6 +304,11 @@ function ContentTypes() {
                           }]
                         }
                       }}
+                      sx={{
+                        '.MuiDataGrid-cellContent, .MuiDataGrid-cell': {
+                          fontSize: '13px'
+                        }
+                      }}
                     />
                   </Box>
               </CardContent>
@@ -295,6 +323,8 @@ function ContentTypes() {
         setShowModal={setShowCopyModal}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
+        contentTypes={contentTypes}
+        dependencyGraph={dependencyGraph}
       />
 
       <DeleteContentTypeModal

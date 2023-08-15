@@ -1,6 +1,6 @@
 {
   "name": "bloomreach-content-saas-ui-extensions",
-  "version": "1.1.0-beta",
+  "version": "1.2.0-beta",
   "title": "Bloomreach Content SaaS UI Extensions",
   "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes",
   "author": {
@@ -25,6 +25,7 @@
     "clsx": "1.1.1",
     "context-api": "0.0.2",
     "date-fns": "2.28.0",
+    "dependency-graph": "^0.11.0",
     "gray-matter": "^4.0.3",
     "next": "^13.4.4",
     "next-images": "1.8.4",
