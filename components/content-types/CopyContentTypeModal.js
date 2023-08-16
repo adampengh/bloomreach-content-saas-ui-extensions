@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { DepGraph } from 'dependency-graph'
+import React, { useContext, useState } from 'react'
 
 // API
 import {
-  getAllChannels,
   getContentType,
   putContentType,
 } from 'api'
@@ -12,26 +10,23 @@ import {
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControl,
-  FormControlLabel,
-  FormGroup,
   InputLabel,
   MenuItem,
   Select,
 } from '@mui/material'
 import {
-  LoadingButton
+  LoadingButton,
  } from '@mui/lab';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import { ErrorContext } from 'src/contexts/ErrorContext';
+
 
 export default function CopyContentTypeModal({
   showModal,
@@ -58,8 +53,9 @@ export default function CopyContentTypeModal({
 
     // Get all content types and dependencies
     // Flatten the array of arrays
-    const contentTypeAndDependencies = selectedRows.map(selectedRow =>
-      [...dependencyGraph.dependantsOf(selectedRow), selectedRow]).flat()
+    const contentTypeAndDependencies = selectedRows.map(selectedRow => {
+      return [...dependencyGraph.dependantsOf(selectedRow), selectedRow]
+    }).flat()
 
     // Get all content types to copy and ensure the order is correct based on
     // the full dependency graph
@@ -136,10 +132,19 @@ export default function CopyContentTypeModal({
       >
         <DialogTitle>Copy Confirmation</DialogTitle>
         <DialogContent>
-          <p>Content Types to Copy ({selectedRows.length}):</p>
+          <p>Content Types to Copy:</p>
           <ul>
             {selectedRows.map(contentType => (
-              <li key={contentType}>{contentType}</li>
+              <>
+                <li key={contentType} style={{fontWeight: 700, lineHeight: 2}}>{contentType} ({dependencyGraph?.dependantsOf(contentType)?.length} dependencies)</li>
+                {dependencyGraph.dependantsOf(contentType).length > 0 && (
+                  <ul>
+                    {dependencyGraph?.dependantsOf(contentType)?.map(dependant =>
+                      <li key={dependant}>{dependant}</li>
+                    )}
+                  </ul>
+                )}
+              </>
             ))}
           </ul>
 
