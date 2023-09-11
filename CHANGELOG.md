@@ -1,6 +1,8 @@
 # Changelog
 ## All notable changes to this project will be documented below
 
+### 1.2.1-beta (September 11, 2023)
+- Fixed issue with Content Types DataGrid not rendering
 ### 1.2.0-beta (August 15, 2023)
 - Added ability to copy content types, along with logic to determine dependencies of content types to be copied
 ### 1.1.0-beta (June 15, 2023)
