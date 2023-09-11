@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import Head from 'next/head';
 import NextLink from 'next/link';
 
@@ -74,35 +74,18 @@ function ContentTypes() {
       getAllContentTypes(environment, xAuthToken, 'development')
         .then(async (response) => {
           const contentTypes = response.data
+          await setContentTypes(contentTypes)
 
-          // Add all content types to the dependency graph
-          const graph = new DepGraph({ circular: true })
-          contentTypes.forEach(async (contentType) => {
-            await graph.addNode(contentType.name)
-          })
-
-          // Loop through content types and add dependencies
-          contentTypes.forEach(async (contentType) => {
-            await contentType.fields.forEach(field =>
-              field.fieldGroupType && graph.addDependency(field.fieldGroupType, contentType.name)
-            )
-          })
-          console.log('ProductRecommendations', graph.dependantsOf('ProductRecommendations'))
-          await setDependencyGraph(graph)
-
-          await setContentTypes(response.data)
-
-          const columns = response.data.map(item => {
-            console.log(item.name, graph.dependenciesOf(item.name))
+          const rows = contentTypes.map(item => {
             return {
               type: item.type,
               id: item.name,
               displayName: item.presentation.displayName,
-              fields: item.fields.length,
-              dependencies: graph.dependantsOf(item.name),
+              fields: item.fields.length
             }
           })
-          setPageData(columns)
+          console.log('rows', rows)
+          setPageData(rows)
           setIsLoaded(true)
         })
         .catch((error) => {
@@ -141,75 +124,160 @@ function ContentTypes() {
     }
   }, [appConfiguration])
 
-  const columns = [
-    {
-      field: 'actions',
-      headerName: '',
-      width: (!isSourceProjectIncludeContentTypes) ? 0 : 150,
-      renderCell: (params) => {
-        const padding = '0.25rem 0.5rem';
-        return (
-          <>
-            {isSourceProjectIncludeContentTypes &&
-              <ButtonGroup size="small" variant="outlined">
-                <Button sx={{ padding: padding}}>
-                  <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
-                    <EditIcon fontSize="small" />
-                  </NextLink>
-                </Button>
-                <Button
-                  sx={{ padding: padding}}
-                  onClick={() => {
-                    setSelectedRows([params.row.id])
-                    setShowCopyModal(true)
-                  }}
-                  disabled={(!isTargetProjectIncludeContentTypes)}
-                >
-                  <ContentCopyIcon fontSize="small" />
-                </Button>
-                <Button
-                  color="error"
-                  onClick={() => {
-                    setSelectedRows([params.row.id])
-                    setShowDeleteModal(true)
-                  }}
-                  sx={{ padding: padding}}>
-                  <DeleteOutlineIcon fontSize="small" />
-                </Button>
-              </ButtonGroup>
-            }
-          </>
-        );
+
+  useMemo(async () => {
+    // Add all content types to the dependency graph
+    const graph = new DepGraph({ circular: true })
+    contentTypes.forEach(async (contentType) => {
+      await graph.addNode(contentType.name)
+    })
+
+    // Loop through content types and add dependencies
+    contentTypes.forEach(async (contentType) => {
+      await contentType.fields.forEach(field =>
+        field.fieldGroupType && graph.addDependency(field.fieldGroupType, contentType.name)
+      )
+    })
+
+    await setDependencyGraph(graph)
+  }, [contentTypes])
+
+
+  const columns = useMemo(() => (
+    [
+      {
+        field: 'actions',
+        headerName: '',
+        width: (!isSourceProjectIncludeContentTypes) ? 0 : 150,
+        renderCell: (params) => {
+          const padding = '0.25rem 0.5rem';
+          return (
+            <>
+              {isSourceProjectIncludeContentTypes &&
+                <ButtonGroup size="small" variant="outlined">
+                  <Button sx={{ padding: padding}}>
+                    <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
+                      <EditIcon fontSize="small" />
+                    </NextLink>
+                  </Button>
+                  <Button
+                    sx={{ padding: padding}}
+                    onClick={() => {
+                      setSelectedRows([params.row.id])
+                      setShowCopyModal(true)
+                    }}
+                    disabled={(!isTargetProjectIncludeContentTypes)}
+                  >
+                    <ContentCopyIcon fontSize="small" />
+                  </Button>
+                  <Button
+                    color="error"
+                    onClick={() => {
+                      setSelectedRows([params.row.id])
+                      setShowDeleteModal(true)
+                    }}
+                    sx={{ padding: padding}}>
+                    <DeleteOutlineIcon fontSize="small" />
+                  </Button>
+                </ButtonGroup>
+              }
+            </>
+          );
+        }
+      },
+      {
+        field: 'type',
+        headerName: 'Type'
+      },
+      {
+        field: 'id',
+        headerName: 'Name',
+        width: 240,
+        renderCell: (params) => {
+          return <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>{params.row.id}</NextLink>;
+        }
+      },
+      {
+        field: 'displayName',
+        headerName: 'Display Name',
+        width: 360,
+      },
+      {
+        field: 'fields',
+        headerName: 'Fields',
+        type: 'number',
       }
-    },
-    {
-      field: 'type',
-      headerName: 'Type'
-    },
-    {
-      field: 'id',
-      headerName: 'Name',
-      width: 240,
-      renderCell: (params) => {
-        return <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>{params.row.id}</NextLink>;
-      }
-    },
-    {
-      field: 'displayName',
-      headerName: 'Display Name',
-      width: 360,
-    },
-    {
-      field: 'fields',
-      headerName: 'Fields',
-      type: 'number',
-    },
-    {
-      field: 'dependencies',
-      headerName: 'Dependencies',
-      width: 400,
-    }
-  ];
+    ]
+  ))
+  // const columns = [
+  //   {
+  //     field: 'actions',
+  //     headerName: '',
+  //     width: (!isSourceProjectIncludeContentTypes) ? 0 : 150,
+  //     renderCell: (params) => {
+  //       const padding = '0.25rem 0.5rem';
+  //       return (
+  //         <>
+  //           {isSourceProjectIncludeContentTypes &&
+  //             <ButtonGroup size="small" variant="outlined">
+  //               <Button sx={{ padding: padding}}>
+  //                 <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
+  //                   <EditIcon fontSize="small" />
+  //                 </NextLink>
+  //               </Button>
+  //               <Button
+  //                 sx={{ padding: padding}}
+  //                 onClick={() => {
+  //                   setSelectedRows([params.row.id])
+  //                   setShowCopyModal(true)
+  //                 }}
+  //                 disabled={(!isTargetProjectIncludeContentTypes)}
+  //               >
+  //                 <ContentCopyIcon fontSize="small" />
+  //               </Button>
+  //               <Button
+  //                 color="error"
+  //                 onClick={() => {
+  //                   setSelectedRows([params.row.id])
+  //                   setShowDeleteModal(true)
+  //                 }}
+  //                 sx={{ padding: padding}}>
+  //                 <DeleteOutlineIcon fontSize="small" />
+  //               </Button>
+  //             </ButtonGroup>
+  //           }
+  //         </>
+  //       );
+  //     }
+  //   },
+  //   {
+  //     field: 'type',
+  //     headerName: 'Type'
+  //   },
+  //   {
+  //     field: 'id',
+  //     headerName: 'Name',
+  //     width: 240,
+  //     renderCell: (params) => {
+  //       return <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>{params.row.id}</NextLink>;
+  //     }
+  //   },
+  //   {
+  //     field: 'displayName',
+  //     headerName: 'Display Name',
+  //     width: 360,
+  //   },
+  //   {
+  //     field: 'fields',
+  //     headerName: 'Fields',
+  //     type: 'number',
+  //   },
+  //   {
+  //     field: 'dependencies',
+  //     headerName: 'Dependencies',
+  //     width: 400,
+  //   }
+  // ];
 
   return (
     <>
