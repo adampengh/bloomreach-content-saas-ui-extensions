@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { use, useContext, useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
 import SidebarLayout from 'src/layouts/SidebarLayout';
+import dayjs from 'dayjs';
 
 // API
 import {
   downloadExportedFiles,
+  getAllChannels,
   getAllProjects,
   getOperationDetails,
   requestAnExport,
@@ -25,56 +27,62 @@ import {
   Container,
   Divider,
   FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   Grid,
+  IconButton,
   InputLabel,
-  ListItemText,
   MenuItem,
-  OutlinedInput,
   Select,
   TextField,
+  Typography,
 } from '@mui/material';
+import TreeView from '@mui/lab/TreeView';
+import TreeItem from '@mui/lab/TreeItem';
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
+// Icons
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import DescriptionIcon from '@mui/icons-material/Description';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FolderIcon from '@mui/icons-material/Folder';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import LanguageIcon from '@mui/icons-material/Language';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 230,
-    },
-  },
-};
-
-const DATA_TYPES = [
-  'resourcebundle',
-  'page',
-  'document',
-  'folder',
-];
+const DATA_TYPES = ['document', 'folder', 'page', 'resourcebundle'];
 
 function ExportImport() {
-  const {
-    appConfiguration,
-  } = useContext(ConfigurationContext)
-
-  const {
-    environment,
-    xAuthToken,
-    projectId,
-  } = appConfiguration.environments?.source
-
+  // States
   const [dataTypes, setDataTypes] = useState(DATA_TYPES)
-  const [sourcePath, setSourcePath] = useState("")
-  const [skippedExportItems, setSkippedExportItems] = useState(0)
-  const [elapsedExportTime, setElapsedExportTime] = useState(0)
-  const [exportOperationId, setExportOperationId] = useState(null)
-  const [exportJobStatus, setExportJobStatus] = useState("")
-  const [exportJobRunning, setExportJobRunning] = useState(false)
   const [downloadReady, setDownloadReady] = useState(false)
-
+  const [elapsedExportTime, setElapsedExportTime] = useState(0)
+  const [exportJobRunning, setExportJobRunning] = useState(false)
+  const [exportJobStatus, setExportJobStatus] = useState("")
+  const [exportOperationId, setExportOperationId] = useState(null)
   const [projectsList, setProjectsList] = useState([])
   const [selectedProject, setSelectedProject] = useState(null)
-  const [sourceFolder, setSourceFolders] = useState(null)
+  const [skippedExportItems, setSkippedExportItems] = useState(0)
+  const [sourcePath, setSourcePath] = useState("")
+  const [sourceFolders, setSourceFolders] = useState(null)
+
+  const [channels, setChannels] = useState([])
+  const [coreChannels, setCoreChannels] = useState([])
+  const [selectedCoreChannel, setSelectedCoreChannel] = useState(null)
+  const [selectedSourceProject, setSelectedSourceProject] = useState('core')
+
+  const [dateTime, setDateTime] = useState(null);
+  const [modifiedAfter, setModifiedAfter] = useState(null);
+
+  // Context
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
 
   useEffect(() => {
     setSelectedProject(projectId)
@@ -83,62 +91,73 @@ function ExportImport() {
     if (environment && xAuthToken) {
       getAllProjects(environment, xAuthToken)
         .then((response) => {
-          console.log(response)
           let projects = response.data
           if (projectId) {
             projects.find(project => project.id === projectId)
           }
-          console.log('projects', projects)
           setProjectsList(response.data)
           setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
 
+      // Get All Core Channels
       getAllCoreChannels(environment)
-        .then((response) => {
-          console.log('Core Channels', response.data)
-        })
+        .then((response) => setCoreChannels(response.data))
         .catch((error) => console.error(error))
-      // getFolder(environment, xAuthToken, folderPath, depth = '5')
-      //   .then(response => {
-      //     console.log(response.data)
-      //   })
-      //   .catch()
     }
 
     // Get target projects list
     if (appConfiguration.environments?.target.environment && appConfiguration.environments?.target.xAuthToken) {
       getAllProjects(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken)
         .then((response) => {
-          console.log(response)
           let projects = response.data
           if (projectId) {
             projects.find(project => project.id === projectId)
           }
-          console.log('projects', projects)
           setProjectsList(response.data)
           setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
+        .catch(error => console.error(error))
     }
   }, [appConfiguration])
 
-  const handleDataTypesChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDataTypes(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+
+  const handleDataTypesChange = (dataType) => {
+    const updatedCheckedState = dataTypes.includes(dataType)
+      ? dataTypes.filter((d) => d !== dataType)
+      : [...dataTypes, dataType];
+    setDataTypes(updatedCheckedState);
   };
 
-  const handleProjectChange = (e) => {
-    e.preventDefault()
-    setSelectedProject(projectsList.find(project => project.id === e.target.value))
+
+  const handleCoreChannelChange = (event) => {
+    setSelectedCoreChannel(event.target.value)
+
+    getAllChannels(environment, xAuthToken)
+      .then((response) => {
+        const channels = response.data
+          .filter((channel) => channel.branchOf === event.target.value) // Filter channels by selected core channel
+        setChannels(channels)
+      })
+      .catch(error => console.error(error))
+
+    getFolder(environment, xAuthToken, `/content/documents/${event.target.value}`)
+      .then((response) => {
+        setSourceFolders(response.data)
+      })
+      .catch(error => console.error(error))
   }
+
+
+  const handleSourceProjectChange = (event) => {
+    event.preventDefault()
+    setSelectedSourceProject(event.target.value)
+  }
+
 
   const handleSubmitExport = (event) => {
     event.preventDefault();
-    requestAnExport(environment, xAuthToken, selectedProject.id, dataTypes, sourcePath)
+    const projectId = selectedSourceProject === 'core' ? 'core' : selectedSourceProject.branch
+    requestAnExport(environment, xAuthToken, projectId, dataTypes, sourcePath, modifiedAfter)
       .then(resp => {
         if(resp.data.status === "STARTING") {
           setExportOperationId(resp.data.operationId)
@@ -146,6 +165,7 @@ function ExportImport() {
         }}
       )
   }
+
 
   const handleExportOperation = (operationId)  => {
     setExportJobRunning(true)
@@ -169,6 +189,7 @@ function ExportImport() {
     }, 1000);
   }
 
+
   const handleExportDownload = (event) => {
     event.preventDefault()
     downloadExportedFiles(environment, xAuthToken, exportOperationId)
@@ -186,19 +207,22 @@ function ExportImport() {
       })
   }
 
+
   const handleSubmitImport = (event) => {
     event.preventDefault();
     //TODO: implement
   }
 
+
   return (
     <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Head>
-        <title>Content Export/Import</title>
+        <title>Content Batch Export/Import</title>
       </Head>
       <PageTitleWrapper>
         <PageTitle
-          heading="Export & Import"
+          heading="Content Batch Export & Import"
           subHeading="Batch Export & Import operation"
         />
       </PageTitleWrapper>
@@ -212,7 +236,7 @@ function ExportImport() {
         >
           <Grid item xs={6}>
             <Card>
-              <CardHeader title="Export" />
+              <CardHeader title={<Typography variant='h3'>Export</Typography>} />
               <Divider />
               <CardContent>
                 <Box
@@ -225,59 +249,125 @@ function ExportImport() {
                   onSubmit={handleSubmitExport}
                 >
                   <div>
-                    <FormControl required sx={{ m: 1, width: 300 }}>
-                      <InputLabel id="demo-multiple-checkbox-label">Data Types</InputLabel>
-                      <Select
-                        label="Data Types"
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
-                        multiple
-                        value={dataTypes}
-                        onChange={handleDataTypesChange}
-                        input={<OutlinedInput label="Data Types" />}
-                        renderValue={(selected) => selected.join(', ')}
-                        MenuProps={MenuProps}
-                      >
+                    {/* 1. Select Data Types */}
+                    <FormControl component="fieldset" sx={{ padding: 1 }}>
+                      <FormLabel component="legend"><strong>1. Select Data Types</strong></FormLabel>
+                      <FormGroup row>
                         {DATA_TYPES.map((dataType) => (
-                          <MenuItem key={dataType} value={dataType}>
-                            <Checkbox checked={dataTypes.indexOf(dataType) > -1} />
-                            <ListItemText primary={dataType} />
-                          </MenuItem>
+                          <FormControlLabel
+                            key={dataType}
+                            control={
+                              <Checkbox checked={dataTypes.indexOf(dataType) > -1} onChange={() => handleDataTypesChange(dataType)}/>
+                            }
+                            label={dataType}
+                          />
                         ))}
-                      </Select>
+                      </FormGroup>
                     </FormControl>
-                    <TextField
-                      required
-                      id="sourcePath"
-                      name="sourcePath"
-                      label="Source Path"
-                      helperText="/content/documents/<folder>"
-                      placeholder='reference-spa/pages'
-                      value={sourcePath || ''}
-                      onChange={(e) => setSourcePath(e.target.value)}
-                    />
-                    <FormControl
-                      variant="outlined"
-                      sx={{ m: 1, minWidth: 240, marginTop: 2 }}
-                    >
-                      <InputLabel id="channel">Project</InputLabel>
-                      <Select
-                        id="projectId"
-                        labelId="projectId"
-                        label="Project ID"
-                        value={selectedProject?.id || ''}
-                        onChange={(e) => handleProjectChange(e)}
-                      >
-                        <MenuItem value='core'>Core</MenuItem>
-                        <Divider />
-                        {projectsList.map(project => (
-                          <MenuItem key={project.id} value={project.id}>
-                            {project.name} ({project.id})
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+
+                    <Divider sx={{ my: 3 }} />
+
+                    {/* 2. Select Channel/Project */}
+                    <Grid container spacing={1}>
+                      <Grid item xs={12}>
+                        <Typography variant='body1' sx={{ marginLeft: 0.5}}><strong>2. Select Channel/Project</strong></Typography>
+                      </Grid>
+                      <Grid item xs>
+                        <FormControl
+                          variant="outlined"
+                          sx={{ m: 1, width: '90%'}}
+                        >
+                          <InputLabel id="channel">Channel</InputLabel>
+                          <Select
+                            id="projectId"
+                            labelId="projectId"
+                            label="Channel"
+                            value={selectedCoreChannel || ''}
+                            onChange={handleCoreChannelChange}
+                          >
+                            {coreChannels?.sort((a, b) => a.name.localeCompare(b.name))
+                              .map(channel => (
+                                <MenuItem key={channel.name} value={channel.name}>
+                                  <strong>{channel.name}</strong>
+                                </MenuItem>
+                              )
+                            )}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs>
+                        <FormControl
+                          variant="outlined"
+                          sx={{ m: 1, width: '90%'}}
+                        >
+                          <InputLabel id="channel">Project </InputLabel>
+                          <Select
+                            id="projectId"
+                            labelId="projectId"
+                            label="Project ID"
+                            value={selectedSourceProject || 'core'}
+                            onChange={(e) => handleSourceProjectChange(e)}
+                          >
+                            <MenuItem value='core'><strong>Core</strong></MenuItem>
+                            <Divider />
+                            {channels?.map(channel => (
+                              <MenuItem key={channel.id} value={channel}>
+                                <strong>{channel.projectName}</strong>&nbsp;({channel.id})
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+
+                    {/* 3. Select Source Folder */}
+                    <Divider sx={{ my: 3 }} />
+
+                    {sourceFolders && <Grid container spacing={1}>
+                      <Grid item xs={12}>
+                        <Typography variant='body1' sx={{ marginLeft: 0.5}}><strong>3. Select Source Folder</strong></Typography>
+                      </Grid>
+                      <Grid item xs>
+                        <Typography variant='body1' sx={{ marginLeft: 0.5}}>Selected source path: <strong>{sourcePath}</strong></Typography>
+                        <FolderList
+                          sourceFolders={sourceFolders}
+                          setSourcePath={setSourcePath}
+                        />
+                      </Grid>
+                    </Grid> }
+
+                    {/* 4. Select Modified After DateTime */}
+                    {sourcePath &&
+                      <>
+                        <Divider sx={{ my: 3 }} />
+                        <Grid container spacing={1}>
+                          <Grid item xs={12}>
+                            <Typography variant='body1' sx={{ marginLeft: 0.5 }}><strong>4. Select Modified After DateTime (optional)</strong></Typography>
+                          </Grid>
+                          <Grid item xs display='flex' alignItems='center'>
+                            <DateTimePicker
+                              renderInput={(props) => <TextField {...props} />}
+                              label="Modified After (optional)"
+                              value={dateTime}
+                              onChange={(newValue) => {
+                                setModifiedAfter(dayjs(newValue).format('YYYY-MM-DDTHH:mm:ssZ'))
+                                setDateTime(newValue);
+                              }}
+                            />
+                            {dateTime &&
+                              <IconButton onClick={() => {
+                                setModifiedAfter(null)
+                                setDateTime(null)
+                              }}>
+                                <HighlightOffIcon />
+                              </IconButton>
+                            }
+                          </Grid>
+                        </Grid>
+                      </>
+                    }
                   </div>
+
                   <div>
                     <Button
                       sx={{ margin: 1 }}
@@ -303,9 +393,11 @@ function ExportImport() {
             </Card>
           </Grid>
 
+
+          {/* TARGET ENVIRONMENT */}
           <Grid item xs={6}>
             <Card>
-              <CardHeader title="Import" />
+              <CardHeader title={<Typography variant='h3'>Import</Typography>} />
               <Divider />
               <CardContent>
                 <Box
@@ -327,7 +419,7 @@ function ExportImport() {
                         labelId="projectId"
                         label="Project ID"
                         value={selectedProject?.id || ''}
-                        onChange={(e) => handleProjectChange(e)}
+                        // onChange={(e) => handleProjectChange(e)}
                       >
                         {projectsList.map(project => (
                           <MenuItem key={project.id} value={project.id}>
@@ -356,8 +448,85 @@ function ExportImport() {
           </Grid>
         </Grid>
       </Container>
+      </LocalizationProvider>
     </>
   );
+}
+
+const FolderList = ({ sourceFolders, setSourcePath }) => {
+  const TreeViewRef = useRef(null);
+  if (!sourceFolders) return null
+
+  const renderTree = (folders, documents) => {
+    return (
+      <>
+        {folders?.map((folder) => {
+          return (
+            <TreeItem
+              key={folder.path}
+              nodeId={folder.path}
+              label={
+                <Typography display='flex' alignItems='center'>
+                  <FolderIcon fontSize='12px' sx={{ marginRight: '4px'}} />
+                  <span>{folder.displayName || folder.path.split('/').pop()}</span>
+                </Typography>
+              }
+            >
+              {renderTree(folder.folders, folder.documents)}
+            </TreeItem>
+          )
+        })}
+        {documents?.map((document) => {
+          return (
+            <TreeItem
+              key={document.path}
+              nodeId={document.path}
+              label={
+                <Typography display='flex' alignItems='center'>
+                  <DescriptionIcon fontSize='12px' sx={{ marginRight: '4px'}} />
+                  <span>{document.displayName || document.path.split('/').pop()}</span>
+                </Typography>
+              }
+            />
+          )
+        })}
+      </>
+    )
+  }
+
+  return (
+    <TreeView
+      aria-label="file system navigator"
+      defaultExpanded={[sourceFolders?.path]}
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      defaultExpandIcon={<ChevronRightIcon />}
+      sx={{
+        height: 480,
+        flexGrow: 1,
+        maxWidth: '100%',
+        overflowY: 'auto',
+        background: '#f0f0f0',
+        padding: 1
+      }}
+      onNodeSelect={(event, nodeIds) => {
+        setSourcePath(nodeIds)
+      }}
+      >
+      <TreeItem
+        ref={TreeViewRef}
+        key={sourceFolders.path}
+        nodeId={sourceFolders.path}
+        label={
+          <Typography display='flex' alignItems='center'>
+            <LanguageIcon fontSize='12px' sx={{ marginRight: '4px'}} />
+            <span>{sourceFolders.displayName || sourceFolders.path.split('/').pop()}</span>
+          </Typography>
+        }
+      >
+        {renderTree(sourceFolders.folders, sourceFolders.documents)}
+      </TreeItem>
+    </TreeView>
+  )
 }
 
 ExportImport.getLayout = (page) => <SidebarLayout>{page}</SidebarLayout>;

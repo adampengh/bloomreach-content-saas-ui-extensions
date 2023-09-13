@@ -260,12 +260,14 @@ export const BloomreachTheme = createTheme({
     primary: {
       light: colors.primary.light,
       main: colors.primary.main,
-      dark: colors.primary.dark
+      dark: colors.primary.dark,
+      contrastText: colors.alpha.white[100]
     },
     secondary: {
       light: colors.secondary.light,
       main: colors.secondary.main,
-      dark: colors.secondary.dark
+      dark: colors.secondary.dark,
+      contrastText: colors.alpha.white[100]
     },
     error: {
       light: colors.error.light,
@@ -446,9 +448,6 @@ export const BloomreachTheme = createTheme({
     },
     MuiSelect: {
       styleOverrides: {
-        iconOutlined: {
-          color: colors.alpha.black[50]
-        },
         icon: {
           top: 'calc(50% - 14px)'
         }
@@ -1147,6 +1146,30 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
+    MuiTreeView: {
+      styleOverrides: {
+        root: {
+          border: '1px solid ' + colors.alpha.black[10],
+          borderRadius: 6,
+          boxShadow: 'inset 2px 2px 6px ' + colors.alpha.black[30] + ', inset -2px -2px 6px ' + colors.alpha.black[30],
+        },
+      }
+    },
+    MuiTreeItem: {
+      styleOverrides: {
+        content: {
+          padding: 3,
+          '&.Mui-selected': {
+            backgroundColor: colors.primary.main,
+            color: colors.alpha.white[100]
+          },
+          '&.Mui-selected.Mui-focused': {
+            backgroundColor: colors.primary.main,
+            color: colors.alpha.white[100]
+          }
+        }
+      }
+    },
     MuiTypography: {
       defaultProps: {
         variantMapping: {
@@ -1216,7 +1239,7 @@ export const BloomreachTheme = createTheme({
     caption: {
       fontSize: 13,
       textTransform: 'uppercase',
-      color: colors.alpha.black[50]
+      // color: colors.alpha.black[50]
     },
     subtitle1: {
       fontSize: 14,

@@ -7,7 +7,8 @@ export const requestAnExport = async (
     xAuthToken,
     projectId = 'core',
     dataTypes = ["resourcebundle", "page", "resourcebundle", "folder"],
-    sourcePath
+    sourcePath,
+    modifiedAfter,
 ) => {
     const response = await axios(`https://${environment}.bloomreach.io/${EXPORT_API_PATH}/`, {
         method: 'POST',
@@ -16,8 +17,9 @@ export const requestAnExport = async (
         },
         data: {
             "dataTypes": dataTypes,
-            "sourcePath": `/content/documents/${sourcePath}`,
+            "sourcePath": sourcePath,
             "branch": projectId,
+            ...(modifiedAfter ? { modifiedAfter } : {})
         }
     })
 

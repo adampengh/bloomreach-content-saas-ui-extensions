@@ -5,12 +5,12 @@ import 'nprogress/nprogress.css';
 import ThemeProvider from 'src/theme/ThemeProvider';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import store from 'redux/store'
 
 // Providers
 import { Provider } from 'react-redux';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
 import { ErrorProvider } from 'src/contexts/ErrorContext';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
@@ -39,7 +39,7 @@ function App(props) {
           <ConfigurationProvider>
             <SidebarProvider>
               <ThemeProvider>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <CssBaseline />
                   {getLayout(<Component {...pageProps} />)}
                 </LocalizationProvider>
