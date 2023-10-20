@@ -1,7 +1,8 @@
-import React, { use, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Head from 'next/head';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import dayjs from 'dayjs';
+import axios from 'axios'
 
 // API
 import {
@@ -12,6 +13,7 @@ import {
   requestAnExport,
   getFolder,
   getAllCoreChannels,
+  requestImport,
 } from 'api';
 
 // Components
@@ -60,32 +62,37 @@ const DATA_TYPES = ['document', 'folder', 'page', 'resourcebundle'];
 
 function ExportImport() {
   // States
+  // Export Panel
+  const [channels, setChannels] = useState([])
+  const [coreChannels, setCoreChannels] = useState([])
+  const [dateTime, setDateTime] = useState(null);
   const [dataTypes, setDataTypes] = useState(DATA_TYPES)
   const [downloadReady, setDownloadReady] = useState(false)
   const [elapsedExportTime, setElapsedExportTime] = useState(0)
   const [exportJobRunning, setExportJobRunning] = useState(false)
   const [exportJobStatus, setExportJobStatus] = useState("")
   const [exportOperationId, setExportOperationId] = useState(null)
-  const [projectsList, setProjectsList] = useState([])
-  const [selectedProject, setSelectedProject] = useState(null)
+  const [modifiedAfter, setModifiedAfter] = useState(null);
+  const [selectedCoreChannel, setSelectedCoreChannel] = useState(null)
+  const [selectedTargetProject, setSelectedTargetProject] = useState(null)
+  const [selectedSourceProject, setSelectedSourceProject] = useState('core')
   const [skippedExportItems, setSkippedExportItems] = useState(0)
   const [sourcePath, setSourcePath] = useState("")
+  const [sourceProjectsList, setSourceSourceProjectsList] = useState([])
   const [sourceFolders, setSourceFolders] = useState(null)
 
-  const [channels, setChannels] = useState([])
-  const [coreChannels, setCoreChannels] = useState([])
-  const [selectedCoreChannel, setSelectedCoreChannel] = useState(null)
-  const [selectedSourceProject, setSelectedSourceProject] = useState('core')
-
-  const [dateTime, setDateTime] = useState(null);
-  const [modifiedAfter, setModifiedAfter] = useState(null);
+  // Import Panel
+  const [file, setFile] = useState()
+  const [selectedEnvironment, setSelectedEnvironment] = useState('target')
+  const [targetProjectsList, setTargetProjectsList] = useState([])
 
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
 
+
   useEffect(() => {
-    setSelectedProject(projectId)
+    setSelectedTargetProject(projectId)
 
     // Get source projects list
     if (environment && xAuthToken) {
@@ -95,8 +102,8 @@ function ExportImport() {
           if (projectId) {
             projects.find(project => project.id === projectId)
           }
-          setProjectsList(response.data)
-          setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
+          setSourceSourceProjectsList(response.data)
+          setSelectedTargetProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
 
       // Get All Core Channels
@@ -113,8 +120,8 @@ function ExportImport() {
           if (projectId) {
             projects.find(project => project.id === projectId)
           }
-          setProjectsList(response.data)
-          setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
+          setTargetProjectsList(response.data)
+          setSelectedTargetProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
         .catch(error => console.error(error))
     }
@@ -208,9 +215,64 @@ function ExportImport() {
   }
 
 
-  const handleSubmitImport = (event) => {
+  // Import Panel
+  const handleEnvironmentChange = (event) => {
+    console.log('handleEnvironmentChange', event.target.value)
+    event.preventDefault()
+    setSelectedEnvironment(event.target.value)
+
+    getAllProjects(appConfiguration.environments?.[event.target.value]?.environment, appConfiguration.environments?.[event.target.value]?.xAuthToken)
+      .then((response) => setTargetProjectsList(response.data))
+      .catch((error) => console.error('error', error.message))
+  }
+
+  const handleSubmitImport = async (event) => {
     event.preventDefault();
-    //TODO: implement
+    console.log('handleSubmitImport')
+    console.log('selectedEnvironment', selectedEnvironment)
+
+    const environment = appConfiguration.environments?.[selectedEnvironment]?.environment
+    const xAuthToken = appConfiguration.environments?.[selectedEnvironment]?.xAuthToken
+    console.log('environment', environment)
+    console.log('xAuthToken', xAuthToken)
+    console.log('projectId', selectedTargetProject)
+
+    const formData = new FormData(event.currentTarget)
+    formData.append('file', file)
+    const response = await fetch(`/api/content-import?environment=${environment}&projectId=${selectedTargetProject}`, {
+      method: 'POST',
+      headers: {
+        'x-auth-token': xAuthToken,
+        'content-type': 'multipart/form-data'
+      },
+      body: formData
+    })
+
+    // await axios(`https://${environment}.bloomreach.io/management/content-import/v1/projects/${selectedTargetProject}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'x-auth-token': xAuthToken,
+    //     'content-type': 'multipart/form-data'
+    //   },
+    //   body: formData
+    // })
+    //   .then(response => console.log('response', response))
+    //   .catch(error => console.error('error', error.message))
+
+    // const response = await fetch(`https://${environment}.bloomreach.io/management/content-import/v1/projects/${selectedTargetProject}`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'x-auth-token': xAuthToken,
+    //   },
+    //   body: formData
+    // })
+
+    const responseJson = await response
+    console.log('responseJson', responseJson)
+
+    // requestImport(appConfiguration.environments?.[selectedEnvironment]?.environment, appConfiguration.environments?.[selectedEnvironment]?.xAuthToken, selectedTargetProject, file)
+    //   .then((response) => console.log('response', response))
+    //   .catch((error) => console.error('error', error.message))
   }
 
 
@@ -234,6 +296,8 @@ function ExportImport() {
           alignItems="stretch"
           spacing={3}
         >
+
+          {/* EXPORT PANEL */}
           <Grid item xs={6}>
             <Card>
               <CardHeader title={<Typography variant='h3'>Export</Typography>} />
@@ -394,7 +458,7 @@ function ExportImport() {
           </Grid>
 
 
-          {/* TARGET ENVIRONMENT */}
+          {/* IMPORT PANEL */}
           <Grid item xs={6}>
             <Card>
               <CardHeader title={<Typography variant='h3'>Import</Typography>} />
@@ -410,6 +474,28 @@ function ExportImport() {
                   onSubmit={handleSubmitImport}>
                   <div>
                     <FormControl
+                      required
+                      variant="outlined"
+                      sx={{ m: 1, width: '90%', marginTop: 2 }}
+                    >
+                      <InputLabel id="targetProjectId">Environment</InputLabel>
+                      <Select
+                        id="environment"
+                        labelId="Environment"
+                        label="Environment"
+                        value={selectedEnvironment}
+                        onChange={handleEnvironmentChange}
+                      >
+                        <MenuItem value={'source'}>
+                          {appConfiguration?.environments?.source?.environment} (Source)
+                        </MenuItem>
+                        <MenuItem value={'target'}>
+                          {appConfiguration?.environments?.target?.environment} (Target)
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+
+                    <FormControl
                       variant="outlined"
                       sx={{ m: 1, minWidth: '90%', marginTop: 2 }}
                     >
@@ -418,12 +504,13 @@ function ExportImport() {
                         id="projectId"
                         labelId="projectId"
                         label="Project ID"
-                        value={selectedProject?.id || ''}
-                        // onChange={(e) => handleProjectChange(e)}
+                        value={selectedTargetProject || ''}
+                        onChange={(e) => setSelectedTargetProject(e.target.value)}
                       >
-                        {projectsList.map(project => (
+                        {targetProjectsList?.sort((a, b) => a.name.localeCompare(b.name))
+                          .map(project => (
                           <MenuItem key={project.id} value={project.id}>
-                            {project.name} ({project.id})
+                            <strong>{project.name}</strong> ({project.id})
                           </MenuItem>
                         ))}
                       </Select>
@@ -431,13 +518,15 @@ function ExportImport() {
                     <TextField
                       required
                       type="file"
-                      id="sourcePath"
-                      name="sourcePath"
+                      id="file"
+                      name="file"
+                      onChange={(e) => setFile(e.target.value)}
                     />
                     <Button
                       sx={{ margin: 1 }}
                       variant="contained"
                       type="submit"
+                      disabled={!file}
                     >
                       Import
                     </Button>

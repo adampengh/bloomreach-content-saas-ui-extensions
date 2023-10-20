@@ -93,9 +93,6 @@ export const deleteContentType = async (environment, xAuthToken, contentType) =>
   console.log('xAuthToken:', xAuthToken)
   console.log('contentType:', contentType)
 
-  const url = `https://${environment}.bloomreach.io/${CONTENT_TYPE_API_PATH}/development/${contentType}`
-  console.log('url:', url)
-
   const response = await axios(`/api/contenttypes/${contentType}?environment=${environment}`, {
     method: 'DELETE',
     headers: {
