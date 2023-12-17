@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router'
 
 // APIs
-import { getChannel } from 'api';
+import { getChannel } from 'bloomreach-content-management-apis';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';

@@ -4,7 +4,7 @@ import Router , {useRouter}  from 'next/router';
 // API
 import {
   deleteProject,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

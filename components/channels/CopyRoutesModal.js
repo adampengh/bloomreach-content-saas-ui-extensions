@@ -5,7 +5,7 @@ import {
   getAllChannels,
   getRoute,
   putRoute,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

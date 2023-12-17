@@ -9,7 +9,7 @@ import {
   putMenuItems,
   getMenuProperties,
   putMenuProperties,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

@@ -4,7 +4,7 @@ import React from 'react'
 import {
   createDeveloperProject,
   getAllProjects,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

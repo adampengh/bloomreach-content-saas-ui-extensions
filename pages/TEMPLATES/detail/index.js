@@ -6,7 +6,7 @@ import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 import sampleJson from 'mock-data/sample-component'
 
 // APIs
-import { getContentType } from 'api';
+import { getContentType } from 'bloomreach-content-management-apis';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';

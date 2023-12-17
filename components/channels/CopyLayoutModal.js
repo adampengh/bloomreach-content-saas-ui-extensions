@@ -5,7 +5,7 @@ import {
   getAllChannels,
   getLayout,
   putLayout,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

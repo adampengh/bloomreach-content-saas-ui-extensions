@@ -6,7 +6,7 @@ import NextLink from 'next/link';
 import {
   getAllContentTypes,
   getDeveloperProject,
-} from 'api';
+} from 'bloomreach-content-management-apis';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';

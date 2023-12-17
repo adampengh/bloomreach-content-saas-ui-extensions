@@ -4,9 +4,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
   addChannelToProject,
   getAllChannels,
-  getLayout,
-  putLayout,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {
@@ -18,13 +16,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
   FormControlLabel,
   FormGroup,
   IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
 } from '@mui/material'
 
 // Contexts

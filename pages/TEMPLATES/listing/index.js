@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import NextLink from 'next/link';
 
 // API Methods
-import { getAllProjects } from 'api';
+import { getAllProjects } from 'bloomreach-content-management-apis';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';

@@ -10,7 +10,7 @@ import {
   requestAnExport,
   getFolder,
   getAllCoreChannels,
-} from 'api';
+} from 'bloomreach-content-management-apis';
 
 // Components
 import PageTitle from 'src/components/PageTitle';

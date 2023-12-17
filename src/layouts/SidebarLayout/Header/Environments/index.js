@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 // API
 import {
   getAllProjects
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import StatusIndicator from 'components/StatusIndicator';

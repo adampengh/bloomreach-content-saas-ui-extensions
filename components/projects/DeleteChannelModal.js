@@ -3,10 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 // API
 import {
   deleteChannelBranch,
-  getAllChannels,
-  getLayout,
-  putLayout,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 
 // API
 import {
   deleteContentType,
   getAllContentTypes,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {
@@ -14,7 +14,6 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  DialogContentText,
   IconButton,
   Typography,
 } from '@mui/material';

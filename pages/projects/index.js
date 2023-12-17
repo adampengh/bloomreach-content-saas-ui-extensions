@@ -3,7 +3,7 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 
 // APIs
-import { getAllProjects } from 'api';
+import { getAllProjects } from 'bloomreach-content-management-apis';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';
