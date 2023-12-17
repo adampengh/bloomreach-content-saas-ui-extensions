@@ -4,7 +4,7 @@ import React, { useContext } from 'react'
 import {
   deleteChannelParameter,
   getChannelParameters,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

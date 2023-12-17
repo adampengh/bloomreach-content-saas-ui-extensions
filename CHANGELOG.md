@@ -1,6 +1,7 @@
 # Changelog
 ## All notable changes to this project will be documented below
-
+### 1.3.0 (December 13, 2023)
+- Replaced existing API functions with [bloomreach-content-management-apis](https://www.npmjs.com/package/bloomreach-content-management-apis) library
 ### 1.2.1-beta (September 11, 2023)
 - Fixed issue with Content Types DataGrid not rendering
 ### 1.2.0-beta (August 15, 2023)

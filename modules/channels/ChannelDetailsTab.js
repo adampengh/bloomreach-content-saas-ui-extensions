@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react'
 import {
   getChannel,
   putChannel,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {
@@ -179,7 +179,7 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
                 onChange={(event, value) => {
                   setChannelData(prevState => ({
                     ...prevState,
-                    locale: value.locale
+                    locale: value?.locale
                   }))
                 }}
               />

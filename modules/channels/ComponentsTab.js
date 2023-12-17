@@ -5,7 +5,7 @@ import NextLink from 'next/link'
 import {
   getAllComponents,
   getAllComponentGroups,
-} from '/api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import CopyComponentModal from 'components/channels/CopyComponentModal'

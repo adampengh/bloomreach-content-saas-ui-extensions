@@ -6,7 +6,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 // API
 import {
   getAllProjects
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import CreateProjectModal from 'components/projects/CreateProjectModal';

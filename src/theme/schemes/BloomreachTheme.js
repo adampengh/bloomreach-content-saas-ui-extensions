@@ -245,7 +245,7 @@ export const BloomreachTheme = createTheme({
     width: '260px'
   },
   header: {
-    height: '80px',
+    height: '0',
     background: colors.alpha.white[100],
     boxShadow: colors.shadows.cardSm,
     textColor: colors.secondary.main

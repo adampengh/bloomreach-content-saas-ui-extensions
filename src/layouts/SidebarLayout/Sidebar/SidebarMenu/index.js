@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 
-import { validateToken } from 'api'
+import { validateToken } from 'bloomreach-content-management-apis'
 
 // Components
 import {
@@ -353,7 +353,7 @@ function SidebarMenu() {
             component="div"
             subheader={
               <ListSubheader component="div" disableSticky>
-                Content Types
+                Content Type Management
               </ListSubheader>
             }
           >

@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import {
   createComponentGroup,
   getAllComponentGroups,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

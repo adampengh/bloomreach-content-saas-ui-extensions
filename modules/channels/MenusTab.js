@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 // API
 import {
   getAllMenus,
-} from '/api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import CopyMenusModal from 'components/channels/CopyMenusModal'

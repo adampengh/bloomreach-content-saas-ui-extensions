@@ -1,0 +1,50 @@
+{
+  "name": "bloomreach-content-management-apis",
+  "version": "1.0.0",
+  "description": "A library of functions for calling Bloomreach Content SaaS Management APIs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adampengh/bloomreach-content-management-apis.git"
+  },
+  "author": "Adam Pengh (adam.pengh@bloomreach.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adampengh/bloomreach-content-management-apis/issues"
+  },
+  "homepage": "https://github.com/adampengh/bloomreach-content-management-apis#readme",
+  "main": "dist/index.umd.js",
+  "browser": "dist/index.js",
+  "module": "dist/index.js",
+  "es2015": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "dev": "npm run build -- --watch",
+    "docs": "typedoc",
+    "format": "prettier --write \"./**/*.{js,jsx,json}\" --config ./.prettierrc",
+    "jest": "jest",
+    "lint": "eslint --ext js,ts src",
+    "test": "node -r dotenv/config $(which jest)",
+    "test:watch": "node -r dotenv/config $(which jest) --watchAll",
+    "yalcPush": "yalc push --replace --no-scripts"
+  },
+  "browserslist": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version",
+    "last 1 edge version"
+  ],
+  "dependencies": {
+    "axios": "^1.2.2"
+  },
+  "eslintConfig": {
+    "extends": "@bloomreach/eslint-config-base",
+    "rules": {
+      "import/no-cycle": "off"
+    }
+  },
+  "yalcSig": "17048c33f98dda976f2898a7f23b7f7d"
+}
