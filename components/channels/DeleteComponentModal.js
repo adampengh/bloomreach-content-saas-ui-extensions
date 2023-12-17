@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import {
   deleteComponent,
   getAllComponents,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

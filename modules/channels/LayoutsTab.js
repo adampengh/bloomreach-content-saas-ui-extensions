@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 // API
 import {
   getAllLayouts,
-} from '/api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import CopyLayoutModal from 'components/channels/CopyLayoutModal'

@@ -1,4 +1,3 @@
-import { getContentType } from 'api'
 import axios from 'axios'
 
 const CONTENT_TYPE_API_PATH = 'management/contenttypes/v1'

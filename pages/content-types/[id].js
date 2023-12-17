@@ -4,7 +4,7 @@ import { CopyBlock } from 'react-code-blocks'
 import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 
 // APIs
-import { getContentType } from 'api/content-types';
+import { getContentType } from 'bloomreach-content-management-apis';
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';

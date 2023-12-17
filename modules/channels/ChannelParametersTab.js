@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 // API
-import { getChannelParameters } from 'api'
+import { getChannelParameters } from 'bloomreach-content-management-apis'
 
 // Components
 import CreateChannelParameterModal from 'components/channels/CreateChannelParameterModal'

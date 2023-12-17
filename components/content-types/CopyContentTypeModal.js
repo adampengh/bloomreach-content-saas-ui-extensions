@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import {
   getContentType,
   putContentType,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {

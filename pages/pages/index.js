@@ -8,7 +8,7 @@ import {
   getFolder,
   getPage,
   putPage,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Layouts
 import SidebarLayout from 'src/layouts/SidebarLayout';

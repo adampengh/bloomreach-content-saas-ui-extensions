@@ -7,7 +7,7 @@ import {
   getAllComponentGroups,
   getComponent,
   putComponent,
-} from 'api'
+} from 'bloomreach-content-management-apis'
 
 // Components
 import {
