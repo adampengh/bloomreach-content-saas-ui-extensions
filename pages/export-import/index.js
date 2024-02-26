@@ -133,12 +133,16 @@ function ExportImport() {
 
   const handleProjectChange = (e) => {
     e.preventDefault()
-    setSelectedProject(projectsList.find(project => project.id === e.target.value))
+    if (e.target.value === 'core') {
+      setSelectedProject('core')
+    } else {
+      setSelectedProject(projectsList.find(project => project.id === e.target.value))
+    }
   }
 
   const handleSubmitExport = (event) => {
     event.preventDefault();
-    requestAnExport(environment, xAuthToken, selectedProject.id, dataTypes, sourcePath)
+    requestAnExport(environment, xAuthToken, sourcePath, null, selectedProject.id, dataTypes)
       .then(resp => {
         if(resp.data.status === "STARTING") {
           setExportOperationId(resp.data.operationId)
@@ -265,7 +269,7 @@ function ExportImport() {
                         id="projectId"
                         labelId="projectId"
                         label="Project ID"
-                        value={selectedProject?.id || ''}
+                        value={selectedProject === 'core' ? selectedProject : (selectedProject?.id || '')}
                         onChange={(e) => handleProjectChange(e)}
                       >
                         <MenuItem value='core'>Core</MenuItem>
