@@ -8,8 +8,8 @@ import {
   getAllProjects,
   getOperationDetails,
   requestAnExport,
-  getFolder,
-  getAllCoreChannels,
+  createImportJob,
+  getImportOperationStatus,
 } from 'bloomreach-content-management-apis';
 
 // Components
@@ -25,26 +25,29 @@ import {
   Container,
   Divider,
   FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   Grid,
   InputLabel,
-  ListItemText,
   MenuItem,
-  OutlinedInput,
+  Paper,
   Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
+  useTheme,
 } from '@mui/material';
 
 // Contexts
 import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ErrorContext } from 'src/contexts/ErrorContext';
 
-const MenuProps = {
-  PaperProps: {
-    style: {
-      width: 230,
-    },
-  },
-};
-
+// Constants
 const DATA_TYPES = [
   'resourcebundle',
   'page',
@@ -53,15 +56,12 @@ const DATA_TYPES = [
 ];
 
 function ExportImport() {
-  const {
-    appConfiguration,
-  } = useContext(ConfigurationContext)
+  const theme = useTheme();
 
-  const {
-    environment,
-    xAuthToken,
-    projectId,
-  } = appConfiguration.environments?.source
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { handleShowSnackbar } = useContext(ErrorContext)
+
+  const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
 
   const [dataTypes, setDataTypes] = useState(DATA_TYPES)
   const [sourcePath, setSourcePath] = useState("")
@@ -74,61 +74,49 @@ function ExportImport() {
 
   const [projectsList, setProjectsList] = useState([])
   const [selectedProject, setSelectedProject] = useState(null)
-  const [sourceFolder, setSourceFolders] = useState(null)
+
+  // Import state
+  const [file, setFile] = useState('')
+  const [importJobStatus, setImportJobStatus] = useState("")
+  const [importJobRunning, setImportJobRunning] = useState(false)
 
   useEffect(() => {
-    setSelectedProject(projectId)
-
     // Get source projects list
     if (environment && xAuthToken) {
       getAllProjects(environment, xAuthToken)
         .then((response) => {
-          console.log(response)
           let projects = response.data
           if (projectId) {
             projects.find(project => project.id === projectId)
           }
-          console.log('projects', projects)
           setProjectsList(response.data)
           setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
-
-      getAllCoreChannels(environment)
-        .then((response) => {
-          console.log('Core Channels', response.data)
-        })
-        .catch((error) => console.error(error))
-      // getFolder(environment, xAuthToken, folderPath, depth = '5')
-      //   .then(response => {
-      //     console.log(response.data)
-      //   })
-      //   .catch()
     }
 
     // Get target projects list
     if (appConfiguration.environments?.target.environment && appConfiguration.environments?.target.xAuthToken) {
       getAllProjects(appConfiguration.environments?.target.environment, appConfiguration.environments?.target.xAuthToken)
         .then((response) => {
-          console.log(response)
           let projects = response.data
           if (projectId) {
             projects.find(project => project.id === projectId)
           }
-          console.log('projects', projects)
           setProjectsList(response.data)
           setSelectedProject(projectId ? projects.find(project => project.id === projectId) : projects[0])
         })
     }
   }, [appConfiguration])
 
-  const handleDataTypesChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setDataTypes(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+  const handleDataTypesChange = async (event) => {
+    const name = event.target.name
+    const checked = event.target.checked
+
+    if (checked) {
+      await setDataTypes([...dataTypes, name])
+    } else {
+      await setDataTypes(dataTypes.filter(dataType => dataType !== name))
+    }
   };
 
   const handleProjectChange = (e) => {
@@ -190,10 +178,56 @@ function ExportImport() {
       })
   }
 
+
+  // ================================================
+  // Content Import
+  // ================================================
+  const validateImportFile = (filename) => {
+    const allowedExtensions = /(\.ndjson)$/i
+    return allowedExtensions.test(filename)
+  }
+
+  const handleImportFileChange = (event) => {
+    const file = event.target.files[0]
+    const filename = file.name
+    if (!validateImportFile(filename)) {
+      handleShowSnackbar('error', 'Invalid file type. Only .ndjson files are allowed.')
+      setFile('')
+    } else {
+      setFile(file)
+    }
+  }
+
   const handleSubmitImport = (event) => {
     event.preventDefault();
-    //TODO: implement
+    createImportJob(environment, xAuthToken, selectedProject.id, file)
+      .then((response) => {
+        if(response.data.status === "STARTING") {
+          handleImportOperation(response.data.operationId)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
+
+  const handleImportOperation = (operationId)  => {
+    setImportJobRunning(true)
+    setDownloadReady(false)
+    const importInterval = setInterval(function () {
+      getImportOperationStatus(environment, xAuthToken, operationId)
+        .then(response => {
+          if (response.data.status === "COMPLETED") {
+            setImportJobRunning(false)
+            setImportJobStatus(response.data)
+            clearInterval(importInterval)
+          } else {
+            setImportJobStatus(response.data)
+          }
+        })
+    }, 1000);
+  }
+
 
   return (
     <>
@@ -203,7 +237,7 @@ function ExportImport() {
       <PageTitleWrapper>
         <PageTitle
           heading="Export & Import"
-          subHeading="Batch Export & Import operation"
+          subHeading="Batch Export & Import Operation"
         />
       </PageTitleWrapper>
       <Container maxWidth="xl">
@@ -229,26 +263,23 @@ function ExportImport() {
                   onSubmit={handleSubmitExport}
                 >
                   <div>
-                    <FormControl required sx={{ m: 1, width: 300 }}>
-                      <InputLabel id="demo-multiple-checkbox-label">Data Types</InputLabel>
-                      <Select
-                        label="Data Types"
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
-                        multiple
-                        value={dataTypes}
-                        onChange={handleDataTypesChange}
-                        input={<OutlinedInput label="Data Types" />}
-                        renderValue={(selected) => selected.join(', ')}
-                        MenuProps={MenuProps}
-                      >
+                    <FormControl required sx={{ p: 1, width: 300 }}>
+                      <FormLabel component="legend"><strong>Data Types</strong></FormLabel>
+                      <FormGroup sx={{ padding: 1 }}>
                         {DATA_TYPES.map((dataType) => (
-                          <MenuItem key={dataType} value={dataType}>
-                            <Checkbox checked={dataTypes.indexOf(dataType) > -1} />
-                            <ListItemText primary={dataType} />
-                          </MenuItem>
+                          <FormControlLabel
+                            key={dataType}
+                            control={
+                              <Checkbox
+                                name={dataType}
+                                checked={dataTypes.indexOf(dataType) > -1}
+                                onChange={handleDataTypesChange}
+                              />
+                            }
+                            label={dataType}
+                          />
                         ))}
-                      </Select>
+                      </FormGroup>
                     </FormControl>
                     <TextField
                       required
@@ -256,8 +287,8 @@ function ExportImport() {
                       name="sourcePath"
                       label="Source Path"
                       helperText="/content/documents/<folder>"
-                      placeholder='reference-spa/pages'
-                      value={sourcePath || ''}
+                      placeholder='/content/documents/'
+                      value={sourcePath}
                       onChange={(e) => setSourcePath(e.target.value)}
                     />
                     <FormControl
@@ -325,7 +356,7 @@ function ExportImport() {
                       variant="outlined"
                       sx={{ m: 1, minWidth: '90%', marginTop: 2 }}
                     >
-                      <InputLabel id="channel">Project</InputLabel>
+                      <InputLabel id="channel">Project ID</InputLabel>
                       <Select
                         id="projectId"
                         labelId="projectId"
@@ -345,14 +376,68 @@ function ExportImport() {
                       type="file"
                       id="sourcePath"
                       name="sourcePath"
+                      onChange={handleImportFileChange}
                     />
                     <Button
                       sx={{ margin: 1 }}
                       variant="contained"
                       type="submit"
+                      disabled={!(selectedProject && file && !importJobRunning)}
                     >
                       Import
                     </Button>
+
+                    { importJobStatus &&
+                      <Paper sx={{ margin: 1 }}>
+                        <TableContainer sx={{ marginTop: 2 }}>
+                          <Table size="small">
+                            <TableHead sx={{background: theme.palette.primary.main}}>
+                              <TableRow>
+                                <TableCell colSpan={2} sx={{color: theme.palette.common.white}}>Import Job Status</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell align='left'>Status:</TableCell>
+                                <TableCell>{importJobStatus.status}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell align='left'>Start Time:</TableCell>
+                                <TableCell>{importJobStatus.startTime}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell align='left'>End Time:</TableCell>
+                                <TableCell>{importJobStatus.endTime}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell align='left'>Read Count:</TableCell>
+                                <TableCell>{importJobStatus.readCount}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell align='left'>Write Count:</TableCell>
+                                <TableCell>{importJobStatus.writeCount}</TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell align='left'>Skipped Count:</TableCell>
+                                <TableCell>{importJobStatus.skipCount}</TableCell>
+                              </TableRow>
+                              {importJobStatus.errorLog &&
+                                <TableRow>
+                                  <TableCell align='left'>Errors:</TableCell>
+                                  <TableCell></TableCell>
+                                </TableRow>
+                              }
+                              {importJobStatus.errorLog.map((error, index) => (
+                                <TableRow key={index}>
+                                  <TableCell align='left'>{error.path}</TableCell>
+                                  <TableCell>{error.error}</TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </Paper>
+                    }
                   </div>
                 </Box>
               </CardContent>
