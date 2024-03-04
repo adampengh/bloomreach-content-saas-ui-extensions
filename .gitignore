@@ -13,3 +13,5 @@ yarn-error.log*
 
 # Next.js
 /.next
+
+.yalc*

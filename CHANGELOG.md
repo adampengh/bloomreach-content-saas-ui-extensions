@@ -1,19 +1,28 @@
 # Changelog
 ## All notable changes to this project will be documented below
 
+### 1.4.0 (March 4, 2024)
+- Added Batch Import Functionality
+
 ### 1.3.1 (February 26, 2024)
 - Fix Batch Export
+
 ### 1.3.0 (December 13, 2023)
 - Replaced existing API functions with [bloomreach-content-management-apis](https://www.npmjs.com/package/bloomreach-content-management-apis) library
+
 ### 1.2.1-beta (September 11, 2023)
 - Fixed issue with Content Types DataGrid not rendering
+
 ### 1.2.0-beta (August 15, 2023)
 - Added ability to copy content types, along with logic to determine dependencies of content types to be copied
+
 ### 1.1.0-beta (June 15, 2023)
 - Added ability to delete Routes
 - Added ability to delete Menus
+
 ### 1.0.1-beta (June 5, 2023)
 - Added ability to Reopen, Rebase, Merge, and Delete Projects
+
 ### 1.0.0-beta (June 2, 2023)
 - Set the project to Beta status
 - Upgraded NextJS to version 13
