@@ -1709,10 +1709,10 @@ big.js@^5.2.2:
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
-bloomreach-content-management-apis@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/bloomreach-content-management-apis/-/bloomreach-content-management-apis-1.1.0.tgz#6ea40214652c7de0c7f2af27118dcbcfb7a57a0e"
-  integrity sha512-JD0U3daHGN1BYGSi21x9X4W6POmqEgLhva7Q9etBUKkMN4m2gWxzag7KK8TscTuqjyGIqHSXFzYZdQ1X4seDQQ==
+bloomreach-content-management-apis@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/bloomreach-content-management-apis/-/bloomreach-content-management-apis-1.2.0.tgz#274fe692cdad1dd6587dd0c87c78df079d8e4edd"
+  integrity sha512-9FgcaEBPweTJK6JiiCT6yEoeLN81fSSCJ/8FOCg0LyFFlx4FLVbSvGcKTYHLTzp674aOaNluc8GGZkCuz3//8Q==
   dependencies:
     axios "^1.2.2"
 
