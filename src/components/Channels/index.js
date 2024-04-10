@@ -7,7 +7,7 @@ import NextLink from 'next/link';
 import { getAllChannels } from 'bloomreach-content-management-apis';
 
 // Components
-import ChannelIcon from 'components/ChannelIcon'
+import { ChannelIcon, Loader } from 'src/components'
 import {
   Card,
   CardContent,
@@ -31,15 +31,8 @@ const ChannelsComponent = () => {
   const [channels, setChannels] = useState([])
   const [projects, setProjects] = useState([])
 
-  const {
-    appConfiguration
-  } = useContext(ConfigurationContext)
-
-  const {
-    environment,
-    xAuthToken,
-    projectId,
-  } = appConfiguration.environments?.source
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
 
   useEffect(() => {
     if (environment && xAuthToken) {
@@ -77,18 +70,7 @@ const ChannelsComponent = () => {
         }}
       >
       { !isLoaded
-        ?
-          <Grid
-            item
-            xs={12}
-            justifyContent="center"
-            alignItems="stretch"
-            alignContent="stretch"
-          >
-            <Card>
-              <CircularProgress />
-            </Card>
-          </Grid>
+        ? <Loader open={!isLoaded} />
         :
           <>
             {projects.map((project) => (

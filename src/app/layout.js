@@ -3,16 +3,19 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import styled from '@emotion/styled'
 import { BloomreachTheme, config } from '../theme/schemes/BloomreachTheme'
 
 // Components
 import { Box } from '@mui/material'
+import styled from '@emotion/styled'
 import Footer from 'src/components/Footer'
 import Header from 'src/components/Header'
 import Sidebar from 'src/components/Sidebar'
 
+import store from 'src/redux/store'
+
 // Contexts
+import { Provider } from 'react-redux';
 import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
 import { ErrorProvider } from 'src/contexts/ErrorContext';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
@@ -42,28 +45,30 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <ErrorProvider>
-            <ConfigurationProvider>
-              <SidebarProvider>
-                <ThemeProvider theme={BloomreachTheme}>
-                <CssBaseline />
-                  <AppWrapper>
-                    <Header />
-                    <Sidebar />
-                    <PageWrapper sx={{
-                      ml: {
-                        xs: 0,
-                        lg: config.sidebar.width
-                      }
-                    }}>
-                      {children}
-                    </PageWrapper>
-                    <Footer />
-                  </AppWrapper>
-                </ThemeProvider>
-              </SidebarProvider>
-            </ConfigurationProvider>
-          </ErrorProvider>
+          <Provider store={store}>
+            <ErrorProvider>
+              <ConfigurationProvider>
+                <SidebarProvider>
+                  <ThemeProvider theme={BloomreachTheme}>
+                  <CssBaseline />
+                    <AppWrapper>
+                      <Header />
+                      <Sidebar />
+                      <PageWrapper sx={{
+                        ml: {
+                          xs: 0,
+                          lg: config.sidebar.width
+                        }
+                      }}>
+                        {children}
+                      </PageWrapper>
+                      <Footer />
+                    </AppWrapper>
+                  </ThemeProvider>
+                </SidebarProvider>
+              </ConfigurationProvider>
+            </ErrorProvider>
+          </Provider>
         </AppRouterCacheProvider>
       </body>
     </html>

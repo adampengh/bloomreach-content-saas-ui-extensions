@@ -1,4 +1,4 @@
-import { getMarkdown } from '/lib/markdown';
+import { getMarkdown } from 'src/lib/markdown';
 
 import MarkdownContent from 'src/components/MarkdownContent';
 import PageTitle from 'src/components/PageTitle';

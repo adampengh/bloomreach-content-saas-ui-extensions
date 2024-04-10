@@ -7,14 +7,14 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { getChannel } from 'bloomreach-content-management-apis';
 
 // Components
-import TabPanel from 'components/TabPanel';
+import { Loader, TabPanel } from 'src/components';
 import {
   ChannelTab,
   ComponentsTab,
   LayoutsTab,
   RoutesTab,
   MenusTab,
-} from '/modules/channels'
+} from './tabs'
 import {
   Box,
   Card,
@@ -47,10 +47,7 @@ const ChannelDetails = ({ channelId }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [channel, setChannel] = useState(null)
   const { appConfiguration } = useContext(ConfigurationContext)
-  const {
-    environment,
-    xAuthToken,
-  } = appConfiguration.environments?.source
+  const { environment, xAuthToken } = appConfiguration.environments?.source
 
   useEffect(() => {
     tab ? setValue(TABS.indexOf(tab)) : 0;
@@ -90,18 +87,7 @@ const ChannelDetails = ({ channelId }) => {
         }}
       >
       { !isLoaded
-        ?
-          <Grid
-            item
-            xs={12}
-            justifyContent="center"
-            alignItems="stretch"
-            alignContent="stretch"
-          >
-            <Card>
-              <CircularProgress />
-            </Card>
-          </Grid>
+        ? <Loader open={!isLoaded} />
         :
           <Grid item xs={12}>
             <Card>

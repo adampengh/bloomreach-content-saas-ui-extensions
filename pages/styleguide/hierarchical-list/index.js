@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import SidebarLayout from 'src/layouts/SidebarLayout';
 
-import HierarchicalList from 'components/HierarchicalList';
+import HierarchicalList from 'src/components/HierarchicalList';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {

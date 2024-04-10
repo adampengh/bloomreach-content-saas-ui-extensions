@@ -7,8 +7,8 @@ import { useSearchParams } from 'next/navigation';
 import { getAllProjects } from 'bloomreach-content-management-apis'
 
 // Components
-import CreateProjectModal from 'components/projects/CreateProjectModal';
-import StatusIndicator from 'components/StatusIndicator';
+import CreateProjectModal from 'src/components/Projects/modals/CreateProjectModal';
+import { StatusIndicator } from 'src/components';
 import {
   Box,
   Button,

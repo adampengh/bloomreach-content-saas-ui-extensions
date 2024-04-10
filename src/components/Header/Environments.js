@@ -8,7 +8,7 @@ import {
 } from 'bloomreach-content-management-apis'
 
 // Components
-import StatusIndicator from 'components/StatusIndicator';
+import { StatusIndicator } from 'src/components';
 import {
   Box,
   Button,

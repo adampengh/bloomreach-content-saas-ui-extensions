@@ -1,20 +1,20 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import ChannelsComponent from 'src/components/Channels';
+import TemplatePageComponent from 'src/components/Templates';
 
 export const metadata = {
-  title: 'Channels'
+  title: 'Templates'
 }
 
-export default function Page() {
+export default async function Templates() {
   return (
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Channels"
+          heading="Templates"
         />
       </PageTitleWrapper>
-      <ChannelsComponent />
+      <TemplatePageComponent />
     </>
   )
 }

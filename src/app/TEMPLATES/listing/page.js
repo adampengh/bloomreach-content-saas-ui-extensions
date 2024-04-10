@@ -1,20 +1,20 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import ChannelsComponent from 'src/components/Channels';
+import ListingTemplateComponent from 'src/components/Templates/ListingTemplate';
 
 export const metadata = {
-  title: 'Channels'
+  title: 'Listing Page'
 }
 
-export default function Page() {
+export default async function ListingTemplate() {
   return (
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Channels"
+          heading="Listing Page"
         />
       </PageTitleWrapper>
-      <ChannelsComponent />
+      <ListingTemplateComponent />
     </>
   )
 }

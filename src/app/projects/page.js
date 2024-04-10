@@ -1,9 +1,9 @@
-import ConfigurationComponent from 'src/components/configuration';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import ProjectsComponent from 'src/components/Projects';
 
 export const metadata = {
-  title: 'Configuration'
+  title: 'Projects'
 }
 
 export default function Page() {
@@ -11,11 +11,10 @@ export default function Page() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Configuration"
-          subHeading="Configuration used throughout the application"
+          heading="Projects"
         />
       </PageTitleWrapper>
-      <ConfigurationComponent />
+      <ProjectsComponent />
     </>
   )
 }
