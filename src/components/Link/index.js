@@ -1,7 +1,9 @@
+'use client'
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation'
 import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
 import { styled } from '@mui/material/styles';

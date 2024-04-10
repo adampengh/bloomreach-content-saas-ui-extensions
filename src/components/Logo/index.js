@@ -1,5 +1,7 @@
-import { Box, styled, Tooltip } from '@mui/material';
-import Link from 'src/components/Link';
+import { Box, Tooltip } from '@mui/material';
+import styled from '@emotion/styled'
+import Link from '../Link';
+import { config } from '../../theme/schemes/BloomreachTheme'
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -26,10 +28,10 @@ const LogoSignWrapper = styled(Box)(
 
 const LogoSign = styled(Box)(
   ({ theme }) => `
-        background: ${theme.general.reactFrameworkColor};
+        background: ${config.general.reactFrameworkColor};
         width: 18px;
         height: 18px;
-        border-radius: ${theme.general.borderRadiusSm};
+        border-radius: ${config.general.borderRadiusSm};
         position: relative;
         transform: rotate(45deg);
         top: 3px;
@@ -45,7 +47,7 @@ const LogoSign = styled(Box)(
             top: -1px;
             right: -20px;
             transform: rotate(0deg);
-            border-radius: ${theme.general.borderRadiusSm};
+            border-radius: ${config.general.borderRadiusSm};
         }
 
         &:before {
@@ -69,8 +71,8 @@ const LogoSignInner = styled(Box)(
         top: 12px;
         left: 12px;
         z-index: 5;
-        border-radius: ${theme.general.borderRadiusSm};
-        background: ${theme.header.background};
+        border-radius: ${config.general.borderRadiusSm};
+        background: ${config.header.background};
 `
 );
 
@@ -85,7 +87,7 @@ const VersionBadge = styled(Box)(
         background: ${theme.palette.success.main};
         color: ${theme.palette.success.contrastText};
         padding: ${theme.spacing(0.4, 1)};
-        border-radius: ${theme.general.borderRadiusSm};
+        border-radius: ${config.general.borderRadiusSm};
         text-align: center;
         display: inline-block;
         line-height: 1;

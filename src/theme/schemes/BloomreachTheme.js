@@ -1,9 +1,9 @@
-import { alpha, createTheme, lighten, darken } from '@mui/material';
+import { alpha, createTheme, lighten, darken } from '@mui/material/styles';
 import '@mui/lab/themeAugmentation';
 
 // import i18n from 'src/i18n/i18n';
 
-const themeColors = {
+export const themeColors = {
   primary: '#002840',
   secondary: '#243B55',
   success: '#57CA22',
@@ -15,9 +15,9 @@ const themeColors = {
   primaryAlt: '#000C57'
 };
 
-const colors = {
+export const colors = {
   gradients: {
-    blue1: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
+    blue1: `linear-gradient(135deg, ${darken('#33C2FF', 0.4)} 0%, #002840 100%)`,
     blue2: 'linear-gradient(135deg, #ABDCFF 0%, #0396FF 100%)',
     blue3: 'linear-gradient(127.55deg, #141E30 3.73%, #243B55 92.26%)',
     blue4: 'linear-gradient(-20deg, #2b5876 0%, #4e4376 100%)',
@@ -130,6 +130,38 @@ const colors = {
     dark: darken(themeColors.info, 0.2)
   }
 };
+
+export const config = {
+  general: {
+    reactFrameworkColor: '#00D8FF',
+    borderRadiusSm: '6px',
+    borderRadius: '10px',
+    borderRadiusLg: '12px',
+    borderRadiusXl: '16px'
+  },
+  sidebar: {
+    background: colors.layout.sidebar.background,
+    textColor: colors.layout.sidebar.textColor,
+    dividerBg: colors.layout.sidebar.dividerBg,
+    menuItemColor: colors.layout.sidebar.menuItemColor,
+    menuItemColorActive: colors.layout.sidebar.menuItemColorActive,
+    menuItemBg: colors.layout.sidebar.menuItemBg,
+    menuItemBgActive: colors.layout.sidebar.menuItemBgActive,
+    menuItemIconColor: colors.layout.sidebar.menuItemIconColor,
+    menuItemIconColorActive: colors.layout.sidebar.menuItemIconColorActive,
+    menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
+    width: '260px'
+  },
+  header: {
+    height: '0',
+    background: colors.alpha.white[100],
+    boxShadow: colors.shadows.cardSm,
+    textColor: colors.secondary.main
+  },
+  footer: {
+    height: '0'
+  }
+}
 
 export const BloomreachTheme = createTheme({
   // direction: i18n.dir(),

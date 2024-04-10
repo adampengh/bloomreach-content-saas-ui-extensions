@@ -1,8 +1,19 @@
 import { Box, Container, Link, Typography, styled } from '@mui/material';
+import { config } from 'src/theme/schemes/BloomreachTheme';
 
-const FooterWrapper = styled(Container)(
+const FooterWrapper = styled(Box)(
   ({ theme }) => `
-        margin-top: ${theme.spacing(4)};
+    align-content: center;
+    align-items: center;
+    background: ${theme.palette.common.white};
+    bottom: 0;
+    display: ${config.footer.height != 0 ? 'flex' : 'none'};
+    height: 68px;
+    left: ${config.sidebar.width};
+    margin-top: ${theme.spacing(4)};
+    position: fixed;
+    right: 0;
+    z-index: 10;
 `
 );
 
@@ -10,9 +21,10 @@ function Footer() {
   return (
     <FooterWrapper className="footer-wrapper">
       <Box
-        pb={4}
+        px={4}
         display={{ xs: 'block', md: 'flex' }}
         alignItems="center"
+        alignContent='center'
         textAlign={{ xs: 'center', md: 'left' }}
         justifyContent="space-between"
       >
