@@ -10,8 +10,6 @@ import Footer from 'src/modules/Footer'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Provider } from 'react-redux';
-import store from 'src/redux/store'
 import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
 import { ErrorProvider } from 'src/contexts/ErrorContext';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
@@ -45,30 +43,28 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <Provider store={store}>
-            <ErrorProvider>
-              <ConfigurationProvider>
-                <SidebarProvider>
-                  <ThemeProvider theme={BloomreachTheme}>
-                  <CssBaseline />
-                    <AppWrapper>
-                      <Header />
-                      <Sidebar />
-                      <PageWrapper sx={{
-                        ml: {
-                          xs: 0,
-                          lg: config.sidebar.width
-                        }
-                      }}>
-                        {children}
-                      </PageWrapper>
-                      <Footer />
-                    </AppWrapper>
-                  </ThemeProvider>
-                </SidebarProvider>
-              </ConfigurationProvider>
-            </ErrorProvider>
-          </Provider>
+          <ErrorProvider>
+            <ConfigurationProvider>
+              <SidebarProvider>
+                <ThemeProvider theme={BloomreachTheme}>
+                <CssBaseline />
+                  <AppWrapper>
+                    <Header />
+                    <Sidebar />
+                    <PageWrapper sx={{
+                      ml: {
+                        xs: 0,
+                        lg: config.sidebar.width
+                      }
+                    }}>
+                      {children}
+                    </PageWrapper>
+                    <Footer />
+                  </AppWrapper>
+                </ThemeProvider>
+              </SidebarProvider>
+            </ConfigurationProvider>
+          </ErrorProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
