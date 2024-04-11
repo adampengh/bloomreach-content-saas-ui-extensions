@@ -1,6 +1,16 @@
 # Changelog
 ## All notable changes to this project will be documented below
 
+## Version 2
+
+### 2.0.0 (March 4, 2024)
+- Upgraded app to NextJS v14
+- Upgraded to NodeJS 18
+
+---
+
+## Version 1
+
 ### 1.4.0 (March 4, 2024)
 - Added Batch Import Functionality
 

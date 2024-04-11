@@ -1,4 +1,4 @@
-import NotFoundComponent from "src/components/NotFound"
+import NotFoundComponent from "src/modules/NotFound"
 
 export const metadata = {
   title: '404 - Not Found'

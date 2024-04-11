@@ -1,24 +1,24 @@
 'use client'
-
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { BloomreachTheme, config } from '../theme/schemes/BloomreachTheme'
+import { BloomreachTheme, config } from 'src/theme/schemes/BloomreachTheme'
 
 // Components
 import { Box } from '@mui/material'
 import styled from '@emotion/styled'
-import Footer from 'src/components/Footer'
-import Header from 'src/components/Header'
-import Sidebar from 'src/components/Sidebar'
-
-import store from 'src/redux/store'
+import Footer from 'src/modules/Footer'
 
 // Contexts
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { Provider } from 'react-redux';
+import store from 'src/redux/store'
 import { ConfigurationProvider } from 'src/contexts/ConfigurationContext';
 import { ErrorProvider } from 'src/contexts/ErrorContext';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
+
+// Modules
+import Header from 'src/modules/Header'
+import Sidebar from 'src/modules/Sidebar'
 
 import '../global.css'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import ErrorPage from "src/components/ErrorPage"
+import ErrorPage from "src/modules/ErrorPage"
 
 export const metadata = {
   title: 'Error'

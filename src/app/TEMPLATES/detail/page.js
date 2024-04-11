@@ -1,6 +1,6 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import DetailTemplateComponent from 'src/components/Templates/DetailTemplate';
+import DetailTemplateComponent from 'src/modules/Templates/DetailTemplate';
 
 export const metadata = {
   title: 'Detail Page'

@@ -1,9 +1,9 @@
-import ConfigurationComponent from 'src/modules/Configuration';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import ConvertPageLayoutComponent from 'src/modules/Pages/ConvertPageLayout';
 
 export const metadata = {
-  title: 'Configuration'
+  title: 'Convert Page Layout'
 }
 
 export default function Page() {
@@ -11,11 +11,10 @@ export default function Page() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Configuration"
-          subHeading="Configuration used throughout the application"
+          heading='Convert Page Layout'
         />
       </PageTitleWrapper>
-      <ConfigurationComponent />
+      <ConvertPageLayoutComponent />
     </>
   )
 }

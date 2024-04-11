@@ -1,20 +1,21 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import TemplatePageComponent from 'src/modules/Templates';
+import ExportImport from 'src/modules/ExportImport';
 
 export const metadata = {
-  title: 'Templates'
+  title: 'Content Export/Import'
 }
 
-export default async function Templates() {
+export default function Configuration() {
   return (
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Templates"
+          heading="Export & Import"
+          subHeading="Batch Export & Import Operation"
         />
       </PageTitleWrapper>
-      <TemplatePageComponent />
+      <ExportImport />
     </>
   )
 }
