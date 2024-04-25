@@ -19,7 +19,7 @@ import {
 import AddChannelModal from './modals/AddChannelModal';
 import DeleteChannelModal from './modals/DeleteChannelModal';
 import DeleteProjectModal from './modals/DeleteProjectModal';
-import { ChannelIcon, Loader, StatusIndicator, TabPanel } from 'src/components'
+import { ChannelIcon, StatusIndicator, TabPanel } from 'src/components'
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import {
@@ -29,7 +29,6 @@ import {
   ButtonGroup,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Grid,
   IconButton,
@@ -45,15 +44,13 @@ import {
 } from '@mui/material';
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const ProjectDetails = ({ instance, projectId }) => {
+export const ProjectsDetailsModule = ({ instance, projectId }) => {
   // State
-  const [isLoaded, setIsLoaded] = useState(false)
   const [showAddChannelModal, setShowAddChannelModal] = useState(false)
   const [showDeleteChannelModal, setShowDeleteChannelModal] = useState(false)
   const [channelToDelete, setChannelToDelete] = useState(null)
@@ -69,6 +66,7 @@ const ProjectDetails = ({ instance, projectId }) => {
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
+  const { setLoading } = useContext(LoadingContext)
 
 
   useEffect(() => {
@@ -77,22 +75,33 @@ const ProjectDetails = ({ instance, projectId }) => {
       const environment = appConfiguration?.environments?.[instance]?.environment
       const xAuthToken = appConfiguration?.environments?.[instance]?.xAuthToken
       if (environment && xAuthToken) {
-        getDeveloperProject(environment, xAuthToken, projectId)
+        setLoading({ loading: true, message: `Loading Project ${projectId}` })
+        // Get Developer Project Details
+        const promise1 = getDeveloperProject(environment, xAuthToken, projectId)
           .then(response => {
             console.log('projectData', response.data)
             setProjectData(response.data)
           })
           .catch(err => console.log(err))
 
-        getAllCoreChannels(environment)
+
+        const promise2 = getAllCoreChannels(environment)
           .then(response => setCoreChannels(response.data))
           .catch(err => console.log(err))
 
-        getAllChannels(environment, xAuthToken)
+        const promise3 = getAllChannels(environment, xAuthToken)
           .then(response => setChannels(response?.data?.filter(project => project.branch === projectId)))
           .catch(err => console.log(err))
 
-        setIsLoaded(true)
+        Promise.all([promise1, promise2, promise3])
+          .then(() => {
+            console.log('All Promises Resolved')
+            setLoading({ loading: false, message: '' })
+          })
+          .catch(err => {
+            console.log(err)
+            setLoading({ loading: false, message: '' })
+          })
       }
     }
   }, [instance, projectId, appConfiguration])
@@ -161,7 +170,7 @@ const ProjectDetails = ({ instance, projectId }) => {
           alignContent='center'
           justifyContent='space-between'
         >
-          <Grid item display="flex">
+          <Grid item display='flex'>
             <Grid item>
               <PageTitle
                 heading={projectData?.name}
@@ -177,13 +186,13 @@ const ProjectDetails = ({ instance, projectId }) => {
             </Grid>
           </Grid>
           <Grid item>
-            <ButtonGroup aria-label="outlined primary button group">
+            <ButtonGroup aria-label='outlined primary button group'>
               {/* IN PROGRESS */}
               { projectData?.state?.status === 'IN_PROGRESS' &&
                 projectData?.state?.availableActions?.includes('REBASE_PROJECT') &&
                 <Button
                   sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
-                  color="primary"
+                  color='primary'
                   onClick={() => handleRebaseProject()}
                 >
                   Update
@@ -195,7 +204,7 @@ const ProjectDetails = ({ instance, projectId }) => {
                 <>
                   <Button
                     sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
-                    color="primary"
+                    color='primary'
                     onClick={() => handleReopenProject()}
                   >
                     Re-Open
@@ -206,7 +215,7 @@ const ProjectDetails = ({ instance, projectId }) => {
               { projectData?.state?.status !== 'MERGED' &&
                 <Button
                   sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
-                  color="primary"
+                  color='primary'
                   onClick={() => handleMergeProject()}
                 >
                   Merge
@@ -215,7 +224,7 @@ const ProjectDetails = ({ instance, projectId }) => {
               <Button
                 disabled={!(projectData?.state?.status === 'IN_PROGRESS' || projectData?.state?.status === 'MERGED')}
                 sx={{ margin: 1, marginRight: 0, marginLeft: 0 }}
-                color="error"
+                color='error'
                 onClick={() => setShowDeleteProjectModal(true)}
               >
                 Delete Project
@@ -225,50 +234,47 @@ const ProjectDetails = ({ instance, projectId }) => {
         </Grid>
       </PageTitleWrapper>
 
-      <Container maxWidth="xl">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem'}}>
+      <Container maxWidth='xl'>
+        <Breadcrumbs aria-label='breadcrumb' sx={{ marginBottom: '1.5rem'}}>
           <Link
-            color="inherit"
-            href="/projects"
-            underline="hover"
+            color='inherit'
+            href='/projects'
+            underline='hover'
           >
             Projects
           </Link>
-          <Typography color="text.primary">{projectData?.name}</Typography>
+          <Typography color='text.primary'>{projectData?.name}</Typography>
         </Breadcrumbs>
 
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
+          direction='row'
+          justifyContent='center'
+          alignItems='stretch'
+          alignContent='stretch'
           sx={{
             '& .MuiCircularProgress-root': {
               margin: '24px'
             }
           }}
         >
-        { !isLoaded
-          ? <Loader open={!isLoaded} />
-          :
             <Grid item xs={12}>
               <Card>
                 <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={tab} onChange={handleChange} aria-label="basic tabs example">
-                      <Tab label="Channels" />
-                      <Tab label="JSON" />
+                    <Tabs value={tab} onChange={handleChange} aria-label='basic tabs example'>
+                      <Tab label='Channels' />
+                      <Tab label='JSON' />
                     </Tabs>
                   </Box>
                   <TabPanel value={tab} index={0}>
                     <List sx={{ padding: 0 }}>
                       {channels?.map(channel =>
-                        <ListItem key={channel.id} component="div"
+                        <ListItem key={channel.id} component='div'
                           secondaryAction={
                             <IconButton
-                              edge="end"
-                              aria-label="delete"
+                              edge='end'
+                              aria-label='delete'
                               onClick={() => handleClickDeleteIcon(channel.id)}
                             >
                               <DeleteIcon />
@@ -288,7 +294,7 @@ const ProjectDetails = ({ instance, projectId }) => {
                     <Button
                       disabled={!availableChannels.length > 0}
                       sx={{ margin: 1 }}
-                      variant="outlined"
+                      variant='outlined'
                       onClick={() => setShowAddChannelModal(true)}
                     >
                       Add Channels
@@ -309,7 +315,6 @@ const ProjectDetails = ({ instance, projectId }) => {
                 </CardContent>
               </Card>
             </Grid>
-          }
         </Grid>
       </Container>
 
@@ -341,5 +346,3 @@ const ProjectDetails = ({ instance, projectId }) => {
     </>
   )
 }
-
-export default ProjectDetails

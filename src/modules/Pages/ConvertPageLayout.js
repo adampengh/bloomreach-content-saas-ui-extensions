@@ -47,14 +47,14 @@ const ConvertPageLayoutComponent = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSkip = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
+  // const handleSkip = () => {
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //   setSkipped((prevSkipped) => {
+  //     const newSkipped = new Set(prevSkipped.values());
+  //     newSkipped.add(activeStep);
+  //     return newSkipped;
+  //   });
+  // };
 
   const handleReset = () => {
     setActiveStep(0);
@@ -91,13 +91,13 @@ const ConvertPageLayoutComponent = () => {
 
   return (
     <>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
+          direction='row'
+          justifyContent='center'
+          alignItems='stretch'
+          alignContent='stretch'
           sx={{
             '& .MuiGrid-item': {
               textAlign: 'center'
@@ -143,7 +143,7 @@ const ConvertPageLayoutComponent = () => {
 
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                       <Button
-                        color="inherit"
+                        color='inherit'
                         disabled={activeStep === 0}
                         onClick={handleBack}
                         sx={{ mr: 1 }}

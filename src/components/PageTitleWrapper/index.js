@@ -20,7 +20,7 @@ const PageTitle = styled(Box)(
 
 const PageTitleWrapper = ({ children }) => {
   return (
-    <PageTitle className="MuiPageTitle-wrapper">
+    <PageTitle className='MuiPageTitle-wrapper'>
       {children}
     </PageTitle>
   );

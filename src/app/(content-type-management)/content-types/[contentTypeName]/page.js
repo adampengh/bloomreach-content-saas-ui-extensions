@@ -1,4 +1,4 @@
-import ContentTypeDetailComponent from 'src/modules/ContentTypes/ContentTypeDetail'
+import ContentTypeDetailModule from 'src/modules/ContentTypes/ContentTypeDetail'
 
 export const metadata = {
   title: 'Content Type Details'
@@ -9,7 +9,7 @@ export default function Page({ params }) {
 
   return (
     <>
-      <ContentTypeDetailComponent contentTypeName={contentTypeName} />
+      <ContentTypeDetailModule contentTypeName={contentTypeName} />
     </>
   )
 }

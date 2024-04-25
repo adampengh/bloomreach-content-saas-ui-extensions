@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 
 // API
 import {
@@ -17,17 +17,15 @@ import {
   DialogContentText,
   IconButton,
   Typography,
-} from '@mui/material';
-import {
-  LoadingButton
- } from '@mui/lab';
+} from '@mui/material'
+import { LoadingButton } from '@mui/lab'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
+
 
 const DeleteComponentModal = ({
   showDeleteComponentsModal,
@@ -97,17 +95,17 @@ const DeleteComponentModal = ({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleDeleteComponents}
       >
-        <DialogTitle id="alert-dialog-title">
-          <Typography variant="h3" component="h3">Confirm Deletion</Typography>
+        <DialogTitle id='alert-dialog-title'>
+          <Typography variant='h3' component='h3'>Confirm Deletion</Typography>
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -120,7 +118,7 @@ const DeleteComponentModal = ({
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ pb: '64px' }}>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id='alert-dialog-description'>
             Delete {selectedComponents.length} components from {channelId}
             <ul>
               {selectedComponents?.map((component, index) =>
@@ -136,10 +134,10 @@ const DeleteComponentModal = ({
           >Cancel</Button>
           <LoadingButton
             loading={isProcessing}
-            color="error"
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            color='error'
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

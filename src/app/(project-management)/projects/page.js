@@ -1,6 +1,7 @@
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import ProjectsComponent from 'src/modules/Projects';
+
+import PageTitle from 'src/components/PageTitle'
+import PageTitleWrapper from 'src/components/PageTitleWrapper'
+import { ProjectsListModule } from 'src/modules'
 
 export const metadata = {
   title: 'Projects'
@@ -11,10 +12,10 @@ export default function Page() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Projects"
+          heading='Projects'
         />
       </PageTitleWrapper>
-      <ProjectsComponent />
+      <ProjectsListModule />
     </>
   )
 }

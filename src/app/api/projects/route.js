@@ -10,7 +10,7 @@ export async function GET() {
 export async function POST() {
   const options = { status: 405, statusText: 'Method Not Allowed' }
   const blob = new Blob([JSON.stringify(options, null, 2)], {
-    type: "application/json",
+    type: 'application/json',
   });
   const response = new Response(blob, options)
   return response
@@ -26,7 +26,7 @@ export async function DELETE(request) {
   if (!xAuthToken) {
     const response = { status: 401 }
     const blob = new Blob([JSON.stringify(response, null, 2)], {
-      type: "application/json",
+      type: 'application/json',
     });
     return new Response(blob, response)
   }
@@ -37,7 +37,7 @@ export async function DELETE(request) {
   if (!environment) {
     const response = { status: 406, statusText: 'Not Acceptable', message: 'environment query parameter is required'}
     const blob = new Blob([JSON.stringify(response, null, 2)], {
-      type: "application/json",
+      type: 'application/json',
     });
     return new Response(blob, response)
   }
@@ -46,7 +46,7 @@ export async function DELETE(request) {
   if (!projectId) {
     const response = { status: 406, statusText: 'Not Acceptable', message: 'projectId query parameter is required'}
     const blob = new Blob([JSON.stringify(response, null, 2)], {
-      type: "application/json",
+      type: 'application/json',
     });
     return new Response(blob, response)
   }
@@ -62,7 +62,7 @@ export async function DELETE(request) {
       console.log('response', response.data)
       const res = { status: 200 }
       const blob = new Blob([JSON.stringify(response.data, null, 2)], {
-        type: "application/json",
+        type: 'application/json',
       });
       return { blob, res }
     })
@@ -71,7 +71,7 @@ export async function DELETE(request) {
       console.error(error.response.data)
       const res = { status: error.response.status }
       const blob = new Blob([JSON.stringify(error, null, 2)], {
-        type: "application/json",
+        type: 'application/json',
       });
       return { blob, res }
     })

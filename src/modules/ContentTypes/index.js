@@ -1,18 +1,17 @@
 'use client'
 
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 
 // APIs
-import { getAllContentTypes, getDeveloperProject } from 'bloomreach-content-management-apis';
+import { getAllContentTypes, getDeveloperProject } from 'bloomreach-content-management-apis'
 
 // Components
-import { DepGraph } from 'dependency-graph';
-import { Loader } from 'src/components'
-import CopyContentTypeModal from './modals/CopyContentTypeModal';
-import DeleteContentTypeModal from './modals/DeleteContentTypeModal';
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import { DepGraph } from 'dependency-graph'
+import CopyContentTypeModal from './modals/CopyContentTypeModal'
+import DeleteContentTypeModal from './modals/DeleteContentTypeModal'
+import PageTitle from 'src/components/PageTitle'
+import PageTitleWrapper from 'src/components/PageTitleWrapper'
 import {
   Alert,
   Box,
@@ -22,34 +21,32 @@ import {
   CardContent,
   Container,
   Grid,
-} from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+} from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 
 // Constants
 import { DATA_GRID_HEIGHT } from 'src/lib/constants'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import EditIcon from '@mui/icons-material/Edit'
 
 
 
-const ContentTypesComponent = () => {
+const ContentTypesModule = () => {
   // Context
-  const { handleShowSnackbar } = useContext(ErrorContext)
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken } = appConfiguration.environments?.source
+  const { setLoading } = useContext(LoadingContext)
 
   // State
   const [contentTypes, setContentTypes] = useState([])
   const [pageData, setPageData] = useState([])
-  const [isLoaded, setIsLoaded] = useState(false)
   const [showCopyModal, setShowCopyModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [isSourceProjectIncludeContentTypes, setIsSourceProjectIncludeContentTypes] = useState(false)
@@ -62,6 +59,7 @@ const ContentTypesComponent = () => {
 
   useEffect(() => {
     if (environment && xAuthToken) {
+      setLoading({ loading: true, message: '' })
       getAllContentTypes(environment, xAuthToken, 'development')
         .then(async (response) => {
           const contentTypes = response.data
@@ -77,10 +75,10 @@ const ContentTypesComponent = () => {
           })
           console.log('rows', rows)
           setPageData(rows)
-          setIsLoaded(true)
+          setLoading({ loading: false, message: '' })
         })
-        .catch((error) => {
-          setIsLoaded(true)
+        .catch(() => {
+          setLoading({ loading: false, message: '' })
         })
     }
 
@@ -142,10 +140,10 @@ const ContentTypesComponent = () => {
           return (
             <>
               {isSourceProjectIncludeContentTypes &&
-                <ButtonGroup size="small" variant="outlined">
+                <ButtonGroup size='small' variant='outlined'>
                   <Button sx={{ padding: padding}}>
                     <NextLink href={`/content-types/${params.row.id}`} legacyBehavior>
-                      <EditIcon fontSize="small" />
+                      <EditIcon fontSize='small' />
                     </NextLink>
                   </Button>
                   <Button
@@ -156,16 +154,16 @@ const ContentTypesComponent = () => {
                     }}
                     disabled={(!isTargetProjectIncludeContentTypes)}
                   >
-                    <ContentCopyIcon fontSize="small" />
+                    <ContentCopyIcon fontSize='small' />
                   </Button>
                   <Button
-                    color="error"
+                    color='error'
                     onClick={() => {
                       setSelectedRows([params.row.id])
                       setShowDeleteModal(true)
                     }}
                     sx={{ padding: padding}}>
-                    <DeleteOutlineIcon fontSize="small" />
+                    <DeleteOutlineIcon fontSize='small' />
                   </Button>
                 </ButtonGroup>
               }
@@ -198,28 +196,24 @@ const ContentTypesComponent = () => {
     ]
   ))
 
-  if (!isLoaded) {
-    return <Loader open={!isLoaded} />
-  }
-
   return (
     <>
       <PageTitleWrapper>
         <Grid
           container
-          justifyContent="space-between"
-          flexDirection="row"
-          flexWrap="nowrap"
+          justifyContent='space-between'
+          flexDirection='row'
+          flexWrap='nowrap'
         >
           <Grid item xs={12}>
-            <PageTitle heading="Content Types" />
+            <PageTitle heading='Content Types' />
           </Grid>
-          <Grid item xs={12} display="inline-flex" justifyContent="flex-end">
+          <Grid item xs={12} display='inline-flex' justifyContent='flex-end'>
             {isSourceProjectIncludeContentTypes &&
-              <ButtonGroup aria-label="outlined primary button group">
+              <ButtonGroup aria-label='outlined primary button group'>
                 <Button
                   disabled // TODO: Add ability to create new content types
-                  variant="contained"
+                  variant='contained'
                   startIcon={<AddIcon />}
                 >Content Type</Button>
                 {isTargetProjectIncludeContentTypes &&
@@ -230,8 +224,8 @@ const ContentTypesComponent = () => {
                   >Copy</Button>
                 }
                 <Button
-                  color="error"
-                  variant="outlined"
+                  color='error'
+                  variant='outlined'
                   disabled={!selectedRows.length}
                   startIcon={<DeleteOutlineIcon />}
                   onClick={setShowDeleteModal}
@@ -242,20 +236,20 @@ const ContentTypesComponent = () => {
         </Grid>
       </PageTitleWrapper>
 
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
+          direction='row'
+          justifyContent='center'
+          alignItems='stretch'
+          alignContent='stretch'
           spacing={2}
         >
           {!isSourceProjectIncludeContentTypes &&
             <Grid item xs={12}>
               <Card>
                 <CardContent sx={{ paddingBottom: '16px !important' }}>
-                  <Alert severity="warning">The currently selected Source Environment Developer Project ({appConfiguration?.environments?.source?.projectId}) does not include Content Type changes</Alert>
+                  <Alert severity='warning'>The currently selected Source Environment Developer Project ({appConfiguration?.environments?.source?.projectId}) does not include Content Type changes</Alert>
                 </CardContent>
               </Card>
             </Grid>
@@ -264,7 +258,7 @@ const ContentTypesComponent = () => {
             <Grid item xs={12}>
               <Card>
                 <CardContent sx={{ paddingBottom: '16px !important' }}>
-                  <Alert severity="warning">The currently selected Target Environment Developer Project ({appConfiguration?.environments?.target?.projectId}) does not include Content Type changes</Alert>
+                  <Alert severity='warning'>The currently selected Target Environment Developer Project ({appConfiguration?.environments?.target?.projectId}) does not include Content Type changes</Alert>
                 </CardContent>
               </Card>
             </Grid>
@@ -327,4 +321,4 @@ const ContentTypesComponent = () => {
   )
 }
 
-export default ContentTypesComponent
+export default ContentTypesModule

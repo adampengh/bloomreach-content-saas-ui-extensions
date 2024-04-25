@@ -32,12 +32,12 @@ const NotFoundComponent = () => {
   return (
     <MainContent>
       <TopWrapper>
-        <Container maxWidth="md">
-          <Box textAlign="center">
-            <Typography variant="h2" sx={{ my: 2 }}>
+        <Container maxWidth='md'>
+          <Box textAlign='center'>
+            <Typography variant='h2' sx={{ my: 2 }}>
               The page you are looking for doesn't exist.
             </Typography>
-            <Button href="/" variant="contained">
+            <Button href='/' variant='contained'>
               Go to homepage
             </Button>
           </Box>

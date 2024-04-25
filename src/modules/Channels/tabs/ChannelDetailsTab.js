@@ -20,10 +20,11 @@ import {
 } from '@mui/material'
 
 // Contexts
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 // Lib
 import { locales } from 'src/lib/locales'
+
 
 const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
   // Context
@@ -59,18 +60,18 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
   return (
     <>
       <Box
-        component="form"
+        component='form'
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
-        display="flex"
+        display='flex'
         sx={{ margin: 0, marginTop: -2 }}
       >
         <Grid
           container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="stretch"
+          direction='row'
+          justifyContent='flex-start'
+          alignItems='stretch'
           rowSpacing={3}
           columnSpacing={3}
           sx={{ width: '100%' }}
@@ -81,9 +82,9 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
               spacing={3}
             >
               <TextField
-                id="name"
-                name="name"
-                label="Channel Name"
+                id='name'
+                name='name'
+                label='Channel Name'
                 value={channelData.name}
                 fullWidth
                 onChange={(e) => {
@@ -96,41 +97,41 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
               />
               <TextField
                 disabled
-                id="id"
-                name="id"
-                label="Channel ID"
+                id='id'
+                name='id'
+                label='Channel ID'
                 value={channelData.id}
                 fullWidth
               />
               <TextField
                 disabled
-                id="branch"
-                name="branch"
-                label="Branch"
+                id='branch'
+                name='branch'
+                label='Branch'
                 value={channelData.branch}
                 fullWidth
               />
               <TextField
                 disabled
-                id="branchOf"
-                name="branchOf"
-                label="Branch of"
+                id='branchOf'
+                name='branchOf'
+                label='Branch of'
                 value={channelData.branchOf}
                 fullWidth
               />
               <TextField
                 disabled
-                id="projectName"
-                name="projectName"
-                label="Project Name"
+                id='projectName'
+                name='projectName'
+                label='Project Name'
                 value={channelData.projectName}
                 fullWidth
               />
               <TextField
                 disabled
-                id="contentRootPath"
-                name="contentRootPath"
-                label="Content Root Path"
+                id='contentRootPath'
+                name='contentRootPath'
+                label='Content Root Path'
                 value={channelData.contentRootPath}
                 fullWidth
               />
@@ -143,9 +144,9 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
               sx={{ width: '100%', maxWidth: '480px' }}
             >
               <TextField
-                id="icon"
-                name="icon"
-                label="Icon"
+                id='icon'
+                name='icon'
+                label='Icon'
                 value={channelData.icon}
                 fullWidth
                 onChange={(e) =>
@@ -156,21 +157,21 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
                 }
                 InputProps={{
                   endAdornment:
-                    <InputAdornment position="end">
+                    <InputAdornment position='end'>
                       <ChannelIcon icon={channelData.icon} />
                     </InputAdornment>
                 }}
               />
               <Autocomplete
                 disablePortal
-                id="locale"
-                name="locale"
+                id='locale'
+                name='locale'
                 options={locales}
                 fullWidth
                 value={channelData.locale}
-                renderInput={(params) => <TextField {...params} label="Locale" />}
+                renderInput={(params) => <TextField {...params} label='Locale' />}
                 renderOption={(props, option) => (
-                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                  <Box component='li' sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                     {option.displayName} - {option.locale}
                   </Box>
                 )}
@@ -183,15 +184,15 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
               />
               <TextField
                 disabled
-                id="defaultDevice"
-                name="defaultDevice"
-                label="Default Device"
+                id='defaultDevice'
+                name='defaultDevice'
+                label='Default Device'
                 value={channelData.defaultDevice}
                 fullWidth
               />
               <FormControlLabel
-                id="remoteHostProtection"
-                name="remoteHostProtection"
+                id='remoteHostProtection'
+                name='remoteHostProtection'
                 onClick={(e) =>
                   setChannelData(prevState => ({
                     ...prevState,
@@ -208,8 +209,8 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
 
           <Grid item xs={12}>
             <Button
-              variant="contained"
-              type="submit"
+              variant='contained'
+              type='submit'
             >Save</Button>
           </Grid>
         </Grid>

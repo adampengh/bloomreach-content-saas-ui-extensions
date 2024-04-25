@@ -4,7 +4,6 @@ import { useState } from 'react'
 import ChannelDetailsTab from 'src/modules/Channels/tabs/ChannelDetailsTab'
 import ChannelParametersTab from 'src/modules/Channels/tabs/ChannelParametersTab'
 import ChannelParametersValuesTab from 'src/modules/Channels/tabs/ChannelParametersValuesTab'
-import ChannelResponseHeaders from 'src/modules/Channels/tabs/ChannelResponseHeaders'
 import {
   Box,
   Grid,
@@ -23,23 +22,23 @@ export const ChannelTab = ({ channel, environment, xAuthToken }) => {
   return (
     <Grid
       container
-      direction="row"
-      justifyContent="flex-start"
-      alignItems="stretch"
+      direction='row'
+      justifyContent='flex-start'
+      alignItems='stretch'
       spacing={3}
       sx={{ width: '100%' }}
     >
       <Grid item xs={12}>
         <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', minHeight: '400px' }}>
           <Tabs
-            orientation="vertical"
+            orientation='vertical'
             value={activeTab}
             onChange={handleTabChange}
             sx={{ borderRight: 1, borderColor: 'divider', marginRight: 3 }}
           >
-            <Tab label="Channel Settings" />
-            <Tab label="Properties" />
-            <Tab label="Property Values" />
+            <Tab label='Channel Settings' />
+            <Tab label='Properties' />
+            <Tab label='Property Values' />
             {/* <Tab label="Response Headers" /> */}
           </Tabs>
 

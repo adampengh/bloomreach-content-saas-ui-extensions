@@ -1,6 +1,7 @@
-// 'use client'
-import { useContext } from 'react';
-import { SidebarContext } from 'src/contexts/SidebarContext';
+'use client'
+
+import { useContext } from 'react'
+import { SidebarContext } from 'src/contexts'
 import styled from '@emotion/styled'
 import { config } from 'src/theme/schemes/BloomreachTheme'
 
@@ -11,7 +12,6 @@ import {
   Box,
   Button,
   Drawer,
-  alpha,
   Divider,
   useTheme,
   lighten,
@@ -37,6 +37,7 @@ const Sidebar = () => {
   return (
     <>
       <SidebarWrapper
+        as='nav'
         sx={{
           display: {
             xs: 'none',
@@ -46,10 +47,18 @@ const Sidebar = () => {
           overflow: 'hidden',
           left: 0,
           top: 0,
-          background:
-            theme.palette.mode === 'dark'
-              ? alpha(lighten(config.header.background, 0.1), 0.5)
-              : `linear-gradient(to bottom, ${lighten(config.sidebar.background, 0.1)}, ${darken(config.sidebar.background, 0.2)})`,
+          background: `radial-gradient(circle at top left, ${lighten(config.sidebar.background, 0.2)}, ${darken(config.sidebar.background, 0.3)})`,
+          '&::before': {
+            display: 'block',
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            right: 0,
+            width: '100%',
+            height: '100%',
+            background: `linear-gradient(to right, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0.3) 100%)`
+          }
         }}
       >
         <Scrollbar>
@@ -71,19 +80,19 @@ const Sidebar = () => {
         />
         <Box p={2}>
           <Button
-            href="/release-notes"
-            variant="text"
-            color="primary"
-            size="small"
+            href='/release-notes'
+            variant='text'
+            color='primary'
+            size='small'
             sx={{ color: theme.colors.alpha.trueWhite[70] }}
           >
             Release Notes
           </Button>
           <Button
-            href="/contributing"
-            variant="text"
-            color="primary"
-            size="small"
+            href='/contributing'
+            variant='text'
+            color='primary'
+            size='small'
             sx={{ color: theme.colors.alpha.trueWhite[70] }}
           >
             Contributing
@@ -95,7 +104,7 @@ const Sidebar = () => {
         anchor={theme.direction === 'rtl' ? 'right' : 'left'}
         open={sidebarToggle}
         onClose={closeSidebar}
-        variant="temporary"
+        variant='temporary'
         elevation={9}
       >
         <SidebarWrapper

@@ -25,16 +25,14 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
-import {
-  LoadingButton
- } from '@mui/lab';
+import { LoadingButton } from '@mui/lab'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
+
 
 export default function CopyLayoutModal({
   showModal,
@@ -132,9 +130,7 @@ export default function CopyLayoutModal({
             layoutData,
             xResourceVersion
           )
-            .then(response => {
-              console.log('Put Layout Success')
-            })
+            .then(() => console.log('Put Layout Success'))
             .catch(error => console.error('Put Layout Error', error))
         }
       }
@@ -168,17 +164,17 @@ export default function CopyLayoutModal({
       onClose={handleClose}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleCopyItems}
       >
         <DialogTitle>
           Copy Confirmation
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -200,15 +196,15 @@ export default function CopyLayoutModal({
             </ul>
             <FormControl
               required
-              variant="outlined"
+              variant='outlined'
               sx={{ m: 1, width: '100%', marginTop: 3 }}
             >
-              <InputLabel id="targetProjectId">Environment</InputLabel>
+              <InputLabel id='targetProjectId'>Environment</InputLabel>
               <Select
 
-                id="environment"
-                labelId="Environment"
-                label="Environment"
+                id='environment'
+                labelId='Environment'
+                label='Environment'
                 value={selectedEnvironment}
                 onChange={handleEnvironmentChange}
               >
@@ -239,9 +235,9 @@ export default function CopyLayoutModal({
           <Button onClick={handleClose}>Cancel</Button>
           <LoadingButton
             loading={isProcessing}
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

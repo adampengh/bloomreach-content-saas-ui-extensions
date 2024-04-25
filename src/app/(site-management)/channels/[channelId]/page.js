@@ -1,6 +1,7 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import ChannelDetails from 'src/modules/Channels/ChannelDetails';
+
+import { ChannelDetailsModule } from 'src/modules';
 
 export const metadata = {
   title: 'Channel Details'
@@ -13,10 +14,10 @@ export default function Page({ params }) {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Channel Details"
+          heading='Channel Details'
         />
       </PageTitleWrapper>
-      <ChannelDetails channelId={channelId} />
+      <ChannelDetailsModule channelId={channelId} />
     </>
   )
 }

@@ -1,6 +1,6 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import ExportImport from 'src/modules/ExportImport';
+import ExportImportModule from 'src/modules/ExportImport';
 
 export const metadata = {
   title: 'Content Export/Import'
@@ -11,11 +11,11 @@ export default function Configuration() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Export & Import"
-          subHeading="Batch Export & Import Operation"
+          heading='Export & Import'
+          subHeading='Batch Export & Import Operation'
         />
       </PageTitleWrapper>
-      <ExportImport />
+      <ExportImportModule />
     </>
   )
 }

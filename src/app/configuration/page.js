@@ -11,8 +11,8 @@ export default function Page() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Configuration"
-          subHeading="Configuration used throughout the application"
+          heading='Configuration'
+          subHeading='Configuration used throughout the application'
         />
       </PageTitleWrapper>
       <ConfigurationComponent />

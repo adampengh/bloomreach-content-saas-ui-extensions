@@ -29,8 +29,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -108,15 +107,15 @@ export default function CopyComponentModal({
             componentGroup,
             {
               name: componentGroup,
-              hidden: "false",
-              system: "false"
+              hidden: 'false',
+              system: 'false'
             })
             .then(response => {
               console.log('createComponentGroup', response)
               componentGroups = [...componentGroups, {
                 name: componentGroup,
-                hidden: "false",
-                system: "false"
+                hidden: 'false',
+                system: 'false'
               }]
             })
             .catch(error => console.error('Error creating component group', error))
@@ -163,7 +162,7 @@ export default function CopyComponentModal({
             componentData,
             xResourceVersion
           )
-            .then(response => console.log('Put Component Success'))
+            .then(() => console.log('Put Component Success'))
             .catch(error => console.error('Put Component Error', error))
         }
       }
@@ -197,17 +196,17 @@ export default function CopyComponentModal({
       onClose={handleClose}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleCopyComponents}
       >
         <DialogTitle>
           Copy Confirmation
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -229,15 +228,15 @@ export default function CopyComponentModal({
 
           <FormControl
             required
-            variant="outlined"
+            variant='outlined'
             sx={{ m: 1, width: '100%', marginTop: 3 }}
           >
-            <InputLabel id="targetProjectId">Environment</InputLabel>
+            <InputLabel id='targetProjectId'>Environment</InputLabel>
             <Select
 
-              id="environment"
-              labelId="Environment"
-              label="Environment"
+              id='environment'
+              labelId='Environment'
+              label='Environment'
               value={selectedEnvironment}
               onChange={handleEnvironmentChange}
             >
@@ -270,9 +269,9 @@ export default function CopyComponentModal({
           >Cancel</Button>
           <LoadingButton
             loading={isProcessing}
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 
 // API
 import {
@@ -10,29 +10,24 @@ import {
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControlLabel,
-  FormGroup,
   IconButton,
-  TextField,
 } from '@mui/material'
 
 // Context
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export default function DeleteComponentGroupModal({
   showModal,
   setShowModal,
-  componentGroups,
   setComponentGroups,
   selectedComponentGroup,
   setSelectedComponentGroup,
@@ -51,9 +46,7 @@ export default function DeleteComponentGroupModal({
     event.preventDefault()
 
     await deleteComponentGroup(environment, xAuthToken, channelId, selectedComponentGroup.name)
-      .then(response => {
-        handleShowSnackbar('success', 'Component Group Deleted')
-      })
+      .then(() => handleShowSnackbar('success', 'Component Group Deleted'))
       .catch(error => handleShowSnackbar('error', error.message))
 
     await getAllComponentGroups(environment, xAuthToken, channelId)
@@ -74,18 +67,18 @@ export default function DeleteComponentGroupModal({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         <DialogTitle>
           Delete Component Group
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -103,9 +96,9 @@ export default function DeleteComponentGroupModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            color="error"
-            variant="contained"
-            type="submit"
+            color='error'
+            variant='contained'
+            type='submit'
           >Delete</Button>
         </DialogActions>
       </Box>

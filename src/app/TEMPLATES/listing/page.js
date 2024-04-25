@@ -1,20 +1,22 @@
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import ListingTemplateComponent from 'src/modules/Templates/ListingTemplate';
+
+// Modules
+import { ListingTemplateModule } from 'src/modules/Templates/listing';
 
 export const metadata = {
   title: 'Listing Page'
 }
 
-export default async function ListingTemplate() {
+export default async function TemplatesListing() {
   return (
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Listing Page"
+          heading='Listing Page'
         />
       </PageTitleWrapper>
-      <ListingTemplateComponent />
+      <ListingTemplateModule />
     </>
   )
 }

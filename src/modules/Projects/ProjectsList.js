@@ -7,7 +7,7 @@ import NextLink from 'next/link';
 import { getAllProjects } from 'bloomreach-content-management-apis';
 
 // Components
-import { Loader, StatusIndicator } from 'src/components';
+import { StatusIndicator } from 'src/components';
 import CreateProjectModal from 'src/modules/Projects/modals/CreateProjectModal';
 import {
   Button,
@@ -28,15 +28,21 @@ import {
 } from '@mui/material';
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
 import AddIcon from '@mui/icons-material/Add';
 import DifferenceIcon from '@mui/icons-material/Difference';
 import LanguageIcon from '@mui/icons-material/Language';
 
-const ProjectsComponent = () => {
-  const [isLoaded, setIsLoaded] = useState(false)
+
+export const ProjectsListModule = () => {
+  // Context
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken } = appConfiguration.environments?.source
+  const { setLoading } = useContext(LoadingContext)
+
+  // State
   const [sourceProjects, setSourceProjects] = useState([])
   const [targetProjects, setTargetProjects] = useState([])
 
@@ -44,20 +50,13 @@ const ProjectsComponent = () => {
   const [showCreateSourceProjectModal, setShowCreateSourceProjectModal] = useState(false)
   const [showCreateTargetProjectModal, setShowCreateTargetProjectModal] = useState(false)
 
-  const {
-    appConfiguration
-  } = useContext(ConfigurationContext)
-
-  const {
-    environment,
-    xAuthToken,
-  } = appConfiguration.environments?.source
 
   const timestamp = (project) => new Date(project.system.createdAt).valueOf()
   const sortFunction = (projectA, projectB) => timestamp(projectB) - timestamp(projectA)
 
   useEffect(() => {
     if (environment && xAuthToken) {
+      setLoading({ loading: true, message: 'Loading projects...'})
       // Get source projects
       getAllProjects(environment, xAuthToken)
         .then((response) => {
@@ -65,10 +64,10 @@ const ProjectsComponent = () => {
           console.log('projects', projects)
           projects.sort(sortFunction)
           setSourceProjects(projects)
-          setIsLoaded(true)
+          setLoading({ loading: false, message: '' })
         })
-        .catch((error) => {
-          setIsLoaded(true)
+        .catch(() => {
+          setLoading({ loading: false, message: '' })
         })
     }
 
@@ -79,10 +78,10 @@ const ProjectsComponent = () => {
           let projects = response.data
           projects.sort(sortFunction)
           setTargetProjects(projects)
-          setIsLoaded(true)
+          setLoading({ loading: false, message: '' })
         })
-        .catch((error) => {
-          setIsLoaded(true)
+        .catch(() => {
+          setLoading({ loading: false, message: '' })
         })
     }
   }, [appConfiguration])
@@ -90,8 +89,7 @@ const ProjectsComponent = () => {
   const handleShowModal = (environment) => {
     if (environment === 'source') {
       setShowCreateSourceProjectModal(true)
-    }
-    if (environment === 'target') {
+    } else {
       setShowCreateTargetProjectModal(true)
     }
     setShowModal(true)
@@ -99,39 +97,29 @@ const ProjectsComponent = () => {
 
   return (
     <>
-    <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
+          direction='row'
+          justifyContent='center'
+          alignItems='stretch'
+          alignContent='stretch'
           spacing={3}
-          sx={{
-            '& .MuiCircularProgress-root': {
-              margin: '24px'
-            }
-          }}
         >
-        { !isLoaded
-          ? <Loader open={!isLoaded} />
-          : <>
-              <ProjectsList
-                appConfiguration={appConfiguration?.environments?.source}
-                projects={sourceProjects}
-                header='Source Projects'
-                handleShowModal={handleShowModal}
-                environment='source'
-              />
-              <ProjectsList
-                appConfiguration={appConfiguration?.environments?.target}
-                projects={targetProjects}
-                header='Target Projects'
-                handleShowModal={handleShowModal}
-                environment='target'
-              />
-            </>
-          }
+          <ProjectsList
+            appConfiguration={appConfiguration?.environments?.source}
+            projects={sourceProjects}
+            header='Source Projects'
+            handleShowModal={handleShowModal}
+            environment='source'
+          />
+          <ProjectsList
+            appConfiguration={appConfiguration?.environments?.target}
+            projects={targetProjects}
+            header='Target Projects'
+            handleShowModal={handleShowModal}
+            environment='target'
+          />
         </Grid>
       </Container>
 
@@ -155,7 +143,7 @@ const ProjectsComponent = () => {
           xAuthToken={appConfiguration?.environments?.target?.xAuthToken}
         />
       }
-      </>
+    </>
   )
 }
 
@@ -173,19 +161,19 @@ const ProjectsList = ({
           title={
             <Grid
               container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              alignContent="center">
-                <Grid item xs={6} display="flex" alignContent="center" alignItems="center">
-                  <Typography variant="h4" component="span">{header}</Typography>
+              direction='row'
+              justifyContent='space-between'
+              alignItems='center'
+              alignContent='center'>
+                <Grid item xs={6} display='flex' alignContent='center' alignItems='center'>
+                  <Typography variant='h4' component='span'>{header}</Typography>
                   { appConfiguration?.environment &&
-                    <Chip color='primary' label={appConfiguration.environment} size="small" sx={{ marginLeft: '0.5rem' }} />
+                    <Chip color='primary' label={appConfiguration.environment} size='small' sx={{ marginLeft: '0.5rem' }} />
                   }
                 </Grid>
-                <Grid item xs={6} textAlign="right">
+                <Grid item xs={6} textAlign='right'>
                   <Button
-                    variant="outlined"
+                    variant='outlined'
                     startIcon={<AddIcon />}
                     onClick={() => handleShowModal(environment)}
                   >New Project</Button>
@@ -197,7 +185,7 @@ const ProjectsList = ({
         <CardContent>
           <List>
             { projects.map((project) => (
-              <ListItem key={project.id} component="div">
+              <ListItem key={project.id} component='div'>
                 <NextLink href={`/projects/${environment}/${project.id}`} passHref legacyBehavior>
                   <ListItemButton>
                     <ListItemAvatar>
@@ -205,7 +193,7 @@ const ProjectsList = ({
                         ?
                           <>
                             <LanguageIcon />
-                            <Tooltip title="Includes Content Types">
+                            <Tooltip title='Includes Content Types'>
                               <DifferenceIcon />
                             </Tooltip>
                           </>
@@ -224,5 +212,3 @@ const ProjectsList = ({
     </Grid>
   );
 }
-
-export default ProjectsComponent;

@@ -1,7 +1,7 @@
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { Box, useTheme } from '@mui/material';
 
-export const Scrollbar = ({ className, children, ...rest }) => {
+export const Scrollbar = ({ children, ...rest }) => {
   const theme = useTheme();
 
   return (

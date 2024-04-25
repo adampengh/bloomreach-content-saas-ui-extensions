@@ -25,16 +25,14 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
-import {
-  LoadingButton
- } from '@mui/lab';
+import { LoadingButton } from '@mui/lab'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
+
 
 export default function CopyRoutesModal({
   showCopyModal,
@@ -133,9 +131,7 @@ export default function CopyRoutesModal({
             routeData,
             xResourceVersion
           )
-            .then(response => {
-              console.log('Put Route Success')
-            })
+            .then(() => console.log('Put Route Success'))
             .catch(error => console.error('Put Route Error', error))
         }
       }
@@ -169,17 +165,17 @@ export default function CopyRoutesModal({
       onClose={handleClose}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleCopyItems}
       >
         <DialogTitle>
           Copy Confirmation
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -201,15 +197,15 @@ export default function CopyRoutesModal({
             </ul>
             <FormControl
               required
-              variant="outlined"
+              variant='outlined'
               sx={{ m: 1, width: '100%', marginTop: 3 }}
             >
-              <InputLabel id="targetProjectId">Environment</InputLabel>
+              <InputLabel id='targetProjectId'>Environment</InputLabel>
               <Select
 
-                id="environment"
-                labelId="Environment"
-                label="Environment"
+                id='environment'
+                labelId='Environment'
+                label='Environment'
                 value={selectedEnvironment}
                 onChange={handleEnvironmentChange}
               >
@@ -240,9 +236,9 @@ export default function CopyRoutesModal({
           <Button onClick={handleClose}>Cancel</Button>
           <LoadingButton
             loading={isProcessing}
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

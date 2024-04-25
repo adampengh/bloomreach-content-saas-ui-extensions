@@ -14,34 +14,30 @@ import {
   Button,
   ButtonGroup,
   Grid,
-} from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+} from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Constants
 import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'src/lib/constants'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import EditIcon from '@mui/icons-material/Edit'
+
 
 export const MenusTab = ({ channel }) => {
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken } = appConfiguration.environments?.source
   const { handleShowSnackbar } = useContext(ErrorContext)
-
-  const {
-    environment,
-    xAuthToken,
-  } = appConfiguration.environments?.source
+  const { setLoading } = useContext(LoadingContext)
 
   // State
-  const [isLoaded, setIsLoaded] = useState(false)
   const [pageSize, setPageSize] = useState(10);
 
   const [menus, setMenus] = useState([])
@@ -52,6 +48,7 @@ export const MenusTab = ({ channel }) => {
 
   useEffect(() => {
     console.log('useEffect getAllMenus()')
+    setLoading({ loading: true, message: 'Loading Menus' })
     getAllMenus(environment, xAuthToken, channel.id)
       .then(response => {
         console.log('menus', response.data)
@@ -63,9 +60,12 @@ export const MenusTab = ({ channel }) => {
         })
         setMenus(columns)
         setPageSize(columns.length)
-        setIsLoaded(true)
+        setLoading({ loading: false, message: '' })
       })
-      .catch(error => handleShowSnackbar('error', error.message))
+      .catch(error => {
+        setLoading({ loading: false, message: '' })
+        handleShowSnackbar('error', error.message)
+      })
   }, [channel])
 
 
@@ -77,13 +77,13 @@ export const MenusTab = ({ channel }) => {
       renderCell: (params) => {
         const padding = '0.25rem 0.5rem';
         return (
-          <ButtonGroup size="small" variant="outlined">
+          <ButtonGroup size='small' variant='outlined'>
             <Button
               disabled
               sx={{ padding: padding}}
               >
               <NextLink href={`/status/coming-soon`} legacyBehavior>
-                <EditIcon fontSize="small" />
+                <EditIcon fontSize='small' />
               </NextLink>
             </Button>
             <Button
@@ -93,16 +93,16 @@ export const MenusTab = ({ channel }) => {
                 setShowCopyModal(true)
               }}
             >
-              <ContentCopyIcon fontSize="small" />
+              <ContentCopyIcon fontSize='small' />
             </Button>
             <Button
-              color="error"
+              color='error'
               onClick={() => {
                 setSelectedItems([params.row.id])
                 setShowDeleteModal(true)
               }}
               sx={{ padding: padding}}>
-              <DeleteOutlineIcon fontSize="small" />
+              <DeleteOutlineIcon fontSize='small' />
             </Button>
           </ButtonGroup>
         );
@@ -113,7 +113,7 @@ export const MenusTab = ({ channel }) => {
       headerName: 'Menu',
       width: 240,
       renderCell: (params) => {
-        const href = `/menus/${params.row.id}`
+        // const href = `/menus/${params.row.id}`
         if (params.row.label) {
           return <NextLink href={'/status/coming-soon'} legacyBehavior>{params.row.label}</NextLink>;
         } else {
@@ -123,32 +123,28 @@ export const MenusTab = ({ channel }) => {
     },
   ];
 
-  if (!isLoaded) {
-    return null
-  }
-
   return (
     <>
       <Grid
         container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        alignContent="center"
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+        alignContent='center'
         rowSpacing={3}
         sx={{ width: '100%' }}
       >
         <Grid
           item
-          display="flex"
-          alignItems="center"
-          alignContent="center"
-          justifyContent="flex-end"
+          display='flex'
+          alignItems='center'
+          alignContent='center'
+          justifyContent='flex-end'
           xs={12}
           >
-          <ButtonGroup aria-label="outlined primary button group">
+          <ButtonGroup aria-label='outlined primary button group'>
             <Button
-              variant="contained"
+              variant='contained'
               startIcon={<AddIcon />}
               disabled // TODO: Add ability to create menu
             >New Menu</Button>
@@ -158,8 +154,8 @@ export const MenusTab = ({ channel }) => {
               startIcon={<ContentCopyIcon />}
             >Copy</Button>
             <Button
-              color="error"
-              variant="outlined"
+              color='error'
+              variant='outlined'
               disabled={!selectedItems.length}
               startIcon={<DeleteOutlineIcon />}
               onClick={() => setShowDeleteModal(true)}

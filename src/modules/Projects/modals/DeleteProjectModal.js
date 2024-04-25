@@ -18,8 +18,7 @@ import {
  } from '@mui/lab';
 
 // Context
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -80,18 +79,18 @@ export default function DeleteProjectModal({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         <DialogTitle>
           Delete Project
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -109,11 +108,11 @@ export default function DeleteProjectModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <LoadingButton
-            color="error"
+            color='error'
             loading={isProcessing}
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

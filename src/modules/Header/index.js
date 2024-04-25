@@ -6,17 +6,15 @@ import { config } from '../../theme/schemes/BloomreachTheme'
 import {
   alpha,
   lighten,
-  useTheme,
   Box,
   Divider,
   IconButton,
   Stack,
   Tooltip,
 } from '@mui/material';
-import Environments from './Environments';
 
 // Contexts
-import { SidebarContext } from 'src/contexts/SidebarContext';
+import { SidebarContext } from 'src/contexts';
 
 // Icons
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
@@ -48,35 +46,35 @@ const HeaderWrapper = styled(Box)(
 
 const Header = () => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const theme = useTheme();
 
   return (
     <HeaderWrapper
+      as='header'
       display={config.header.height != 0 ? 'flex' : 'none'}
-      alignItems="center"
+      alignItems='center'
     >
       <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        alignItems="center"
+        direction='row'
+        divider={<Divider orientation='vertical' flexItem />}
+        alignItems='center'
         spacing={2}
       >
         {/* <Environments /> */}
       </Stack>
-      <Box display="flex" alignItems="center">
+      <Box display='flex' alignItems='center'>
         <Box
-          component="span"
+          component='span'
           sx={{
             ml: 2,
             display: { lg: 'none', xs: 'inline-block' }
           }}
         >
-          <Tooltip arrow title="Toggle Menu">
-            <IconButton color="primary" onClick={toggleSidebar}>
+          <Tooltip arrow title='Toggle Menu'>
+            <IconButton color='primary' onClick={toggleSidebar}>
               {!sidebarToggle ? (
-                <MenuTwoToneIcon fontSize="small" />
+                <MenuTwoToneIcon fontSize='small' />
               ) : (
-                <CloseTwoToneIcon fontSize="small" />
+                <CloseTwoToneIcon fontSize='small' />
               )}
             </IconButton>
           </Tooltip>
@@ -86,4 +84,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Header;

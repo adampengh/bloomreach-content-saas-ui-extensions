@@ -20,7 +20,7 @@ export default async function ReleaseNotes() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Release Notes"
+          heading='Release Notes'
         />
       </PageTitleWrapper>
       <MarkdownContent markdown={markdown} />

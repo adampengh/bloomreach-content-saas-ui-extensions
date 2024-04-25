@@ -1,4 +1,4 @@
-import { Box, Container, Link, Typography, styled } from '@mui/material';
+import { Box, Typography, styled } from '@mui/material';
 import { config } from 'src/theme/schemes/BloomreachTheme';
 
 const FooterWrapper = styled(Box)(
@@ -17,19 +17,19 @@ const FooterWrapper = styled(Box)(
 `
 );
 
-function Footer() {
+const Footer = () => {
   return (
-    <FooterWrapper className="footer-wrapper">
+    <FooterWrapper as='footer' className='footer-wrapper'>
       <Box
         px={4}
         display={{ xs: 'block', md: 'flex' }}
-        alignItems="center"
+        alignItems='center'
         alignContent='center'
         textAlign={{ xs: 'center', md: 'left' }}
-        justifyContent="space-between"
+        justifyContent='space-between'
       >
         <Box>
-          <Typography variant="subtitle1">
+          <Typography variant='subtitle1'>
             &copy; { new Date().getFullYear() } - Bloomreach
           </Typography>
         </Box>

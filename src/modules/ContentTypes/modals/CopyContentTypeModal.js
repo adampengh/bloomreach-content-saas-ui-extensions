@@ -19,13 +19,10 @@ import {
   MenuItem,
   Select,
 } from '@mui/material'
-import {
-  LoadingButton,
- } from '@mui/lab';
+import { LoadingButton } from '@mui/lab'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 
 export default function CopyContentTypeModal({
@@ -33,7 +30,6 @@ export default function CopyContentTypeModal({
   setShowModal,
   selectedRows,
   setSelectedRows,
-  contentTypes,
   dependencyGraph,
 }) {
   // State
@@ -102,7 +98,7 @@ export default function CopyContentTypeModal({
           data,
           xResourceVersion
         )
-          .then(response => {
+          .then(() => {
             console.log('Put Content Type Success')
           })
           .catch(error => console.error('Put Content Type Error', error))
@@ -123,11 +119,11 @@ export default function CopyContentTypeModal({
       onClose={handleClose}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleCopyContentTypes}
       >
         <DialogTitle>Copy Confirmation</DialogTitle>
@@ -150,15 +146,15 @@ export default function CopyContentTypeModal({
 
           <FormControl
             required
-            variant="outlined"
+            variant='outlined'
             sx={{ m: 1, width: '100%', marginTop: 3 }}
           >
-            <InputLabel id="targetProjectId">Environment</InputLabel>
+            <InputLabel id='targetProjectId'>Environment</InputLabel>
             <Select
               disabled
-              id="environment"
-              labelId="Environment"
-              label="Environment"
+              id='environment'
+              labelId='Environment'
+              label='Environment'
               value={'target'}
             >
               <MenuItem key={0} value={'target'}>
@@ -171,9 +167,9 @@ export default function CopyContentTypeModal({
           <Button onClick={handleClose}>Cancel</Button>
           <LoadingButton
             loading={isProcessing}
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

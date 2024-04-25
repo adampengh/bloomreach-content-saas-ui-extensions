@@ -1,4 +1,4 @@
-import ProjectDetails from 'src/modules/Projects/ProjectDetails'
+import { ProjectsDetailsModule } from 'src/modules'
 
 export const metadata = {
   title: 'Project Details'
@@ -6,11 +6,10 @@ export const metadata = {
 
 export default function Page({ params }) {
   const [instance, projectId] = params.params
-  console.log('PAGE:', instance, projectId)
 
   return (
     <>
-      <ProjectDetails instance={instance} projectId={projectId} />
+      <ProjectsDetailsModule instance={instance} projectId={projectId} />
     </>
   )
 }

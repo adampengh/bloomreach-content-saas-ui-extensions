@@ -1,6 +1,9 @@
+// Components
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import TemplatePageComponent from 'src/modules/Templates';
+
+// Modules
+import { TemplatePageModule } from 'src/modules/Templates';
 
 export const metadata = {
   title: 'Templates'
@@ -11,10 +14,10 @@ export default async function Templates() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Templates"
+          heading='Templates'
         />
       </PageTitleWrapper>
-      <TemplatePageComponent />
+      <TemplatePageModule />
     </>
   )
 }

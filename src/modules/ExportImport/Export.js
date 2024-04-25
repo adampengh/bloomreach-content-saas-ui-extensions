@@ -40,12 +40,12 @@ const ExportComponent = ({
 }) => {
   // State
   const [dataTypes, setDataTypes] = useState(DATA_TYPES)
-  const [sourcePath, setSourcePath] = useState("")
+  const [sourcePath, setSourcePath] = useState('')
 
   const [skippedExportItems, setSkippedExportItems] = useState(0)
   const [elapsedExportTime, setElapsedExportTime] = useState(0)
   const [exportOperationId, setExportOperationId] = useState(null)
-  const [exportJobStatus, setExportJobStatus] = useState("")
+  const [exportJobStatus, setExportJobStatus] = useState('')
   const [exportJobRunning, setExportJobRunning] = useState(false)
   const [downloadReady, setDownloadReady] = useState(false)
 
@@ -73,7 +73,7 @@ const ExportComponent = ({
     event.preventDefault();
     requestAnExport(environment, xAuthToken, sourcePath, null, selectedProject.id, dataTypes)
       .then(resp => {
-        if(resp.data.status === "STARTING") {
+        if(resp.data.status === 'STARTING') {
           setExportOperationId(resp.data.operationId)
           handleExportOperation(resp.data.operationId)
         }}
@@ -87,7 +87,7 @@ const ExportComponent = ({
     const mainLoopId = setInterval(function () {
       getOperationDetails(environment, xAuthToken, operationId)
         .then(resp => {
-          if (resp.data.status === "COMPLETED") {
+          if (resp.data.status === 'COMPLETED') {
             setExportJobRunning(false)
             setDownloadReady(true)
             setElapsedExportTime(0)
@@ -106,7 +106,7 @@ const ExportComponent = ({
     event.preventDefault()
     downloadExportedFiles(environment, xAuthToken, exportOperationId)
       .then(response => {
-        const blob = new Blob([response.data], {type: "application/octet-stream"})
+        const blob = new Blob([response.data], {type: 'application/octet-stream'})
         const url = window.URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
@@ -121,21 +121,21 @@ const ExportComponent = ({
 
   return (
     <Card>
-      <CardHeader title="Export" />
+      <CardHeader title='Export' />
       <Divider />
       <CardContent>
         <Box
-          component="form"
+          component='form'
           sx={{
             '& .MuiTextField-root': { m: 1, width: '90%' }
           }}
           noValidate
-          autoComplete="off"
+          autoComplete='off'
           onSubmit={handleSubmitExport}
         >
           <div>
             <FormControl required sx={{ p: 1, width: '100%' }}>
-              <FormLabel component="legend"><strong>Data Types</strong></FormLabel>
+              <FormLabel component='legend'><strong>Data Types</strong></FormLabel>
               <FormGroup sx={{ padding: 1, display: 'flex', flexDirection: 'row' }}>
                 {DATA_TYPES.map((dataType) => (
                   <FormControlLabel
@@ -154,14 +154,14 @@ const ExportComponent = ({
             </FormControl>
 
             <FormControl
-              variant="outlined"
+              variant='outlined'
               sx={{ m: 1, minWidth: 240, marginTop: 2 }}
             >
-              <InputLabel id="channel">Project</InputLabel>
+              <InputLabel id='channel'>Project</InputLabel>
               <Select
-                id="projectId"
-                labelId="projectId"
-                label="Project ID"
+                id='projectId'
+                labelId='projectId'
+                label='Project ID'
                 value={selectedProject === 'core' ? selectedProject : (selectedProject?.id || '')}
                 onChange={(e) => handleProjectChange(e)}
               >
@@ -177,10 +177,10 @@ const ExportComponent = ({
 
             <TextField
               required
-              id="sourcePath"
-              name="sourcePath"
-              label="Source Path"
-              helperText="/content/documents/<folder>"
+              id='sourcePath'
+              name='sourcePath'
+              label='Source Path'
+              helperText='/content/documents/<folder>'
               placeholder='/content/documents/'
               value={sourcePath}
               onChange={(e) => setSourcePath(e.target.value)}
@@ -190,8 +190,8 @@ const ExportComponent = ({
           <div>
             <Button
               sx={{ margin: 1 }}
-              variant="contained"
-              type="submit"
+              variant='contained'
+              type='submit'
               disabled={!sourcePath}
             >
               Start export
@@ -200,7 +200,7 @@ const ExportComponent = ({
             { downloadReady &&
               <Button
                 sx={{ margin: 1 }}
-                variant="contained"
+                variant='contained'
                 onClick={(e) => handleExportDownload(e)}
               >
                 Download

@@ -23,30 +23,27 @@ import {
   MenuItem,
   Select,
   Tooltip,
-} from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+} from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import EditIcon from '@mui/icons-material/Edit'
+
 
 export const ComponentsTab = ({ channel }) => {
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
-  const {
-    environment,
-    xAuthToken,
-  } = appConfiguration.environments?.source
+  const { environment, xAuthToken } = appConfiguration.environments?.source
+  const { setLoading } = useContext(LoadingContext)
 
   // State
-  const [isLoaded, setIsLoaded] = useState(false)
   const [pageSize, setPageSize] = useState(10);
 
   const [componentGroups, setComponentGroups] = useState([])
@@ -62,21 +59,22 @@ export const ComponentsTab = ({ channel }) => {
   const [showDeleteComponentsModal, setShowDeleteComponentsModal] = useState(false)
 
   useEffect(() => {
+    setLoading({ loading: true, message: 'Loading Component Groups' })
     getAllComponentGroups(environment, xAuthToken, channel.id)
       .then(response => {
         setComponentGroups(response.data)
         setSelectedComponentGroup(response.data.filter(group => !group.system)[0])
-        setIsLoaded(true)
+        setLoading({ loading: false, message: '' })
       })
       .catch(error => {
         handleShowSnackbar('error', error.message)
-        setIsLoaded(true)
+        setLoading({ loading: false, message: '' })
       })
-
   }, [channel])
 
   useEffect(() => {
     if (selectedComponentGroup) {
+      setLoading({ loading: true, message: 'Loading Components' })
       getAllComponents(environment, xAuthToken, channel.id, selectedComponentGroup.name)
         .then(response => {
           const columns = response.data.map(item => {
@@ -88,11 +86,14 @@ export const ComponentsTab = ({ channel }) => {
           })
           setComponents(columns)
           setPageSize(columns.length)
+          setLoading({ loading: false, message: '' })
         })
-        .catch(error => handleShowSnackbar('error', error.message))
+        .catch(error => {
+          handleShowSnackbar('error', error.message)
+          setLoading({ loading: false, message: '' })
+        })
     }
   }, [selectedComponentGroup])
-
 
   const handleComponentGroupChange = (event) => {
     event.preventDefault()
@@ -108,12 +109,12 @@ export const ComponentsTab = ({ channel }) => {
         const padding = '0.25rem 0.5rem';
         return !selectedComponentGroup?.system
           ?
-          <ButtonGroup size="small" variant="outlined">
+          <ButtonGroup size='small' variant='outlined'>
             <Button
               sx={{ padding: padding}}
               >
               <NextLink href={`/components/${channel.id}/${params.row.id}`} legacyBehavior>
-                <EditIcon fontSize="small" />
+                <EditIcon fontSize='small' />
               </NextLink>
             </Button>
             <Button
@@ -123,16 +124,16 @@ export const ComponentsTab = ({ channel }) => {
                 setShowCopyComponentsModal(true)
               }}
             >
-              <ContentCopyIcon fontSize="small" />
+              <ContentCopyIcon fontSize='small' />
             </Button>
             <Button
-              color="error"
+              color='error'
               onClick={() => {
                 setSelectedComponents([params.row.id])
                 setShowDeleteComponentsModal(true)
               }}
               sx={{ padding: padding}}>
-              <DeleteOutlineIcon fontSize="small" />
+              <DeleteOutlineIcon fontSize='small' />
             </Button>
           </ButtonGroup>
         : null;
@@ -163,43 +164,39 @@ export const ComponentsTab = ({ channel }) => {
     },
   ];
 
-  if (!isLoaded) {
-    return null
-  }
-
   return (
     <>
       <Grid
         container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        alignContent="center"
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+        alignContent='center'
         rowSpacing={3}
         sx={{ width: '100%' }}
       >
         <Grid
           item
-          display="flex"
-          alignItems="center"
-          alignContent="center"
-          justifyContent="space-between"
+          display='flex'
+          alignItems='center'
+          alignContent='center'
+          justifyContent='space-between'
           xs={12}>
             <Grid
-              display="flex"
-              alignItems="center"
-              alignContent="center"
-              justifyContent="space-between"
+              display='flex'
+              alignItems='center'
+              alignContent='center'
+              justifyContent='space-between'
             >
               <FormControl
-                variant="outlined"
+                variant='outlined'
                 sx={{ my: 1, marginRight: 1, minWidth: 240 }}
               >
-                <InputLabel id="componentGroup">Component Group</InputLabel>
+                <InputLabel id='componentGroup'>Component Group</InputLabel>
                 <Select
-                  id="componentGroup"
-                  labelId="componentGroup"
-                  label="Component Group"
+                  id='componentGroup'
+                  labelId='componentGroup'
+                  label='Component Group'
                   value={selectedComponentGroup || ''}
                   onChange={handleComponentGroupChange}
                 >
@@ -210,24 +207,24 @@ export const ComponentsTab = ({ channel }) => {
                   ))}
                 </Select>
               </FormControl>
-              <ButtonGroup aria-label="outlined primary button group">
+              <ButtonGroup aria-label='outlined primary button group'>
                 {/* Add Component Group */}
                 <Tooltip
                   leaveDelay={0}
-                  title="Add Component Group"
+                  title='Add Component Group'
                 >
                   <IconButton onClick={() => setShowCreateComponentGroupModal(true)}>
-                    <AddIcon fontSize="small"/>
+                    <AddIcon fontSize='small'/>
                   </IconButton>
                 </Tooltip>
                 {/* Delete Component Group */}
                 {!components?.length &&
                   <Tooltip
                     leaveDelay={0}
-                    title="Delete Component Group"
+                    title='Delete Component Group'
                   >
-                    <IconButton color="error" onClick={() => setShowDeleteComponentGroupModal(true)}>
-                      <DeleteOutlineIcon fontSize="small" />
+                    <IconButton color='error' onClick={() => setShowDeleteComponentGroupModal(true)}>
+                      <DeleteOutlineIcon fontSize='small' />
                     </IconButton>
                   </Tooltip>
                 }
@@ -236,9 +233,9 @@ export const ComponentsTab = ({ channel }) => {
 
           {!selectedComponentGroup?.system &&
             <div>
-              <ButtonGroup aria-label="outlined primary button group">
+              <ButtonGroup aria-label='outlined primary button group'>
                 <Button
-                  variant="contained"
+                  variant='contained'
                   startIcon={<AddIcon />}
                   disabled // TODO: Add ability to create components
                 >New Component</Button>
@@ -248,8 +245,8 @@ export const ComponentsTab = ({ channel }) => {
                   startIcon={<ContentCopyIcon />}
                 >Copy</Button>
                 <Button
-                  color="error"
-                  variant="outlined"
+                  color='error'
+                  variant='outlined'
                   disabled={!selectedComponents.length}
                   startIcon={<DeleteOutlineIcon />}
                   onClick={setShowDeleteComponentsModal}
@@ -260,8 +257,8 @@ export const ComponentsTab = ({ channel }) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Box sx={{ height: 'calc(100vh - 522px)', width: '100%' }}>
-            {!!components?.length &&
+          <Box sx={{ minHeight: '300px', height: 'calc(100vh - 522px)', width: '100%' }}>
+            {!!components?.length && columns &&
               <DataGrid
                 rows={components}
                 columns={columns}
@@ -299,7 +296,7 @@ export const ComponentsTab = ({ channel }) => {
         xAuthToken={xAuthToken}
       />
 
-      <DeleteComponentGroupModal
+      {componentGroups && selectedComponentGroup && <DeleteComponentGroupModal
         showModal={showDeleteComponentGroupModal}
         setShowModal={setShowDeleteComponentGroupModal}
         componentGroups={componentGroups}
@@ -309,7 +306,7 @@ export const ComponentsTab = ({ channel }) => {
         channelId={channel.id}
         environment={environment}
         xAuthToken={xAuthToken}
-      />
+      />}
 
       <CopyComponentModal
         showCopyComponentsModal={showCopyComponentsModal}

@@ -22,8 +22,7 @@ import {
 } from '@mui/material'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -116,17 +115,17 @@ export default function AddChannelModal({
       onClose={handleClose}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleAddChannelToProject}
       >
         <DialogTitle>
           Add Channels to Project
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -155,8 +154,8 @@ export default function AddChannelModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
           >Add Channels</Button>
         </DialogActions>
       </Box>

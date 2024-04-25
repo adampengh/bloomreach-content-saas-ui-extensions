@@ -16,21 +16,18 @@ import {
   DialogTitle,
   IconButton,
 } from '@mui/material'
-import {
-  LoadingButton
- } from '@mui/lab';
+import { LoadingButton } from '@mui/lab'
 
 // Context
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export default function DeleteLayoutModal({
   showModal,
   setShowModal,
-  layouts,
   setLayouts,
   selectedItems,
   setSelectedItems,
@@ -54,9 +51,7 @@ export default function DeleteLayoutModal({
 
     for await (const layout of selectedItems) {
       await deleteLayout(environment, xAuthToken, channelId, layout)
-      .then(response => {
-        console.log('deleteLayout', layout)
-      })
+      .then(() => console.log('deleteLayout', layout))
       .catch(error => handleShowSnackbar('error', error.message))
     }
 
@@ -88,18 +83,18 @@ export default function DeleteLayoutModal({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         <DialogTitle>
           Delete Layout
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -122,11 +117,11 @@ export default function DeleteLayoutModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <LoadingButton
-            color="error"
+            color='error'
             loading={isProcessing}
-            loadingPosition="start"
-            variant="contained"
-            type="submit"
+            loadingPosition='start'
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

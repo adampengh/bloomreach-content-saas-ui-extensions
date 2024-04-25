@@ -85,27 +85,27 @@ function HeaderMenu() {
           }
         }}
       >
-        <List disablePadding component={Box} display="flex">
+        <List disablePadding component={Box} display='flex'>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/components/buttons"
+            href='/components/buttons'
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Buttons"
+              primary='Buttons'
             />
           </ListItem>
           <ListItem
             classes={{ root: 'MuiListItem-indicators' }}
             button
             component={Link}
-            href="/components/forms"
+            href='/components/forms'
           >
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
-              primary="Forms"
+              primary='Forms'
             />
           </ListItem>
           <ListItem
@@ -117,10 +117,10 @@ function HeaderMenu() {
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary={
-                <Box display="flex" alignItems="center">
+                <Box display='flex' alignItems='center'>
                   Configuration
-                  <Box display="flex" alignItems="center" pl={0.3}>
-                    <ExpandMoreTwoToneIcon fontSize="small" />
+                  <Box display='flex' alignItems='center' pl={0.3}>
+                    <ExpandMoreTwoToneIcon fontSize='small' />
                   </Box>
                 </Box>
               }
@@ -129,16 +129,16 @@ function HeaderMenu() {
         </List>
       </ListWrapper>
       <Menu anchorEl={ref.current} onClose={handleClose} open={isOpen}>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/">
+        <MenuItem sx={{ px: 3 }} component={Link} href='/'>
           Overview
         </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/tabs">
+        <MenuItem sx={{ px: 3 }} component={Link} href='/components/tabs'>
           Tabs
         </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/cards">
+        <MenuItem sx={{ px: 3 }} component={Link} href='/components/cards'>
           Cards
         </MenuItem>
-        <MenuItem sx={{ px: 3 }} component={Link} href="/components/modals">
+        <MenuItem sx={{ px: 3 }} component={Link} href='/components/modals'>
           Modals
         </MenuItem>
       </Menu>

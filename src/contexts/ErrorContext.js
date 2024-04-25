@@ -7,7 +7,7 @@ import {
 
 export const ErrorContext = createContext({});
 
-export function ErrorProvider({ children }) {
+export const ErrorProvider = ({ children }) => {
   const [snackPack, setSnackPack] = useState([]);
   const [open, setOpen] = useState(false);
   const [messageInfo, setMessageInfo] = useState(undefined);
@@ -70,7 +70,7 @@ export function ErrorProvider({ children }) {
       >
         <Alert
           onClose={handleClose}
-          variant="filled"
+          variant='filled'
           severity={messageSeverity}
           sx={{ width: '100%', boxShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
         >

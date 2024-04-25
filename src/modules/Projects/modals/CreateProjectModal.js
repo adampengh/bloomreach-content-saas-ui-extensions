@@ -38,7 +38,7 @@ export default function CreateProjectModal({
     const name = event.target.querySelector('#projectName').value
     const includeContentTypes = event.target.querySelector('#includeContentTypes').checked
     await createDeveloperProject(environment, xAuthToken, name, includeContentTypes)
-      .then(response => {
+      .then(() => {
         setShowModal(false)
       })
 
@@ -60,12 +60,12 @@ export default function CreateProjectModal({
   return (
     <Dialog open={showModal} onClose={handleClose}>
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleCreateNewProject}
       >
         <DialogTitle>Create New Development Project</DialogTitle>
@@ -75,12 +75,12 @@ export default function CreateProjectModal({
           </DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
-            id="projectName"
-            label="Project Name"
-            type="text"
+            margin='dense'
+            id='projectName'
+            label='Project Name'
+            type='text'
             fullWidth
-            variant="standard"
+            variant='standard'
           />
           <FormGroup>
             <FormControlLabel
@@ -90,12 +90,12 @@ export default function CreateProjectModal({
                   name='includeContentTypes'
                   disabled={hasContentTypesProject} />
               }
-              label="Includes Content Type Changes" />
+              label='Includes Content Type Changes' />
           </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button variant="contained" type="submit">Create Project</Button>
+          <Button variant='contained' type='submit'>Create Project</Button>
         </DialogActions>
       </Box>
     </Dialog>

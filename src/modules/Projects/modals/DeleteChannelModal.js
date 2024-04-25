@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 
 // API
 import {
@@ -18,8 +18,7 @@ import {
 } from '@mui/material'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -58,7 +57,7 @@ export default function DeleteChannelModal({
     event.preventDefault()
 
     await deleteChannelBranch(environment, xAuthToken, channelToDelete)
-      .then(response => {
+      .then(() => {
         console.log('response')
         handleShowSnackbar('success', 'Channel Deleted')
       })
@@ -78,17 +77,17 @@ export default function DeleteChannelModal({
       onClose={handleClose}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleDeleteChannelBranch}
       >
         <DialogTitle>
           Confirm Delete Channel
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -108,8 +107,8 @@ export default function DeleteChannelModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
           >Delete Channel</Button>
         </DialogActions>
       </Box>

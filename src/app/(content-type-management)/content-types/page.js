@@ -1,4 +1,4 @@
-import ContentTypesComponent from 'src/modules/ContentTypes';
+import ContentTypesModule from 'src/modules/ContentTypes';
 
 export const metadata = {
   title: 'Content Types'
@@ -7,7 +7,7 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <ContentTypesComponent />
+      <ContentTypesModule />
     </>
   )
 }

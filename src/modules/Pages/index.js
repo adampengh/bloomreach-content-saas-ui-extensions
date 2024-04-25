@@ -36,8 +36,7 @@ import {
 } from '@mui/material';
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
 import CheckIcon from '@mui/icons-material/Check';
@@ -47,8 +46,13 @@ import FolderIcon from '@mui/icons-material/Folder';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const PagesComponent = () => {
+  // Context
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
+  const { setLoading } = useContext(LoadingContext)
+
+  // State
   const [checked, setChecked] = React.useState([])
-  const [isLoaded, setIsLoaded] = useState(false)
   const [channels, setChannels] = useState([])
   const [sourceChannel, setSourceChannel] = useState({})
   const [sourcePageList, setSourcePageList] = useState()
@@ -59,21 +63,6 @@ const PagesComponent = () => {
   const [pagesCopied, setPagesCopied] = useState({
     pages: []
   })
-
-  const {
-    appConfiguration
-  } = useContext(ConfigurationContext)
-
-  const {
-      handleShowSnackbar
-  } = useContext(ErrorContext)
-
-  const {
-    environment,
-    xAuthToken,
-    projectId,
-  } = appConfiguration.environments?.source
-
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -87,7 +76,6 @@ const PagesComponent = () => {
 
     setChecked(newChecked);
   };
-
 
   const MenuProps = {
     PaperProps: {
@@ -113,6 +101,7 @@ const PagesComponent = () => {
 
   useEffect(() => {
     if (environment && xAuthToken) {
+      setLoading({ loading: true, message: 'Loading Channels'})
       getAllChannels(environment, xAuthToken)
         .then((response) => {
           let data = response.data;
@@ -120,10 +109,10 @@ const PagesComponent = () => {
             data = response.data.filter(channel => channel.branch === projectId)
           }
           setChannels(data)
-          setIsLoaded(true)
+          setLoading({ loading: false, message: '' })
         })
-        .catch((error) => {
-          setIsLoaded(true)
+        .catch(() => {
+          setLoading({ loading: false, message: '' })
         })
     }
   }, [appConfiguration])
@@ -174,7 +163,7 @@ const PagesComponent = () => {
     // Put Page into Target Channel
     if (pageData) {
       await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
-        .then(response => {
+        .then(() => {
           setPagesCopied(prevState => ({
             pages: [...prevState.pages, {
               channel: targetChannel,
@@ -190,7 +179,7 @@ const PagesComponent = () => {
             .then(async (response) => {
               const xResourceVersion = response.headers['x-resource-version']
               await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, xResourceVersion)
-                .then(response => {
+                .then(() => {
                   setPagesCopied(prevState => ({
                     pages: [...prevState.pages, {
                         channel: targetChannel,
@@ -228,9 +217,9 @@ const PagesComponent = () => {
       await getFolder(environment, xAuthToken, folderPath)
         .catch(async (error) => {
           if (error.response.status === 404) {
-            await createOrUpdateFolder(environment, xAuthToken, "pageFolder", targetChannel.branchOf, folderPath, segment)
+            await createOrUpdateFolder(environment, xAuthToken, 'pageFolder', targetChannel.branchOf, folderPath, segment)
           } else {
-            console.error("Error creating folders recursively: ", error)
+            console.error('Error creating folders recursively: ', error)
           }
         })
     }
@@ -238,40 +227,39 @@ const PagesComponent = () => {
 
   return (
     <>
-
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Grid
           container
-          direction="row"
-          justifyContent="flex-start"
+          direction='row'
+          justifyContent='flex-start'
           columnSpacing={{ xs: 0 }}
           rowSpacing={{ xs: 3 }}
         >
           <Grid item xs={12} md={5.5}>
             <Card>
-              <CardHeader title="Source Channel" />
+              <CardHeader title='Source Channel' />
               <Divider />
               <CardContent>
                 <Box
-                  component="div"
+                  component='div'
                   sx={{
                     '& .MuiTextField-root': { m: 2, width: '80ch' }
                   }}
                 >
                   <Grid
                     container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="stretch"
+                    direction='row'
+                    justifyContent='space-between'
+                    alignItems='stretch'
                     spacing={1}
                   >
                     <Grid item xs={12} md={6}>
-                    <FormControl variant="outlined" sx={{ m: 1, minWidth: 240 }}>
-                      <InputLabel id="source-channel-select-label">Channel</InputLabel>
+                    <FormControl variant='outlined' sx={{ m: 1, minWidth: 240 }}>
+                      <InputLabel id='source-channel-select-label'>Channel</InputLabel>
                       <Select
-                        id="source-channel-select"
-                        labelId="source-channel-select-label"
-                        label="Source Channel"
+                        id='source-channel-select'
+                        labelId='source-channel-select-label'
+                        label='Source Channel'
                         value={sourceChannel.id ? sourceChannel.id : ''}
                         onChange={handleSourceDropdownChange}
                       >
@@ -286,10 +274,10 @@ const PagesComponent = () => {
                     <Grid item xs={12} md={6}>
                       { checked.length > 0
                         && !!targetChannels.length &&
-                          <FormControl variant="outlined" sx={{ m: 1, minWidth: 160 }}>
+                          <FormControl variant='outlined' sx={{ m: 1, minWidth: 160 }}>
                             <Button
                               sx={{ margin: 1, padding: 1 }}
-                              variant="contained"
+                              variant='contained'
                               onClick={copyPages}
                             >
                               Copy {checked.length == 1 ? 'Page' : 'Pages'}
@@ -327,33 +315,33 @@ const PagesComponent = () => {
           {/* Target Channel */}
           <Grid item xs={12} md={5.5}>
             <Card>
-              <CardHeader title="Target Channel" />
+              <CardHeader title='Target Channel' />
               <Divider />
               <CardContent>
                 <Box
-                  component="div"
+                  component='div'
                   sx={{
                     '& .MuiTextField-root': { m: 2, width: '80ch' }
                   }}
                 >
                   <Grid
                     container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="stretch"
+                    direction='row'
+                    justifyContent='space-between'
+                    alignItems='stretch'
                     spacing={4}
                   >
                     <Grid item xs={12} md={6}>
                       <FormControl required sx={{ m: 1, width: 320 }}>
-                        <InputLabel id="target-channel-select-label">Channel(s)</InputLabel>
+                        <InputLabel id='target-channel-select-label'>Channel(s)</InputLabel>
                         <Select
-                          label="Target Channel(s)"
-                          labelId="target-channel-select-label"
-                          id="target-channel-select"
+                          label='Target Channel(s)'
+                          labelId='target-channel-select-label'
+                          id='target-channel-select'
                           multiple
                           value={targetChannels}
                           onChange={handleSelectedChannelsChange}
-                          input={<OutlinedInput label="Data Types" />}
+                          input={<OutlinedInput label='Data Types' />}
                           renderValue={(selected) => {
                             return selected.map(channel => channel.name).join(', ')
                           }}
@@ -374,7 +362,7 @@ const PagesComponent = () => {
                   </Grid>
                   {pagesCopied?.pages?.length > 0 &&
                     <Box sx={{ paddingTop: 3 }}>
-                      <Typography variant="h4" component="h4">
+                      <Typography variant='h4' component='h4'>
                         Pages Copied
                       </Typography>
                       <List>
@@ -431,7 +419,7 @@ const TreeList = ({ channel, pageFolder, handleToggle, checked }) => {
 
   return (
     <List
-      component="div"
+      component='div'
       disablePadding
       sx={{ ml: depth * 4 }}
     >
@@ -468,7 +456,7 @@ const Folder = ({ folder, handleToggle, checked, depth, path }) => {
   const folderPath = folder.path + '/'
   return (
     <List
-      component="div"
+      component='div'
       disablePadding
       sx={{ marginLeft: depth * 2 }}
     >
@@ -477,7 +465,7 @@ const Folder = ({ folder, handleToggle, checked, depth, path }) => {
           <FolderIcon />
         </ListItemIcon>
         <ListItemText primary={
-          <Typography type="body2" style={{ fontWeight: 'bold' }}>{folder.path.replace(path, '')}</Typography>} sx={{ pl: 0 }} />
+          <Typography type='body2' style={{ fontWeight: 'bold' }}>{folder.path.replace(path, '')}</Typography>} sx={{ pl: 0 }} />
       </ListItem>
       { pages?.map((page, index) => {
         return (
@@ -522,7 +510,7 @@ const Page = ({ page, handleToggle, checked, depth }) => {
         <ListItemIcon>
           { handleToggle && checked
             ? <Checkbox
-                edge="start"
+                edge='start'
                 checked={checked.indexOf(page) !== -1}
                 tabIndex={-1}
                 disableRipple

@@ -1,4 +1,4 @@
-import { forwardRef, Ref, useState, ReactElement, ChangeEvent } from 'react';
+import { forwardRef, useState } from 'react';
 import {
   Avatar,
   Link,
@@ -12,7 +12,6 @@ import {
   ListItem,
   ListItemAvatar,
   TextField,
-  Theme,
   Tooltip,
   Typography,
   Dialog,
@@ -22,14 +21,13 @@ import {
   Hidden
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { TransitionProps } from '@mui/material/transitions';
 import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
 import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
 
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
 
 const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction="down" ref={ref} {...props} />;
+  return <Slide direction='down' ref={ref} {...props} />;
 });
 
 const DialogWrapper = styled(Dialog)(
@@ -89,8 +87,8 @@ function HeaderSearch() {
 
   return (
     <>
-      <Tooltip arrow title="Search">
-        <IconButton color="primary" onClick={handleClickOpen}>
+      <Tooltip arrow title='Search'>
+        <IconButton color='primary' onClick={handleClickOpen}>
           <SearchTwoToneIcon />
         </IconButton>
       </Tooltip>
@@ -99,9 +97,9 @@ function HeaderSearch() {
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        maxWidth="md"
+        maxWidth='md'
         fullWidth
-        scroll="paper"
+        scroll='paper'
         onClose={handleClose}
       >
         <DialogTitleWrapper>
@@ -111,14 +109,14 @@ function HeaderSearch() {
             onChange={handleSearchChange}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position='start'>
                   <SearchTwoToneIcon />
                 </InputAdornment>
               )
             }}
-            placeholder="Search terms here..."
+            placeholder='Search terms here...'
             fullWidth
-            label="Search"
+            label='Search'
           />
         </DialogTitleWrapper>
         <Divider />
@@ -127,20 +125,20 @@ function HeaderSearch() {
           <DialogContent>
             <Box
               sx={{ pt: 0, pb: 1 }}
-              display="flex"
-              justifyContent="space-between"
+              display='flex'
+              justifyContent='space-between'
             >
-              <Typography variant="body2" component="span">
+              <Typography variant='body2' component='span'>
                 Search results for{' '}
                 <Typography
                   sx={{ fontWeight: 'bold' }}
-                  variant="body1"
-                  component="span"
+                  variant='body1'
+                  component='span'
                 >
                   {searchValue}
                 </Typography>
               </Typography>
-              <Link href="#" variant="body2" underline="hover">
+              <Link href='#' variant='body2' underline='hover'>
                 Advanced search
               </Link>
             </Box>
@@ -158,20 +156,20 @@ function HeaderSearch() {
                     </Avatar>
                   </ListItemAvatar>
                 </Hidden>
-                <Box flex="1">
-                  <Box display="flex" justifyContent="space-between">
+                <Box flex='1'>
+                  <Box display='flex' justifyContent='space-between'>
                     <Link
-                      href="#"
-                      underline="hover"
+                      href='#'
+                      underline='hover'
                       sx={{ fontWeight: 'bold' }}
-                      variant="body2"
+                      variant='body2'
                     >
                       Dashboard for Healthcare Platform
                     </Link>
                   </Box>
                   <Typography
-                    component="span"
-                    variant="body2"
+                    component='span'
+                    variant='body2'
                     sx={{
                       color: (theme) =>
                         lighten(theme.palette.secondary.main, 0.5)
@@ -183,7 +181,7 @@ function HeaderSearch() {
                 </Box>
                 <ChevronRightTwoToneIcon />
               </ListItem>
-              <Divider sx={{ my: 1 }} component="li" />
+              <Divider sx={{ my: 1 }} component='li' />
               <ListItem button>
                 <Hidden smDown>
                   <ListItemAvatar>
@@ -196,20 +194,20 @@ function HeaderSearch() {
                     </Avatar>
                   </ListItemAvatar>
                 </Hidden>
-                <Box flex="1">
-                  <Box display="flex" justifyContent="space-between">
+                <Box flex='1'>
+                  <Box display='flex' justifyContent='space-between'>
                     <Link
-                      href="#"
-                      underline="hover"
+                      href='#'
+                      underline='hover'
                       sx={{ fontWeight: 'bold' }}
-                      variant="body2"
+                      variant='body2'
                     >
                       Example Projects Application
                     </Link>
                   </Box>
                   <Typography
-                    component="span"
-                    variant="body2"
+                    component='span'
+                    variant='body2'
                     sx={{
                       color: (theme) =>
                         lighten(theme.palette.secondary.main, 0.5)
@@ -220,7 +218,7 @@ function HeaderSearch() {
                 </Box>
                 <ChevronRightTwoToneIcon />
               </ListItem>
-              <Divider sx={{ my: 1 }} component="li" />
+              <Divider sx={{ my: 1 }} component='li' />
               <ListItem button>
                 <Hidden smDown>
                   <ListItemAvatar>
@@ -233,20 +231,20 @@ function HeaderSearch() {
                     </Avatar>
                   </ListItemAvatar>
                 </Hidden>
-                <Box flex="1">
-                  <Box display="flex" justifyContent="space-between">
+                <Box flex='1'>
+                  <Box display='flex' justifyContent='space-between'>
                     <Link
-                      href="#"
-                      underline="hover"
+                      href='#'
+                      underline='hover'
                       sx={{ fontWeight: 'bold' }}
-                      variant="body2"
+                      variant='body2'
                     >
                       Search Results Page
                     </Link>
                   </Box>
                   <Typography
-                    component="span"
-                    variant="body2"
+                    component='span'
+                    variant='body2'
                     sx={{
                       color: (theme) =>
                         lighten(theme.palette.secondary.main, 0.5)
@@ -261,7 +259,7 @@ function HeaderSearch() {
             </List>
             <Divider sx={{ mt: 1, mb: 2 }} />
             <Box sx={{ textAlign: 'center' }}>
-              <Button color="primary">View all search results</Button>
+              <Button color='primary'>View all search results</Button>
             </Box>
           </DialogContent>
         )}

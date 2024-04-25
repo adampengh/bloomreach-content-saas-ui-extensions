@@ -5,17 +5,16 @@ import { CopyBlock } from 'react-code-blocks'
 import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 
 // APIs
-import { getComponent } from 'bloomreach-content-management-apis';
+import { getComponent } from 'bloomreach-content-management-apis'
 
 // Components
-import { Loader, TabPanel } from 'src/components';
+import { TabPanel } from 'src/components'
 import {
   Box,
   Breadcrumbs,
   Card,
   CardContent,
   Checkbox,
-  CircularProgress,
   Container,
   FormControlLabel,
   FormGroup,
@@ -25,46 +24,31 @@ import {
   Tabs,
   TextField,
   Typography,
-} from '@mui/material';
+} from '@mui/material'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { is } from 'date-fns/locale';
+import { ConfigurationContext, LoadingContext } from 'src/contexts'
+
 
 const ComponentsPage = ({ channelId, componentGroup, componentName }) => {
-
-
-  const [error, setError] = useState(null)
-  const [isLoaded, setIsLoaded] = useState(false)
-
   const [tab, setTab] = useState(0);
   const [component, setComponent] = useState(null)
-  const [xResourceVersion, setXResourceVersion] = useState(null)
 
-  const {
-    appConfiguration
-  } = useContext(ConfigurationContext)
-
-  const {
-    environment,
-    xAuthToken,
-  } = appConfiguration?.environments?.source
+  const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken } = appConfiguration?.environments?.source
+  const { setLoading } = useContext(LoadingContext)
 
   useEffect(() => {
     if (environment && xAuthToken && channelId && componentGroup && componentName) {
+      setLoading({ loading: true, message: '' })
       getComponent(environment, xAuthToken, channelId, componentGroup, componentName)
         .then((response) => {
           setComponent(response.data)
-          setXResourceVersion(response.headers['x-resource-version'])
-          setIsLoaded(true)
-          setError(null)
+          setLoading({ loading: false, message: '' })
         })
-        .catch((error) => {
-          setError(error.message)
-          setIsLoaded(true)
-        })
+        .catch(() => setLoading({ loading: false, message: '' }))
     } else {
-      setIsLoaded(true)
+      setLoading({ loading: false, message: '' })
     }
   }, [environment, xAuthToken, channelId, componentGroup, componentName])
 
@@ -76,29 +60,25 @@ const ComponentsPage = ({ channelId, componentGroup, componentName }) => {
     return null;
   }
 
-  if (!isLoaded) {
-    return <Loader open={!isLoaded} />
-  }
-
   return (
-    <Container maxWidth="xl">
-      <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem' }}>
+    <Container maxWidth='xl'>
+      <Breadcrumbs aria-label='breadcrumb' sx={{ marginBottom: '1.5rem' }}>
         <Link
-          underline="hover"
-          color="inherit"
-          href="/components"
+          underline='hover'
+          color='inherit'
+          href='/components'
         >
           Components
         </Link>
-        <Typography color="text.primary"></Typography>
+        <Typography color='text.primary'></Typography>
       </Breadcrumbs>
 
       <Grid
         container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        alignContent="stretch"
+        direction='row'
+        justifyContent='center'
+        alignItems='stretch'
+        alignContent='stretch'
         sx={{
           '& .MuiCircularProgress-root': {
             margin: '24px'
@@ -109,70 +89,70 @@ const ComponentsPage = ({ channelId, componentGroup, componentName }) => {
           <Card>
             <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
-                  <Tab label="Configuration" />
-                  <Tab label="Properties" />
-                  <Tab label="JSON" />
+                <Tabs value={tab} onChange={handleTabChange} aria-label='basic tabs example'>
+                  <Tab label='Configuration' />
+                  <Tab label='Properties' />
+                  <Tab label='JSON' />
                 </Tabs>
               </Box>
               <TabPanel value={tab} index={0}>
                 <Box
-                  component="form"
+                  component='form'
                   sx={{
                     '& .MuiTextField-root': { m: 1, width: '100%' }
                   }}
                   noValidate
-                  autoComplete="off"
+                  autoComplete='off'
                   // onSubmit={handleSubmitSourceChannel}
                 >
                   <div style={{ marginBottom: '1rem' }}>
                     <TextField
-                      autoComplete="off"
-                      id="id"
-                      name="id"
-                      label="ID"
-                      value={component?.id}
+                      autoComplete='off'
+                      id='id'
+                      name='id'
+                      label='ID'
+                      value={component?.id || ''}
                       disabled={true}
                       // onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
                     />
                   </div>
                   <div style={{ marginBottom: '1rem' }}>
                     <TextField
-                      autoComplete="off"
-                      id="label"
-                      name="label"
-                      label="Label"
-                      value={component?.label}
+                      autoComplete='off'
+                      id='label'
+                      name='label'
+                      label='Label'
+                      value={component?.label || ''}
                       // onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
                     />
                   </div>
                   <div style={{ marginBottom: '1rem' }}>
                     <TextField
-                      autoComplete="off"
-                      id="icon"
-                      name="icon"
-                      label="Icon"
-                      value={component?.icon}
+                      autoComplete='off'
+                      id='icon'
+                      name='icon'
+                      label='Icon'
+                      value={component?.icon || ''}
                       // onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
                     />
                   </div>
                   <div style={{ marginBottom: '1rem' }}>
                     <TextField
-                      autoComplete="off"
-                      id="ctype"
-                      name="ctype"
-                      label="Ctype"
-                      value={component?.ctype}
+                      autoComplete='off'
+                      id='ctype'
+                      name='ctype'
+                      label='Ctype'
+                      value={component?.ctype || ''}
                       // onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
                     />
                   </div>
                   <div style={{ marginBottom: '1rem' }}>
                     <TextField
-                      autoComplete="off"
-                      id="xtype"
-                      name="xtype"
-                      label="Xtype"
-                      value={component?.xtype}
+                      autoComplete='off'
+                      id='xtype'
+                      name='xtype'
+                      label='Xtype'
+                      value={component?.xtype || ''}
                       // onChange={(e) => setSourceConfig({...sourceConfig, environment: e.target.value})}
                     />
                   </div>
@@ -184,7 +164,7 @@ const ComponentsPage = ({ channelId, componentGroup, componentName }) => {
                             id='hidden'
                             name='hidden'/>
                         }
-                        label="Hidden" />
+                        label='Hidden' />
                     </FormGroup>
                     <FormGroup sx={{ marginLeft: '0.5rem' }}>
                       <FormControlLabel
@@ -193,7 +173,7 @@ const ComponentsPage = ({ channelId, componentGroup, componentName }) => {
                             id='system'
                             name='system'/>
                         }
-                        label="System" />
+                        label='System' />
                     </FormGroup>
                   </div>
                 </Box>

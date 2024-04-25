@@ -22,12 +22,13 @@ import {
 } from '@mui/material'
 
 // Contexts
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 const HELPER_TEXT_MAP = {
-  "discoveryRealm": "STAGING or PRODUCTION",
-  "spaUrl": "Frontend URL"
+  'discoveryRealm': 'STAGING or PRODUCTION',
+  'spaUrl': 'Frontend URL'
 }
+
 
 const ChannelParametersValuesTab = ({ channel, environment, xAuthToken }) => {
   // Context
@@ -57,9 +58,7 @@ const ChannelParametersValuesTab = ({ channel, environment, xAuthToken }) => {
 
     if (xResourceVersion) {
       await putChannel(environment, xAuthToken, channelData.id, channelData, xResourceVersion)
-        .then(response =>
-          handleShowSnackbar('success', 'Properties Saved')
-        )
+        .then(() => handleShowSnackbar('success', 'Properties Saved'))
         .catch(error => {
           console.log('error', error)
           handleShowSnackbar('error', error.message)
@@ -69,33 +68,33 @@ const ChannelParametersValuesTab = ({ channel, environment, xAuthToken }) => {
 
   return (
     <Box
-      component="form"
+      component='form'
       noValidate
-      autoComplete="off"
+      autoComplete='off'
       onSubmit={handleSubmit}
-      display="flex"
+      display='flex'
       sx={{ margin: 0 }}
     >
       <Grid
         container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="stretch"
+        direction='row'
+        justifyContent='flex-start'
+        alignItems='stretch'
         rowSpacing={3}
         columnSpacing={0}
         sx={{ width: '100%', marginTop: -2 }}
       >
         <Grid
           container
-          display="flex"
-          justifyContent="space-between"
-          alignContent="center"
-          alignItems="flex-end"
+          display='flex'
+          justifyContent='space-between'
+          alignContent='center'
+          alignItems='flex-end'
           spacing={0}
           sx={{ width: '100%', paddingBottom: 3, margin: 0 }}
         >
           <Grid item>
-            <Typography variant="h4">Property Values</Typography>
+            <Typography variant='h4'>Property Values</Typography>
           </Grid>
         </Grid>
 
@@ -107,13 +106,13 @@ const ChannelParametersValuesTab = ({ channel, environment, xAuthToken }) => {
             <Fragment key={index}>
               {parameter.name === 'discoveryRealm' ?
                 <FormControl
-                  variant="outlined"
+                  variant='outlined'
                   sx={{ width: '100%', marginRight: 1 }}
                 >
-                  <InputLabel id="sourceProjectId">{parameter.displayName}</InputLabel>
+                  <InputLabel id='sourceProjectId'>{parameter.displayName}</InputLabel>
                   <Select
                     id={parameter.displayName}
-                    labelId="sourceProjectId"
+                    labelId='sourceProjectId'
                     name={parameter.displayName}
                     label={parameter.displayName}
                     value={channelData.parameters[parameter.name] || 'PRODUCTION'}
@@ -155,8 +154,8 @@ const ChannelParametersValuesTab = ({ channel, environment, xAuthToken }) => {
         </Stack>
         <Grid item xs={12}>
           <Button
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
           >Save</Button>
         </Grid>
       </Grid>

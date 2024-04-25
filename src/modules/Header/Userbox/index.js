@@ -77,12 +77,12 @@ function HeaderUserbox() {
   };
 
   return <>
-    <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-      <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+    <UserBoxButton color='secondary' ref={ref} onClick={handleOpen}>
+      <Avatar variant='rounded' alt={user.name} src={user.avatar} />
       <Hidden mdDown>
         <UserBoxText>
-          <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
-          <UserBoxDescription variant="body2">
+          <UserBoxLabel variant='body1'>{user.name}</UserBoxLabel>
+          <UserBoxDescription variant='body2'>
             {user.jobtitle}
           </UserBoxDescription>
         </UserBoxText>
@@ -104,39 +104,39 @@ function HeaderUserbox() {
         horizontal: 'right'
       }}
     >
-      <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+      <MenuUserBox sx={{ minWidth: 210 }} display='flex'>
+        <Avatar variant='rounded' alt={user.name} src={user.avatar} />
         <UserBoxText>
-          <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
-          <UserBoxDescription variant="body2">
+          <UserBoxLabel variant='body1'>{user.name}</UserBoxLabel>
+          <UserBoxDescription variant='body2'>
             {user.jobtitle}
           </UserBoxDescription>
         </UserBoxText>
       </MenuUserBox>
       <Divider sx={{ mb: 0 }} />
-      <List sx={{ p: 1 }} component="nav">
-        <NextLink href="/management/profile" passHref legacyBehavior>
+      <List sx={{ p: 1 }} component='nav'>
+        <NextLink href='/management/profile' passHref legacyBehavior>
           <ListItem button>
-            <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary="My Profile" />
+            <AccountBoxTwoToneIcon fontSize='small' />
+            <ListItemText primary='My Profile' />
           </ListItem>
         </NextLink>
-        <NextLink href="/applications/messenger" passHref legacyBehavior>
+        <NextLink href='/applications/messenger' passHref legacyBehavior>
           <ListItem button>
-            <InboxTwoToneIcon fontSize="small" />
-            <ListItemText primary="Messenger" />
+            <InboxTwoToneIcon fontSize='small' />
+            <ListItemText primary='Messenger' />
           </ListItem>
         </NextLink>
-        <NextLink href="/management/profile/settings" passHref legacyBehavior>
+        <NextLink href='/management/profile/settings' passHref legacyBehavior>
           <ListItem button>
-            <AccountTreeTwoToneIcon fontSize="small" />
-            <ListItemText primary="Account Settings" />
+            <AccountTreeTwoToneIcon fontSize='small' />
+            <ListItemText primary='Account Settings' />
           </ListItem>
         </NextLink>
       </List>
       <Divider />
       <Box sx={{ m: 1 }}>
-        <Button color="primary" fullWidth>
+        <Button color='primary' fullWidth>
           <LockOpenTwoToneIcon sx={{ mr: 1 }} />
           Sign out
         </Button>

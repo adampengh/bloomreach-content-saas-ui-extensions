@@ -14,7 +14,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControlLabel,
   FormGroup,
@@ -23,18 +22,16 @@ import {
 } from '@mui/material'
 
 // Context
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export default function CreateComponentGroupModal({
   showModal,
   setShowModal,
-  componentGroups,
   setComponentGroups,
-  selectedComponentGroup,
   setSelectedComponentGroup,
   channelId,
   environment,
@@ -79,6 +76,7 @@ export default function CreateComponentGroupModal({
 
   const handleNameChange = (event) => {
     event.preventDefault()
+    // eslint-disable-next-line no-useless-escape
     const pattern = /[\.\/\:\[\]\*\'\"\|\s]/
     setComponentGroupName(event.target.value)
     pattern.test(event.target.value) ? setHasError(true) : setHasError(false)
@@ -93,18 +91,18 @@ export default function CreateComponentGroupModal({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         <DialogTitle>
           Create Component Group
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -120,14 +118,14 @@ export default function CreateComponentGroupModal({
           <TextField
             autoFocus
             error={hasError}
-            margin="dense"
-            id="componentGroupName"
-            label="Name"
-            type="text"
+            margin='dense'
+            id='componentGroupName'
+            label='Name'
+            type='text'
             fullWidth
-            variant="standard"
+            variant='standard'
             value={componentGroupName || ''}
-            helperText={hasError ? "Name cannot contain . / : [ ] * ' \" | and any whitespace character" : ''}
+            helperText={hasError ? 'Name cannot contain . / : [ ] * \' " | and any whitespace character' : ''}
             onChange={handleNameChange}
           />
           <FormGroup>
@@ -138,14 +136,14 @@ export default function CreateComponentGroupModal({
                   name='hidden'
                 />
               }
-              label="Hidden" />
+              label='Hidden' />
           </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
             disabled={!!hasError}
           >Create</Button>
         </DialogActions>

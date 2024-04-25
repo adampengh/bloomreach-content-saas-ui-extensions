@@ -23,10 +23,10 @@ import {
 } from '@mui/material'
 
 // Context
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 const DEFAULT_FORM_DATA = {
   name: '',
@@ -40,12 +40,11 @@ const DEFAULT_FORM_DATA = {
   config: null
 }
 
+
 export default function EditChannelParameterModal({
   showModal,
   setShowModal,
   selectedParameter,
-  setSelectedParameter,
-  parameters,
   setParameters,
   channelId,
   environment,
@@ -90,6 +89,7 @@ export default function EditChannelParameterModal({
 
   const handleNameChange = (event) => {
     event.preventDefault()
+    // eslint-disable-next-line no-useless-escape
     const pattern = /[\.\/\:\[\]\*\'\"\|\s]/
     setFormData(prevState => ({
       ...prevState,
@@ -106,18 +106,18 @@ export default function EditChannelParameterModal({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         <DialogTitle>
           Edit Channel Property
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -133,25 +133,25 @@ export default function EditChannelParameterModal({
           <TextField
             autoFocus
             error={hasError}
-            margin="dense"
-            id="name"
-            label="Name"
-            name="name"
-            type="text"
+            margin='dense'
+            id='name'
+            label='Name'
+            name='name'
+            type='text'
             fullWidth
-            variant="standard"
-            helperText={hasError ? "Name cannot contain . / : [ ] * ' \" | and any whitespace character" : ''}
+            variant='standard'
+            helperText={hasError ? 'Name cannot contain . / : [ ] * \' " | and any whitespace character' : ''}
             onChange={handleNameChange}
             value={formData?.name}
           />
           <TextField
-            margin="dense"
-            id="displayName"
-            label="Display Name"
-            name="displayName"
-            type="text"
+            margin='dense'
+            id='displayName'
+            label='Display Name'
+            name='displayName'
+            type='text'
             fullWidth
-            variant="standard"
+            variant='standard'
             value={formData?.displayName || ''}
             onChange={(event) => {
               setFormData(prevState => ({
@@ -162,23 +162,23 @@ export default function EditChannelParameterModal({
           />
           <TextField
             disabled
-            margin="dense"
-            id="valueType"
-            label="Value Type"
-            name="valueType"
-            type="text"
+            margin='dense'
+            id='valueType'
+            label='Value Type'
+            name='valueType'
+            type='text'
             fullWidth
-            variant="standard"
+            variant='standard'
             value={formData?.valueType}
           />
           <TextField
-            margin="dense"
-            id="defaultValue"
-            label="Default Value"
-            name="defaultValue"
-            type="text"
+            margin='dense'
+            id='defaultValue'
+            label='Default Value'
+            name='defaultValue'
+            type='text'
             fullWidth
-            variant="standard"
+            variant='standard'
             value={formData?.defaultValue || ''}
             onChange={(event) => {
               setFormData(prevState => ({
@@ -189,7 +189,7 @@ export default function EditChannelParameterModal({
           />
           <FormGroup>
             <FormControlLabel
-              label="Required"
+              label='Required'
               sx={{ marginLeft: '0px' }}
               onClick={(event) => {
                 setFormData(prevState => ({
@@ -207,7 +207,7 @@ export default function EditChannelParameterModal({
           </FormGroup>
           <FormGroup>
             <FormControlLabel
-              label="Hidden"
+              label='Hidden'
               sx={{ marginLeft: '0px' }}
               onClick={(event) => {
                 setFormData(prevState => ({
@@ -227,8 +227,8 @@ export default function EditChannelParameterModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
             disabled={!!hasError || !formData.name}
           >Save</Button>
         </DialogActions>

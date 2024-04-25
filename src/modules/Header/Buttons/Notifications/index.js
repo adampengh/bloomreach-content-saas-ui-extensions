@@ -54,8 +54,8 @@ function HeaderNotifications() {
 
   return (
     <>
-      <Tooltip arrow title="Notifications">
-        <IconButton color="primary" ref={ref} onClick={handleOpen}>
+      <Tooltip arrow title='Notifications'>
+        <IconButton color='primary' ref={ref} onClick={handleOpen}>
           <NotificationsBadge
             badgeContent={1}
             anchorOrigin={{
@@ -82,32 +82,32 @@ function HeaderNotifications() {
       >
         <Box
           sx={{ p: 2 }}
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
+          display='flex'
+          alignItems='center'
+          justifyContent='space-between'
         >
-          <Typography variant="h5">Notifications</Typography>
+          <Typography variant='h5'>Notifications</Typography>
         </Box>
         <Divider />
         <List sx={{ p: 0 }}>
           <ListItem
             sx={{ p: 2, minWidth: 350, display: { xs: 'block', sm: 'flex' } }}
           >
-            <Box flex="1">
-              <Box display="flex" justifyContent="space-between">
+            <Box flex='1'>
+              <Box display='flex' justifyContent='space-between'>
                 <Typography sx={{ fontWeight: 'bold' }}>
                   Messaging Platform
                 </Typography>
-                <Typography variant="caption" sx={{ textTransform: 'none' }}>
+                <Typography variant='caption' sx={{ textTransform: 'none' }}>
                   {formatDistance(subDays(new Date(), 3), new Date(), {
                     addSuffix: true
                   })}
                 </Typography>
               </Box>
               <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
+                component='span'
+                variant='body2'
+                color='text.secondary'
               >
                 {' '}
                 new messages in your inbox

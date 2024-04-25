@@ -3,7 +3,6 @@ import axios from 'axios'
 
 // API
 import {
-  deleteContentType,
   getAllContentTypes,
 } from 'bloomreach-content-management-apis'
 
@@ -23,8 +22,7 @@ import {
  } from '@mui/lab';
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
 import CloseIcon from '@mui/icons-material/Close';
@@ -34,7 +32,6 @@ const DeleteContentTypeModal = ({
   setShowModal,
   selectedRows,
   setSelectedRows,
-  pageData,
   setPageData,
 }) => {
   // State
@@ -64,7 +61,7 @@ const DeleteContentTypeModal = ({
           'x-auth-token': xAuthToken
         }
       })
-        .then(response => handleShowSnackbar('success', `Deleted ${contentType}`))
+        .then(() => handleShowSnackbar('success', `Deleted ${contentType}`))
         .catch(error => {
           console.error('deleteContentType', error)
           handleShowSnackbar('error', error.message)
@@ -101,17 +98,17 @@ const DeleteContentTypeModal = ({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
-        <DialogTitle id="alert-dialog-title">
-          <Typography variant="h3" component="p">Confirm Deletion</Typography>
+        <DialogTitle id='alert-dialog-title'>
+          <Typography variant='h3' component='p'>Confirm Deletion</Typography>
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -138,10 +135,10 @@ const DeleteContentTypeModal = ({
           >Cancel</Button>
           <LoadingButton
             loading={isProcessing}
-            color="error"
+            color='error'
             // loadingPosition="start"
-            variant="contained"
-            type="submit"
+            variant='contained'
+            type='submit'
             sx={{
               '&.MuiLoadingButton-loading': {
                 paddingLeft: 2

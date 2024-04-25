@@ -19,18 +19,16 @@ import {
 } from '@mui/material'
 
 // Context
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export default function DeleteChannelParameterModal({
   showModal,
   setShowModal,
   selectedParameter,
-  setSelectedParameter,
-  parameters,
   setParameters,
   channelId,
   environment,
@@ -67,18 +65,18 @@ export default function DeleteChannelParameterModal({
       maxWidth={'sm'}
     >
       <Box
-        component="form"
+        component='form'
         sx={{
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         noValidate
-        autoComplete="off"
+        autoComplete='off'
         onSubmit={handleSubmit}
       >
         <DialogTitle>
           Delete Channel Property
           <IconButton
-            aria-label="close"
+            aria-label='close'
             onClick={handleClose}
             sx={{
               position: 'absolute',
@@ -96,9 +94,9 @@ export default function DeleteChannelParameterModal({
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            color="error"
-            variant="contained"
-            type="submit"
+            color='error'
+            variant='contained'
+            type='submit'
           >Delete</Button>
         </DialogActions>
       </Box>

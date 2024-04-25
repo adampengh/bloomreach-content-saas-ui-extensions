@@ -1,5 +1,6 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react';
+
+import React, { useContext, useState } from 'react';
 
 // API
 import {
@@ -31,7 +32,7 @@ import {
 } from '@mui/material';
 
 // Contexts
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ErrorContext } from 'src/contexts'
 
 
 const ImportComponent = ({
@@ -39,13 +40,14 @@ const ImportComponent = ({
   xAuthToken,
   projectsList,
   selectedProject,
+  setSelectedProject,
 }) => {
   const theme = useTheme();
   const { handleShowSnackbar } = useContext(ErrorContext)
 
   // State
   const [file, setFile] = useState('')
-  const [importJobStatus, setImportJobStatus] = useState("")
+  const [importJobStatus, setImportJobStatus] = useState('')
   const [importJobRunning, setImportJobRunning] = useState(false)
 
   // ================================================
@@ -54,6 +56,15 @@ const ImportComponent = ({
   const validateImportFile = (filename) => {
     const allowedExtensions = /(\.ndjson)$/i
     return allowedExtensions.test(filename)
+  }
+
+  const handleProjectChange = (e) => {
+    e.preventDefault()
+    if (e.target.value === 'core') {
+      setSelectedProject('core')
+    } else {
+      setSelectedProject(projectsList.find(project => project.id === e.target.value))
+    }
   }
 
   const handleImportFileChange = (event) => {
@@ -71,7 +82,7 @@ const ImportComponent = ({
     event.preventDefault();
     createImportJob(environment, xAuthToken, selectedProject.id, file)
       .then((response) => {
-        if(response.data.status === "STARTING") {
+        if(response.data.status === 'STARTING') {
           handleImportOperation(response.data.operationId)
         }
       })
@@ -85,7 +96,7 @@ const ImportComponent = ({
     const importInterval = setInterval(function () {
       getImportOperationStatus(environment, xAuthToken, operationId)
         .then(response => {
-          if (response.data.status === "COMPLETED") {
+          if (response.data.status === 'COMPLETED') {
             setImportJobRunning(false)
             setImportJobStatus(response.data)
             clearInterval(importInterval)
@@ -98,27 +109,27 @@ const ImportComponent = ({
 
   return (
     <Card>
-      <CardHeader title="Import" />
+      <CardHeader title='Import' />
       <Divider />
       <CardContent>
         <Box
-          component="form"
+          component='form'
           sx={{
             '& .MuiTextField-root': { m: 1, width: '90%' }
           }}
           noValidate
-          autoComplete="off"
+          autoComplete='off'
           onSubmit={handleSubmitImport}>
           <div>
             <FormControl
-              variant="outlined"
+              variant='outlined'
               sx={{ m: 1, minWidth: '90%', marginTop: 2 }}
             >
-              <InputLabel id="channel">Project ID</InputLabel>
+              <InputLabel id='channel'>Project ID</InputLabel>
               <Select
-                id="projectId"
-                labelId="projectId"
-                label="Project ID"
+                id='projectId'
+                labelId='projectId'
+                label='Project ID'
                 value={selectedProject?.id || ''}
                 onChange={(e) => handleProjectChange(e)}
               >
@@ -131,15 +142,15 @@ const ImportComponent = ({
             </FormControl>
             <TextField
               required
-              type="file"
-              id="sourcePath"
-              name="sourcePath"
+              type='file'
+              id='sourcePath'
+              name='sourcePath'
               onChange={handleImportFileChange}
             />
             <Button
               sx={{ margin: 1 }}
-              variant="contained"
-              type="submit"
+              variant='contained'
+              type='submit'
               disabled={!(selectedProject && file && !importJobRunning)}
             >
               Import
@@ -148,7 +159,7 @@ const ImportComponent = ({
             { importJobStatus &&
               <Paper sx={{ margin: 1 }}>
                 <TableContainer sx={{ marginTop: 2 }}>
-                  <Table size="small">
+                  <Table size='small'>
                     <TableHead sx={{background: theme.palette.primary.main}}>
                       <TableRow>
                         <TableCell colSpan={2} sx={{color: theme.palette.common.white}}>Import Job Status</TableCell>

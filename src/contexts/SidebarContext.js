@@ -2,7 +2,7 @@ import { useState, createContext } from 'react';
 
 export const SidebarContext = createContext({});
 
-export function SidebarProvider({ children }) {
+export const SidebarProvider = ({ children }) => {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   const toggleSidebar = () => {
     setSidebarToggle(!sidebarToggle);

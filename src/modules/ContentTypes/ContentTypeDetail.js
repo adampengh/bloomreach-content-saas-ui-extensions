@@ -5,36 +5,34 @@ import { CopyBlock } from 'react-code-blocks'
 import bloomreachTheme from 'src/theme/code-block/bloomreachTheme'
 
 // APIs
-import { getContentType } from 'bloomreach-content-management-apis';
+import { getContentType } from 'bloomreach-content-management-apis'
 
 // Components
-import { Loader } from 'src/components';
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import PageTitle from 'src/components/PageTitle'
+import PageTitleWrapper from 'src/components/PageTitleWrapper'
 import {
   Breadcrumbs,
   Card,
   CardContent,
-  CircularProgress,
   Container,
   Grid,
   Link,
   Typography,
-} from '@mui/material';
+} from '@mui/material'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
+import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
-const ContentTypeDetailComponent = ({ contentTypeName }) => {
+
+const ContentTypeDetailModule = ({ contentTypeName }) => {
   // State
-  const [error, setError] = useState(null)
-  const [isLoaded, setIsLoaded] = useState(false)
   const [contentType, setContentType] = useState(null)
   const [xResourceVersion, setXResourceVersion] = useState(null)
 
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken } = appConfiguration.environments?.source
+  const { setLoading } = useContext(LoadingContext)
 
   useEffect(() => {
     if (environment && xAuthToken && contentTypeName) {
@@ -42,19 +40,11 @@ const ContentTypeDetailComponent = ({ contentTypeName }) => {
         .then((response) => {
           setContentType(response.data)
           setXResourceVersion(response.headers['x-resource-version'])
-          setIsLoaded(true)
-          setError(null)
+          setLoading({ loading: false, message: '' })
         })
-        .catch((error) => {
-          setError(error.message)
-          setIsLoaded(true)
-        })
+        .catch(() => setLoading({ loading: false, message: '' }))
     }
   }, [environment, xAuthToken, contentTypeName])
-
-  if (!isLoaded) {
-    return <Loader open={!isLoaded} />
-  }
 
   return (
     <>
@@ -67,65 +57,45 @@ const ContentTypeDetailComponent = ({ contentTypeName }) => {
         </PageTitleWrapper>
       }
 
-      <Container maxWidth="xl">
-        <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: '1.5rem'}}>
+      <Container maxWidth='xl'>
+        <Breadcrumbs aria-label='breadcrumb' sx={{ marginBottom: '1.5rem'}}>
           <Link
-            underline="hover"
-            color="inherit"
-            href="/content-types"
+            underline='hover'
+            color='inherit'
+            href='/content-types'
           >
             Content Types
           </Link>
-          <Typography color="text.primary">{contentType?.presentation?.displayName}</Typography>
+          <Typography color='text.primary'>{contentType?.presentation?.displayName}</Typography>
         </Breadcrumbs>
 
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          alignContent="stretch"
-          sx={{
-            '& .MuiCircularProgress-root': {
-              margin: '24px'
-            }
-          }}
+          direction='row'
+          justifyContent='center'
+          alignItems='stretch'
+          alignContent='stretch'
         >
-        { !isLoaded
-          ?
-            <Grid
-              item
-              xs={12}
-              justifyContent="center"
-              alignItems="stretch"
-              alignContent="stretch"
-            >
-              <Card>
-                <CircularProgress />
-              </Card>
-            </Grid>
-          :
-            <Grid item xs={12}>
-              <Card>
-                <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
-                  {contentType &&
-                    <CopyBlock
-                      text={JSON.stringify(contentType, null, 4)}
-                      language='json'
-                      wrapLines
-                      theme={bloomreachTheme}
-                      showLineNumbers={true}
-                      codeBlock
-                    />
-                  }
-                </CardContent>
-              </Card>
-            </Grid>
-          }
+          <Grid item xs={12}>
+            <Card>
+              <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
+                {contentType &&
+                  <CopyBlock
+                    text={JSON.stringify(contentType, null, 4)}
+                    language='json'
+                    wrapLines
+                    theme={bloomreachTheme}
+                    showLineNumbers={true}
+                    codeBlock
+                  />
+                }
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
       </Container>
     </>
   )
 }
 
-export default ContentTypeDetailComponent
+export default ContentTypeDetailModule

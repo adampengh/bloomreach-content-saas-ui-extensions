@@ -20,7 +20,7 @@ export default async function GettingStarted() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading="Getting Started"
+          heading='Getting Started'
         />
       </PageTitleWrapper>
       <MarkdownContent markdown={markdown} />

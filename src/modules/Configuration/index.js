@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useContext, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 // API
 import { getAllProjects } from 'bloomreach-content-management-apis'
 
 // Components
-import CreateProjectModal from 'src/modules/Projects/modals/CreateProjectModal';
-import { StatusIndicator } from 'src/components';
+import CreateProjectModal from 'src/modules/Projects/modals/CreateProjectModal'
+import { StatusIndicator } from 'src/components'
 import {
   Box,
   Button,
@@ -25,25 +25,22 @@ import {
   Stack,
   TextField,
   Tooltip,
-} from '@mui/material';
+} from '@mui/material'
 
 // Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
-import { ErrorContext } from 'src/contexts/ErrorContext';
+import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import AddIcon from '@mui/icons-material/Add'
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
+
 
 const ConfigurationComponent = () => {
   const query = useSearchParams();
   const { environment, apiKey } = query;
 
   // Context
-  const {
-    appConfiguration,
-    storeApplicationConfiguration,
-  } = useContext(ConfigurationContext)
+  const { appConfiguration, storeApplicationConfiguration } = useContext(ConfigurationContext)
   const { handleShowSnackbar } = useContext(ErrorContext)
 
   // State
@@ -160,12 +157,12 @@ const ConfigurationComponent = () => {
 
   return (
     <>
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
+          direction='row'
+          justifyContent='center'
+          alignItems='stretch'
           spacing={3}
         >
           <Grid item xs={5}>
@@ -199,7 +196,7 @@ const ConfigurationComponent = () => {
             }}
           >
             <Button
-              variant="contained"
+              variant='contained'
               startIcon={<SwapHorizIcon />}
               sx={{
                 display: 'flex',
@@ -266,56 +263,56 @@ const Environment = ({
       <Divider />
       <CardContent>
         <Box
-          component="form"
+          component='form'
           sx={{
             '& .MuiTextField-root': { width: '100%' }
           }}
           noValidate
-          autoComplete="off"
+          autoComplete='off'
           onSubmit={handleSubmit}
         >
           <Stack spacing={3}>
             <TextField
               required
-              autoComplete="off"
-              id="environment"
-              name="environment"
-              label="Environment"
-              helperText="https://<environment>.bloomreach.io"
+              autoComplete='off'
+              id='environment'
+              name='environment'
+              label='Environment'
+              helperText='https://<environment>.bloomreach.io'
               value={config?.environment || ''}
               onChange={(e) => setConfig({...config, environment: e.target.value})}
             />
             <TextField
               required
-              autoComplete="off"
-              id="xAuthToken"
-              name="xAuthToken"
-              label="Authorization Token"
+              autoComplete='off'
+              id='xAuthToken'
+              name='xAuthToken'
+              label='Authorization Token'
               value={config?.xAuthToken || ''}
               onChange={(e) => setConfig({...config, xAuthToken: e.target.value})}
             />
             { environment && xAuthToken &&
               <Grid
                 container
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
+                direction='row'
+                justifyContent='space-between'
+                alignItems='center'
                 sx={{ width: '100%' }}
               >
                 <Grid
                   item
-                  flexGrow="1"
+                  flexGrow='1'
                   sx={{ paddingRight: 2 }}>
                   <FormControl
                     onMouseDown={handleProjectClick}
-                    variant="outlined"
+                    variant='outlined'
                     sx={{ width: '100%', marginRight: 1 }}
                   >
-                    <InputLabel id="sourceProjectId">Project ID</InputLabel>
+                    <InputLabel id='sourceProjectId'>Project ID</InputLabel>
                     <Select
-                      id="sourceProjectId"
-                      labelId="sourceProjectId"
-                      label="Source Project ID"
+                      id='sourceProjectId'
+                      labelId='sourceProjectId'
+                      label='Source Project ID'
                       value={config?.projectId || 'core'}
                       onChange={(e) => setConfig({...config, projectId: e.target.value})}
                     >
@@ -331,9 +328,9 @@ const Environment = ({
                   </FormControl>
                 </Grid>
                 <Grid item>
-                  <Tooltip title="Add Project">
+                  <Tooltip title='Add Project'>
                   <Button
-                    variant="outlined"
+                    variant='outlined'
                     onClick={() => handleShowModal('source')}
                     sx={{ height: '57px' }}
                   >
@@ -344,8 +341,8 @@ const Environment = ({
               </Grid>
             }
             <Button
-              variant="contained"
-              type="submit"
+              variant='contained'
+              type='submit'
             >
               Save
             </Button>

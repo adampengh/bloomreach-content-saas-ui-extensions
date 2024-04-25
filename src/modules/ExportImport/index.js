@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useContext, useEffect, useState } from 'react';
 
 // API
@@ -6,14 +7,14 @@ import { getAllProjects } from 'bloomreach-content-management-apis';
 
 // Components
 import { Container, Grid } from '@mui/material';
-
-// Contexts
-import { ConfigurationContext } from 'src/contexts/ConfigurationContext';
 import ExportComponent from './Export';
 import ImportComponent from './Import';
 
+// Contexts
+import { ConfigurationContext } from 'src/contexts';
 
-const ExportImport = () => {
+
+const ExportImportModule = () => {
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
 
@@ -49,12 +50,12 @@ const ExportImport = () => {
   }, [appConfiguration])
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth='xl'>
       <Grid
         container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
+        direction='row'
+        justifyContent='center'
+        alignItems='stretch'
         spacing={3}
       >
         <Grid item xs={6}>
@@ -83,4 +84,4 @@ const ExportImport = () => {
   )
 }
 
-export default ExportImport;
+export default ExportImportModule;
