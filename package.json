@@ -75,7 +75,6 @@
     "yalc": "1.0.0-pre.53"
   },
   "resolutions": {
-    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
-    "bloomreach-content-management-apis": "file:.yalc/bloomreach-content-management-apis"
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest"
   }
 }
