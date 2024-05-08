@@ -1,7 +1,10 @@
 'use client'
 
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+// Components
 import { Typography, Button, Grid } from '@mui/material';
+
+// Icons
+import { AddTwoToneIcon } from 'src/icons';
 
 const PageTitle = ({ heading = '', subHeading = '', docs = '', ...rest }) => {
   return (

@@ -37,13 +37,10 @@ import {
 import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import AddLinkIcon from '@mui/icons-material/AddLink'
-import LinkOffIcon from '@mui/icons-material/LinkOff'
+import { AddLinkIcon, LinkOffIcon } from 'src/icons'
 
 
 export const TranslationsModule = () => {
-  const theme = useTheme();
-
   // Context
   const { handleShowSnackbar } = useContext(ErrorContext)
   const { appConfiguration } = useContext(ConfigurationContext)
@@ -68,13 +65,17 @@ export const TranslationsModule = () => {
 
       getChannelGroups(environment, xAuthToken)
         .then(response => {
-          console.log('getAllChannelGroups', response.data)
+          console.log('useEffect() getAllChannelGroups()', response.data)
           setChannelGroups(response.data)
           setLoading({ loading: false, message: ''})
         })
-        .catch(error => console.error(error));
+        .catch(error => {
+          console.error(error)
+          setLoading({ loading: false, message: ''})
+        });
     }
   }, [environment, xAuthToken])
+
 
   useEffect(() => {
     if (environment && xAuthToken && selectedPath) {
@@ -93,7 +94,7 @@ export const TranslationsModule = () => {
     console.log('linkTranslation')
     console.log('source', source)
     console.log('target', target)
-    setLoading({ loading: true, message: 'Linking Translation' })
+    await setLoading({ loading: true, message: 'Linking Translation' })
 
     await axios.post(`/api/content/translations/link`, {
       environment: environment,
@@ -114,27 +115,27 @@ export const TranslationsModule = () => {
       })
 
     const linkTranslationCheckInterval = setInterval(async function () {
-      console.log('linkTranslationCheckInterval', translationOperationId)
       if (!translationOperationId) {
+        console.log('clearInterval(linkTranslationCheckInterval)')
         clearInterval(linkTranslationCheckInterval)
       } else {
+        console.log('linkTranslationCheckInterval()', translationOperationId)
         await getTranslationOperationStatus(environment, xAuthToken, translationOperationId)
-        .then(response => {
-          console.log('linkTranslation() getTranslationOperationStatus()', response.data)
-          if (response.data.status !== 'STARTING' || response.data.status !== 'STARTED') {
+          .then(response => {
+            console.log('linkTranslation() getTranslationOperationStatus()', response.data)
+            if (response.data.status !== 'STARTING' || response.data.status !== 'STARTED') {
+              clearInterval(linkTranslationCheckInterval)
+            }
+          })
+          .catch(error => {
+            console.error('getTranslationOperationStatus() error', error)
+            handleShowSnackbar('error', error.message)
             clearInterval(linkTranslationCheckInterval)
-          }
-        })
-        .catch(error => {
-          console.error('getTranslationOperationStatus() error', error)
-          handleShowSnackbar('error', error.message)
-          clearInterval(linkTranslationCheckInterval)
-        })
+          })
       }
     }, 1000)
 
-    const formattedPath = source.replace(/^\/+/g, '') // Remove leading slashes
-    await getTranslations(environment, xAuthToken, formattedPath, false, 'all')
+    await getTranslations(environment, xAuthToken, source.replace(/^\/+/g, ''), false, 'all')
       .then(response => {
         console.log('linkTranslation() getTranslations()', response.data)
         setTranslations(response.data)
@@ -170,10 +171,11 @@ export const TranslationsModule = () => {
       })
 
     const unlinkTranslationCheckInterval = setInterval(async function () {
-      console.log('linkTranslationCheckInterval', translationOperationId)
       if (!translationOperationId) {
+        console.log('clearInterval(unlinkTranslationCheckInterval)')
         clearInterval(unlinkTranslationCheckInterval)
       } else {
+        console.log('unlinkTranslationCheckInterval', translationOperationId)
         await getTranslationOperationStatus(environment, xAuthToken, translationOperationId)
           .then(response => {
             console.log('unlinkTranslation() getTranslationOperationStatus()', response.data)
@@ -210,48 +212,7 @@ export const TranslationsModule = () => {
     setChannels(channelGroupChannels)
   }
 
-  const TranslationsTable = ({ translations }) => {
-    console.log('translations', translations)
-    return (
-      <TableContainer>
-        <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
-          <TableHead sx={{background: theme.palette.primary.main}}>
-            <TableRow>
-              <TableCell sx={{color: theme.palette.common.white}}>Translations</TableCell>
-              <TableCell sx={{color: theme.palette.common.white}}>Locale</TableCell>
-              <TableCell sx={{color: theme.palette.common.white}}>Status</TableCell>
-              <TableCell sx={{color: theme.palette.common.white}}>Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {translations?.translations?.sort((a, b) => a.locale.localeCompare(b.locale))
-              .map((translation, index) => (
-              <TableRow
-                key={index}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component='th' scope='row'>{translation.path}</TableCell>
-                <TableCell>{translation.locale}</TableCell>
-                <TableCell>{translation.status}</TableCell>
-                <TableCell>
-                  {translation.status === 'linked' &&
-                    <Button size='small' color='error' onClick={() => unlinkTranslation(translation.path)}>
-                      <LinkOffIcon />
-                    </Button>
-                  }
-                  {translation.status === 'suggested' &&
-                    <Button size='small' color='primary' onClick={() => linkTranslation(translations.path, translation.path)}>
-                      <AddLinkIcon />
-                    </Button>
-                  }
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    )
-  }
+
 
   return (
     <>
@@ -265,21 +226,14 @@ export const TranslationsModule = () => {
           spacing={3}
         >
           {/* Source */}
-          <Grid item xs={6}>
-            <Card sx={{ height: '100%' }}>
+          <Grid
+            item
+            xs={6}
+          >
+            <Card>
               <CardHeader
                 title={
-                  <Grid
-                    container
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    alignContent='center'
-                  >
-                    <Grid item xs={12} display='flex' alignContent='center' alignItems='center'>
-                      <Typography variant='h4' component='span'>Source</Typography>
-                    </Grid>
-                  </Grid>
+                  <Typography variant='h4' component='span'>Source</Typography>
                 }
               />
               <Divider />
@@ -311,7 +265,6 @@ export const TranslationsModule = () => {
                     xAuthToken={xAuthToken}
                     channels={channels}
                     onItemFocus={setSelectedPath}
-                    setLoading={setLoading}
                   />
                 }
               </CardContent>
@@ -319,26 +272,28 @@ export const TranslationsModule = () => {
           </Grid>
 
           {/* Target */}
-          <Grid item xs={6} sx={{ visibility: !translations && 'hidden' }}>
+          <Grid
+            item
+            xs={6}
+            sx={{
+              visibility: !translations && 'hidden'
+            }}
+          >
             <Card>
               <CardHeader
                 title={
-                  <Grid
-                    container
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    alignContent='center'
-                  >
-                    <Grid item xs={12} display='flex' alignContent='center' alignItems='center'>
-                      <Typography variant='h4' component='span'>{translations?.path}</Typography>
-                    </Grid>
-                  </Grid>
+                  <Typography variant='h4' component='span'>{translations?.path}</Typography>
                 }
               />
               <Divider />
               <CardContent>
-                { translations && <TranslationsTable translations={translations} /> }
+                { translations &&
+                  <TranslationsTable
+                    translations={translations}
+                    linkTranslation={linkTranslation}
+                    unlinkTranslation={unlinkTranslation}
+                  />
+                }
               </CardContent>
             </Card>
 
@@ -378,3 +333,47 @@ export const TranslationsModule = () => {
 }
 
 
+const TranslationsTable = ({ translations, linkTranslation, unlinkTranslation }) => {
+  const theme = useTheme()
+  console.log('TranslationsTable', translations)
+  return (
+    <TableContainer>
+      <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+        <TableHead sx={{background: theme.palette.primary.main}}>
+          <TableRow>
+            <TableCell sx={{color: theme.palette.common.white}}>Translations</TableCell>
+            <TableCell sx={{color: theme.palette.common.white}}>Locale</TableCell>
+            <TableCell sx={{color: theme.palette.common.white}}>Status</TableCell>
+            <TableCell sx={{color: theme.palette.common.white}}>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {translations?.translations?.sort((a, b) => a.locale.localeCompare(b.locale))
+            .map((translation, index) => (
+              <TableRow
+                key={index}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component='th' scope='row'>{translation.path}</TableCell>
+                <TableCell>{translation.locale}</TableCell>
+                <TableCell>{translation.status}</TableCell>
+                <TableCell>
+                  {translation.status === 'linked' &&
+                    <Button size='small' color='error' onClick={() => unlinkTranslation(translation.path)}>
+                      <LinkOffIcon />
+                    </Button>
+                  }
+                  {translation.status === 'suggested' &&
+                    <Button size='small' color='primary' onClick={() => linkTranslation(translations.path, translation.path)}>
+                      <AddLinkIcon />
+                    </Button>
+                  }
+                </TableCell>
+              </TableRow>
+            )
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}

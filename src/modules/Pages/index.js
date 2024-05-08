@@ -39,11 +39,14 @@ import {
 import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import CheckIcon from '@mui/icons-material/Check';
-import DescriptionIcon from '@mui/icons-material/Description';
-import EastIcon from '@mui/icons-material/East';
-import FolderIcon from '@mui/icons-material/Folder';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import {
+  CheckIcon,
+  DescriptionIcon,
+  EastIcon,
+  ErrorOutlineIcon,
+  FolderIcon,
+} from 'src/icons'
+
 
 const PagesComponent = () => {
   // Context
@@ -143,91 +146,115 @@ const PagesComponent = () => {
   }
 
   const copyPage = async (page, targetChannel) => {
-    const path = page.relativePagePath
+    console.group('copyPage')
+    console.log('page', page)
+    console.log('targetChannel', targetChannel)
 
-    // Recursively create folder structure
-    await createFoldersRecursively(path, targetChannel)
+    const sourceChannel = page.channel
+    console.log('sourceChannel', sourceChannel)
+
+    const path = page.path
+    console.log('path', path)
+
+    const relativePagePath = page.relativePagePath
+    console.log('relativePagePath', relativePagePath)
+
+    // Recursively re-create folder structure from source channel to target channel
+    await copyFoldersRecursively(path, targetChannel)
 
     // Get Page from Source Channel
-    const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path, projectId)
-        .then(response => response.data)
-        .catch(async (err) => {
-          if (err.response.status === 404) {
-            return await getPage(environment, xAuthToken, sourceChannel.branchOf, path, 'core')
-              .then(response => response.data)
-          } else {
-            console.error('Get page error', err);
-          }
-        })
+    // const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path, projectId)
+    //   .then(response => response.data)
+    //   .catch(async (err) => {
+    //     if (err.response.status === 404) {
+    //       return await getPage(environment, xAuthToken, sourceChannel.branchOf, path, 'core')
+    //         .then(response => response.data)
+    //     } else {
+    //       console.error('Get page error', err);
+    //     }
+    //   })
 
     // Put Page into Target Channel
-    if (pageData) {
-      await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
-        .then(() => {
-          setPagesCopied(prevState => ({
-            pages: [...prevState.pages, {
-              channel: targetChannel,
-              page: pageData,
-              status: 'new'
-            }]
-          }))
-        })
-      .catch(async (err) => {
-        if (err.response.status === 409) {
-          console.warn('Page already exists in this project. Getting x-resource-version and trying again.')
-          await getPage(environment, xAuthToken, targetChannel.branchOf, path, projectId)
-            .then(async (response) => {
-              const xResourceVersion = response.headers['x-resource-version']
-              await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, xResourceVersion)
-                .then(() => {
-                  setPagesCopied(prevState => ({
-                    pages: [...prevState.pages, {
-                        channel: targetChannel,
-                        page: pageData,
-                        status: 'updated'
-                    }]
-                  }))
-                })
-                .catch((err) => {
-                  console.error('Failed to putPage existing page:', err);
-                })
-              })
-        } else {
-          console.error('Failed to putPage:', err.response);
-          setPagesCopied(prevState => ({
-            pages: [...prevState.pages, {
-              channel: targetChannel,
-              page: pageData,
-              status: 'failed',
-              error: err.response.data
-            }]
-          }))
-        }
-      })
-    }
+    // if (pageData) {
+    //   await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
+    //     .then(() => {
+    //       setPagesCopied(prevState => ({
+    //         pages: [...prevState.pages, {
+    //           channel: targetChannel,
+    //           page: pageData,
+    //           status: 'new'
+    //         }]
+    //       }))
+    //     })
+    //   .catch(async (err) => {
+    //     if (err.response.status === 409) {
+    //       console.warn('Page already exists in this project. Getting x-resource-version and trying again.')
+    //       await getPage(environment, xAuthToken, targetChannel.branchOf, path, projectId)
+    //         .then(async (response) => {
+    //           const xResourceVersion = response.headers['x-resource-version']
+    //           await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, xResourceVersion)
+    //             .then(() => {
+    //               setPagesCopied(prevState => ({
+    //                 pages: [...prevState.pages, {
+    //                     channel: targetChannel,
+    //                     page: pageData,
+    //                     status: 'updated'
+    //                 }]
+    //               }))
+    //             })
+    //             .catch((err) => {
+    //               console.error('Failed to putPage existing page:', err);
+    //             })
+    //           })
+    //     } else {
+    //       console.error('Failed to putPage:', err.response);
+    //       setPagesCopied(prevState => ({
+    //         pages: [...prevState.pages, {
+    //           channel: targetChannel,
+    //           page: pageData,
+    //           status: 'failed',
+    //           error: err.response.data
+    //         }]
+    //       }))
+    //     }
+    //   })
+    // }
+
+    console.groupEnd()
   }
 
-  const createFoldersRecursively = async (path, targetChannel) => {
+  const copyFoldersRecursively = async (path, targetChannel) => {
+    console.group('createFoldersRecursively')
+    console.log('path', path)
+
     let segments = path.split('/')
+    console.log('segments', segments)
     segments.pop()
 
-    let folderPath = targetChannel.contentRootPath;
-    for await (const segment of segments) {
-      folderPath += '/' + segment
-      await getFolder(environment, xAuthToken, folderPath)
-        .catch(async (error) => {
-          if (error.response.status === 404) {
-            await createOrUpdateFolder(environment, xAuthToken, 'pageFolder', targetChannel.branchOf, folderPath, segment)
-          } else {
-            console.error('Error creating folders recursively: ', error)
-          }
-        })
-    }
+    // get the allowed document types and folder types for the existing folder
+    // const [allowedDocumentTypes, allowedFolderTypes] = await getFolder(environment, xAuthToken, path)
+
+    // let folderPath = targetChannel.contentRootPath;
+    // for await (const segment of segments) {
+    //   console.log('segment', segment)
+    //   folderPath += '/' + segment
+    //   console.log('folderPath', folderPath)
+    //   await getFolder(environment, xAuthToken, folderPath)
+    //     .catch(async (error) => {
+    //       if (error.response.status === 404) {
+    //         await createOrUpdateFolder(environment, xAuthToken, 'pageFolder', folderPath, segment)
+    //       } else {
+    //         console.error('Error creating folders recursively: ', error)
+    //       }
+    //     })
+    // }
+
+    console.groupEnd()
   }
 
   return (
     <>
-      <Container maxWidth='xl'>
+      <Container maxWidth={false}>
         <Grid
           container
           direction='row'

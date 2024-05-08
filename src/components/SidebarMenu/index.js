@@ -7,9 +7,9 @@ import NextLink from 'next/link';
 // Components
 import { SidebarMenuLink } from './SidebarMenuLink';
 import {
-  ListSubheader,
-  List,
   Button,
+  List,
+  ListSubheader,
   ListItem
 } from '@mui/material';
 
@@ -17,23 +17,28 @@ import {
 import { ConfigurationContext, SidebarContext } from 'src/contexts'
 
 // Icons
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import ImportExportIcon from '@mui/icons-material/ImportExport';
-import InfoIcon from '@mui/icons-material/Info';
-import PlagiarismIcon from '@mui/icons-material/Plagiarism';
-import SettingsIcon from '@mui/icons-material/Settings';
-import TranslateIcon from '@mui/icons-material/Translate';
-import WebIcon from '@mui/icons-material/Web';
+import {
+  AssignmentIcon,
+  FormatListBulletedIcon,
+  ImportExportIcon,
+  InfoIcon,
+  PlagiarismIcon,
+  SettingsIcon,
+  TranslateIcon,
+  WebIcon,
+} from 'src/icons';
 
 import { MenuWrapper, SubMenuWrapper } from './styles';
 
 
-function SidebarMenu() {
-  const [menuItemsEnabled, setMenuItemsEnabled] = useState(false)
-  const { closeSidebar } = useContext(SidebarContext);
+export const SidebarMenu = () => {
   const currentRoute = usePathname()
 
+  // State
+  const [menuItemsEnabled, setMenuItemsEnabled] = useState(false)
+
+  // Context
+  const { closeSidebar } = useContext(SidebarContext);
   const { appConfiguration } = useContext(ConfigurationContext)
 
   useEffect(() => {
@@ -42,7 +47,7 @@ function SidebarMenu() {
     setMenuItemsEnabled(!hasMissingRequiredConfigProperties)
   }, [appConfiguration])
 
-  return <>
+  return (
     <MenuWrapper>
       <List component='div'>
         <SubMenuWrapper>
@@ -178,9 +183,5 @@ function SidebarMenu() {
         </>
       }
     </MenuWrapper>
-  </>;
+  )
 }
-
-
-
-export default SidebarMenu;

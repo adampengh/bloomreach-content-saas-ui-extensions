@@ -20,22 +20,22 @@ import {
   Card,
   CardContent,
   Container,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
 } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 
 // Constants
-import { DATA_GRID_HEIGHT } from 'src/lib/constants'
+import { DATA_GRID_HEIGHT, NAMESPACES } from 'src/lib/constants'
 
 // Contexts
 import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import EditIcon from '@mui/icons-material/Edit'
-
+import { AddIcon, ContentCopyIcon, DeleteOutlineIcon, EditIcon } from 'src/icons'
 
 
 const ContentTypesModule = () => {
@@ -47,6 +47,9 @@ const ContentTypesModule = () => {
   // State
   const [contentTypes, setContentTypes] = useState([])
   const [pageData, setPageData] = useState([])
+  const [rows, setRows] = useState([])
+  const [selectedNamespace, setSelectedNamespace] = useState('all')
+
   const [showCopyModal, setShowCopyModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [isSourceProjectIncludeContentTypes, setIsSourceProjectIncludeContentTypes] = useState(false)
@@ -54,7 +57,7 @@ const ContentTypesModule = () => {
   const [dependencyGraph, setDependencyGraph] = useState(new DepGraph({ circular: true }));
 
   // DataGrid State
-  const [pageSize, setPageSize] = useState(15);
+  const [pageSize, setPageSize] = useState(20);
   const [selectedRows, setSelectedRows] = useState([])
 
   useEffect(() => {
@@ -75,6 +78,7 @@ const ContentTypesModule = () => {
           })
           console.log('rows', rows)
           setPageData(rows)
+          setRows(rows)
           setLoading({ loading: false, message: '' })
         })
         .catch(() => {
@@ -111,6 +115,30 @@ const ContentTypesModule = () => {
     }
   }, [appConfiguration])
 
+
+  useEffect(() => {
+    const sapspartacus = rows.filter(row => row.id.includes('sapspartacus'))
+    const referencespa = rows.filter(row => row.id.includes('referencespa'))
+    const vuestorefront = rows.filter(row => row.id.includes('vuestorefront'))
+    const brxsaas = rows.filter(row => !row.id.includes('sapspartacus') && !row.id.includes('referencespa') && !row.id.includes('vuestorefront'))
+
+    switch (selectedNamespace) {
+      case 'brxsaas':
+        setPageData(brxsaas)
+        break
+      case 'referencespa':
+        setPageData(referencespa)
+        break
+      case 'sapspartacus':
+        setPageData(sapspartacus)
+        break
+      case 'vuestorefront':
+        setPageData(vuestorefront)
+        break
+      default:
+        setPageData(rows)
+    }
+  }, [selectedNamespace])
 
   useMemo(async () => {
     // Add all content types to the dependency graph
@@ -196,6 +224,12 @@ const ContentTypesModule = () => {
     ]
   ))
 
+  const handleNamespaceChange = (event) => {
+    console.log('handleNamespaceChange', event.target.value)
+    setSelectedNamespace(event.target.value)
+  }
+
+
   return (
     <>
       <PageTitleWrapper>
@@ -236,7 +270,7 @@ const ContentTypesModule = () => {
         </Grid>
       </PageTitleWrapper>
 
-      <Container maxWidth='xl'>
+      <Container maxWidth={false}>
         <Grid
           container
           direction='row'
@@ -263,21 +297,36 @@ const ContentTypesModule = () => {
               </Card>
             </Grid>
           }
+
           <Grid item xs={12} sx={{ paddingBottom: '16px !important' }}>
             <Card>
               <CardContent>
+                <FormControl
+                  variant='outlined'
+                  sx={{ my: 1, mb: 4, minWidth: 240 }}
+                >
+                  <InputLabel id='namespace-label'>Namespace</InputLabel>
+                  <Select
+                    id='namespace-select'
+                    labelId='namespace-label'
+                    label='Namespace'
+                    onChange={handleNamespaceChange}
+                    value={selectedNamespace || 'all'}
+                  >
+                    <MenuItem value='all'>All</MenuItem>
+                    {NAMESPACES.map(tab => (
+                      <MenuItem key={tab} value={tab}>
+                        {tab}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
                 <Box sx={{ height: `calc(100vh - ${DATA_GRID_HEIGHT})`, width: '100%' }}>
                   <DataGrid
-                    rows={pageData}
-                    columns={columns}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    rowsPerPageOptions={[10, 20, 30, pageData?.length]}
-                    pagination
                     checkboxSelection
+                    columns={columns}
                     disableSelectionOnClick
-                    onSelectionModelChange={(ids) => setSelectedRows(ids)}
-                    selectionModel={selectedRows}
                     initialState={{
                       sorting: {
                         sortModel: [{
@@ -286,6 +335,13 @@ const ContentTypesModule = () => {
                         }]
                       }
                     }}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    onSelectionModelChange={(ids) => setSelectedRows(ids)}
+                    pageSize={pageSize}
+                    pagination
+                    rows={pageData}
+                    rowsPerPageOptions={[10, 20, 30, pageData?.length]}
+                    selectionModel={selectedRows}
                     sx={{
                       '.MuiDataGrid-cellContent, .MuiDataGrid-cell': {
                         fontSize: '13px'

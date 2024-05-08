@@ -30,10 +30,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import EditIcon from '@mui/icons-material/Edit'
+import { AddIcon, ContentCopyIcon, DeleteOutlineIcon, EditIcon } from 'src/icons'
 
 
 export const ComponentsTab = ({ channel }) => {

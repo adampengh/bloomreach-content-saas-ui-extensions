@@ -1,4 +1,4 @@
-import ConfigurationComponent from 'src/modules/Configuration';
+import ConfigurationModule from 'src/modules/Configuration';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 
@@ -15,7 +15,7 @@ export default function Page() {
           subHeading='Configuration used throughout the application'
         />
       </PageTitleWrapper>
-      <ConfigurationComponent />
+      <ConfigurationModule />
     </>
   )
 }

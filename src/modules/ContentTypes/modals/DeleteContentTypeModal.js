@@ -14,8 +14,7 @@ import {
   DialogTitle,
   DialogActions,
   DialogContent,
-  IconButton,
-  Typography,
+  Divider,
 } from '@mui/material';
 import {
   LoadingButton
@@ -23,9 +22,6 @@ import {
 
 // Contexts
 import { ConfigurationContext, ErrorContext } from 'src/contexts'
-
-// Icons
-import CloseIcon from '@mui/icons-material/Close';
 
 const DeleteContentTypeModal = ({
   showModal,
@@ -105,21 +101,8 @@ const DeleteContentTypeModal = ({
         autoComplete='off'
         onSubmit={handleSubmit}
       >
-        <DialogTitle id='alert-dialog-title'>
-          <Typography variant='h3' component='p'>Confirm Deletion</Typography>
-          <IconButton
-            aria-label='close'
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold' }}>Confirm Deletion</DialogTitle>
+        <Divider />
         <DialogContent sx={{ pb: '64px' }}>
             Delete content types:
             <ul>

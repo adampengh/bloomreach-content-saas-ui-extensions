@@ -1,13 +1,13 @@
 'use client'
 
 import { useContext } from 'react'
-import { SidebarContext } from 'src/contexts'
 import styled from '@emotion/styled'
+
+// Config
 import { config } from 'src/theme/schemes/BloomreachTheme'
 
-import SidebarMenu from './SidebarMenu'
-import { Logo } from './Logo'
-import { Scrollbar } from 'src/components'
+// Components
+import { Logo, SidebarMenu, Scrollbar } from 'src/components'
 import {
   Box,
   Button,
@@ -17,6 +17,9 @@ import {
   lighten,
   darken
 } from '@mui/material';
+
+// Context
+import { SidebarContext } from 'src/contexts'
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `

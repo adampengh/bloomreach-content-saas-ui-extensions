@@ -1,5 +1,5 @@
 'use client'
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { Typography } from '@mui/material';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
@@ -8,12 +8,17 @@ import { TreeItem } from '@mui/x-tree-view/TreeItem';
 // API
 import { getFolder } from 'bloomreach-content-management-apis';
 
+// Contexts
+import { LoadingContext } from 'src/contexts';
+
 // Icons
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';// Document
-import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined'; // Channel
-import FolderOpenIcon from '@mui/icons-material/FolderOpen'; // Folder
-import SnippetFolderOutlinedIcon from '@mui/icons-material/SnippetFolderOutlined';
-import WebIcon from '@mui/icons-material/Web'; // Page
+import {
+  DescriptionOutlinedIcon,
+  DevicesOutlinedIcon,
+  FolderOpenIcon,
+  SnippetFolderOutlinedIcon,
+  WebIcon,
+} from 'src/icons';
 
 
 export const ChannelsHierarchicalList = ({
@@ -21,8 +26,10 @@ export const ChannelsHierarchicalList = ({
   xAuthToken,
   channels,
   onItemFocus,
-  setLoading,
 }) => {
+  // Context
+  const { setLoading } = useContext(LoadingContext)
+
   // State
   const [channelFolders, setChannelFolders] = useState([])
 
@@ -32,11 +39,10 @@ export const ChannelsHierarchicalList = ({
   //   .filter(channel => channel.path !== '/content/documents/administration')
 
   async function getChannelFolders(environment, xAuthToken, channels) {
-    setLoading({ loading: true, message: 'Loading Channels...' })
     let processChannels = []
     for await (const channel of channels) {
       console.log('getChannelFolders()', channel.id)
-      setLoading({ loading: true, message: `Loading Channel: ${channel.displayName}` })
+      await setLoading({ loading: true, message: `Loading Channel: ${channel.displayName}` })
       await getFolder(environment, xAuthToken, `content/documents/${channel.id}`, 5)
         .then(response => {
           console.log('getFolder()', response.data)
@@ -50,10 +56,9 @@ export const ChannelsHierarchicalList = ({
     await setLoading({ loading: false, message: '' })
   }
 
-  useMemo(() => {
+  useEffect(() => {
     getChannelFolders(environment, xAuthToken, channels)
   }, [channels])
-
 
   return (
     <SimpleTreeView

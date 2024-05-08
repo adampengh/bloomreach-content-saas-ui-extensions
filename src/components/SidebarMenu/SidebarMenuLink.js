@@ -17,9 +17,7 @@ export const SidebarMenuLink = ({
     <ListItem component='div'>
       <NextLink href={href} passHref legacyBehavior>
         <Button
-            className={
-              currentRoute.startsWith(href) ? 'active' : ''
-            }
+            className={ currentRoute.startsWith(href) ? 'active' : '' }
             disableRipple
             component='a'
             onClick={closeSidebar}

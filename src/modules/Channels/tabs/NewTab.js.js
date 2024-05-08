@@ -15,6 +15,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   IconButton,
   Typography,
 } from '@mui/material'
@@ -32,10 +34,10 @@ import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts
 // Constants
 
 // Icons
-import AltRouteIcon from '@mui/icons-material/AltRoute';
-import CommentIcon from '@mui/icons-material/Comment';
-import DragHandleIcon from '@mui/icons-material/DragHandle';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {
+  AltRouteIcon,
+  MoreVertIcon,
+} from 'src/icons'
 
 
 export const NewTab = ({ channel }) => {
@@ -102,20 +104,41 @@ export const NewTab = ({ channel }) => {
 
   const MUI_X_PRODUCTS = [
     {
-      internalId: 'grid',
-      label: 'Data Grid',
-      children: [
-        { internalId: 'grid-community', label: '@mui/x-data-grid' },
-        { internalId: 'grid-pro', label: '@mui/x-data-grid-pro' },
-        { internalId: 'grid-premium', label: '@mui/x-data-grid-premium' },
-      ],
+      internalId: 'home',
+      label: 'home'
     },
     {
-      internalId: 'pickers',
-      label: 'Date and Time Pickers',
+      internalId: '_default_',
+      label: '_default_',
       children: [
-        { internalId: 'pickers-community', label: '@mui/x-date-pickers' },
-        { internalId: 'pickers-pro', label: '@mui/x-date-pickers-pro' },
+        {
+          internalId: '_default_/_default_',
+          label: '_default_',
+          children: [
+            {
+              internalId: '_default_/_default_/_default_',
+              label: '_default_',
+              children: [
+                {
+                  internalId: '_default_/_default_/_default_/_default_',
+                  label: '_default_'
+                },
+                {
+                  internalId: '_default_/_default_/_default_/index',
+                  label: 'index'
+                },
+              ],
+            },
+            {
+              internalId: '_default_/_default_/index',
+              label: 'index'
+            },
+          ],
+        },
+        {
+          internalId: '_default_/index',
+          label: 'index'
+        },
       ],
     },
   ];
@@ -147,22 +170,13 @@ export const NewTab = ({ channel }) => {
               const labelId = `checkbox-list-label-${index}`;
 
               return (
-                <ListItem
-                  key={index}
-                  disablePadding
-                  secondaryAction={
-                    <IconButton edge='end' aria-label='comments'>
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                >
-                  <ListItemButton
-                    selected={selectedRoute === route.name}
-                    onClick={() => handleRouteClick(route.name)}
-                  >
-                    <ListItemText id={labelId} primary={route.name} />
-                  </ListItemButton>
-                </ListItem>
+                <RouteItem
+                  key={route.name}
+                  route={route}
+                  handleRouteClick={handleRouteClick}
+                  selectedRoute={selectedRoute}
+                  labelId={labelId}
+                />
               );
             })}
           </List>
@@ -259,6 +273,64 @@ const Routes = ({ route, path }) => {
           />
         )}
       </TreeItem>
+    </>
+  )
+}
+
+const RouteItem = ({
+  route,
+  handleRouteClick,
+  selectedRoute,
+  labelId,
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <ListItem
+        id={route.name}
+        disablePadding
+        secondaryAction={
+          <IconButton
+            edge='end'
+            aria-label='comments'
+            onClick={handleClick}
+          >
+            <MoreVertIcon />
+          </IconButton>
+        }
+      >
+        <ListItemButton
+          selected={selectedRoute === route.name}
+          onClick={() => handleRouteClick(route.name)}
+        >
+          <ListItemText id={labelId} primary={route.name} />
+        </ListItemButton>
+      </ListItem>
+      <Menu
+        id='basic-menu'
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Copy Route</MenuItem>
+        <MenuItem onClick={handleClose}>Delete Route</MenuItem>
+      </Menu>
     </>
   )
 }

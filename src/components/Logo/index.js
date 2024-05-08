@@ -1,57 +1,24 @@
 'use client'
 
-import {
-  Tooltip,
-  Typography,
-  tooltipClasses,
-} from '@mui/material';
-import styled from '@emotion/styled'
-import Link from 'src/components/Link';
+import { Typography } from '@mui/material';
+
 import packageInfo from '../../../package.json';
 
-const LogoWrapper = styled(Link)(
-  ({ theme }) => `
-      color: ${theme.palette.text.primary};
-      display: flex;
-      text-decoration: none;
-      width: 153px;
-      margin: 0;
-      font-weight: ${theme.typography.fontWeightBold};
-    .cls-1{fill:#ffffff;}
-    .cls-2{fill:#ffd500;}
-    .cls-3{fill:#002840;}
-`);
+import {
+  StyledLogoTooltipWrapper,
+  StyledLogoWrapper,
+} from './styles';
 
-
-const TooltipWrapper = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: theme.colors.alpha.trueWhite[100],
-    color: theme.palette.getContrastText(theme.colors.alpha.trueWhite[100]),
-    fontSize: theme.typography.pxToRem(12),
-    fontWeight: 'bold',
-    borderRadius: theme.general.borderRadiusSm,
-    boxShadow:
-      '0 .2rem .8rem rgba(7,9,25,.18), 0 .08rem .15rem rgba(7,9,25,.15)'
-  },
-  [`& .${tooltipClasses.arrow}`]: {
-    color: theme.colors.alpha.trueWhite[100]
-  }
-}));
 
 export const Logo = () => {
   return (
-    <TooltipWrapper
+    <StyledLogoTooltipWrapper
       title='Bloomreach UI Extension'
       arrow
     >
       <>
-        <LogoWrapper href='/'>
+        <StyledLogoWrapper href='/'>
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 331.82 71.87'>
-            <defs>
-              <style></style>
-            </defs>
             <g id='Layer_2' data-name='Layer 2'>
               <g id='bloomreach-logo'>
                 <path className='cls-1' d='M119.81,17.27V49.84h-5.22V17.27Z'/>
@@ -70,9 +37,9 @@ export const Logo = () => {
               </g>
             </g>
           </svg>
-        </LogoWrapper>
+        </StyledLogoWrapper>
         <Typography variant='p' component='small'>Version: {packageInfo?.version}</Typography>
       </>
-    </TooltipWrapper>
+    </StyledLogoTooltipWrapper>
   );
 }

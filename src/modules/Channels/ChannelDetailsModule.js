@@ -36,7 +36,7 @@ const TABS = [
   'layouts',
   'routes',
   'menus',
-  // 'TEMPLATE',
+  'TEMPLATE',
 ]
 
 export const ChannelDetailsModule = ({ channelId }) => {
@@ -145,7 +145,7 @@ export const ChannelDetailsModule = ({ channelId }) => {
                   <Tab label='Layouts' />
                   <Tab label='Routes' />
                   <Tab label='Menus' />
-                  {/* <Tab label='TEMPLATE' /> */}
+                  <Tab label='TEMPLATE' />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
@@ -169,9 +169,9 @@ export const ChannelDetailsModule = ({ channelId }) => {
               <TabPanel value={value} index={4}>
                 {channel && <MenusTab channel={channel} />}
               </TabPanel>
-              {/* <TabPanel value={value} index={5}>
+              <TabPanel value={value} index={5}>
               {channel && <NewTab channel={channel} />}
-              </TabPanel> */}
+              </TabPanel>
             </CardContent>
           </Card>
         </Grid>

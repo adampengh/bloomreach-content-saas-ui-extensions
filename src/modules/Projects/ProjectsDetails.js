@@ -47,7 +47,8 @@ import {
 import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import DeleteIcon from '@mui/icons-material/Delete';
+import { DeleteIcon } from 'src/icons'
+
 
 export const ProjectsDetailsModule = ({ instance, projectId }) => {
   // State

@@ -31,9 +31,7 @@ import {
 import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import DifferenceIcon from '@mui/icons-material/Difference';
-import LanguageIcon from '@mui/icons-material/Language';
+import { AddIcon, DifferenceIcon, LanguageIcon } from 'src/icons'
 
 
 export const ProjectsListModule = () => {

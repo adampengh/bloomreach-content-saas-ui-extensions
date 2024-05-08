@@ -24,8 +24,8 @@ import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts
 import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'src/lib/constants'
 
 // Icons
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import { ContentCopyIcon, DeleteOutlineIcon } from 'src/icons'
+
 
 export const LayoutsTab = ({ channel }) => {
   // Context

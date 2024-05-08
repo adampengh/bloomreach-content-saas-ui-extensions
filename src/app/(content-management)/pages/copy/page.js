@@ -3,7 +3,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import PagesCopyModule from 'src/modules/Pages/copy';
 
 export const metadata = {
-  title: 'Pages: Copy'
+  title: 'Copy Pages'
 }
 
 export default function Page() {
@@ -11,7 +11,7 @@ export default function Page() {
     <>
       <PageTitleWrapper>
         <PageTitle
-          heading='Pages: Copy'
+          heading='Copy Pages'
         />
       </PageTitleWrapper>
       <PagesCopyModule />

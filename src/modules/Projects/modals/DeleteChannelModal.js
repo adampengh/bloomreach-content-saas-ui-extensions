@@ -21,7 +21,7 @@ import {
 import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from 'src/icons'
 
 
 export default function DeleteChannelModal({

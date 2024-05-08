@@ -21,23 +21,14 @@ import {
   TextField,
 } from '@mui/material'
 
+// Constants
+import { DEFAULT_CHANNEL_PROPERTY_VALUES } from 'src/lib/constants'
+
 // Context
 import { ErrorContext } from 'src/contexts'
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close'
-
-const DEFAULT_FORM_DATA = {
-  name: '',
-  valueType: 'string',
-  defaultValue: '',
-  displayName: '',
-  required: false,
-  hidden: false,
-  overlay: false,
-  system: false,
-  config: null
-}
+import { CloseIcon } from 'src/icons'
 
 
 export default function CreateChannelParameterModal({
@@ -51,7 +42,7 @@ export default function CreateChannelParameterModal({
   // Context
   const { handleShowSnackbar } = useContext(ErrorContext)
   // State
-  const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
+  const [formData, setFormData] = useState(DEFAULT_CHANNEL_PROPERTY_VALUES)
   const [hasError, setHasError] = useState(false)
 
   const handleClose = () => {

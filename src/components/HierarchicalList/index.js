@@ -4,11 +4,7 @@ import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 // Icons
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';// Document
-import DevicesOutlinedIcon from '@mui/icons-material/DevicesOutlined'; // Channel
-import FolderOpenIcon from '@mui/icons-material/FolderOpen'; // Folder
-import SnippetFolderOutlinedIcon from '@mui/icons-material/SnippetFolderOutlined';
-import WebIcon from '@mui/icons-material/Web'; // Page
+import { DevicesOutlinedIcon, FolderOpenIcon, DescriptionOutlinedIcon, SnippetFolderOutlinedIcon, WebIcon } from 'src/icons';
 
 export const HierarchicalList = ({ folders }) => {
   if (!folders) return null

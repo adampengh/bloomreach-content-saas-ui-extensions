@@ -24,11 +24,7 @@ import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts
 import { DATA_GRID_HEIGHT_CHANNELS_TABS } from 'src/lib/constants'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add'
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import EditIcon from '@mui/icons-material/Edit'
-
+import { AddIcon, ContentCopyIcon, DeleteOutlineIcon, EditIcon } from 'src/icons'
 
 export const MenusTab = ({ channel }) => {
   // Context

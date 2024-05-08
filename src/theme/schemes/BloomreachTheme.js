@@ -1,8 +1,6 @@
 import { alpha, createTheme, lighten, darken } from '@mui/material/styles';
 import '@mui/lab/themeAugmentation';
 
-// import i18n from 'src/i18n/i18n';
-
 export const themeColors = {
   primary: '#002840',
   secondary: '#243B55',
@@ -153,7 +151,7 @@ export const config = {
     width: '260px'
   },
   header: {
-    height: '0',
+    height: '80px',
     background: colors.alpha.white[100],
     boxShadow: colors.shadows.cardSm,
     textColor: colors.secondary.main
@@ -408,10 +406,10 @@ export const BloomreachTheme = createTheme({
           '--swiper-theme-color': colors.primary.main
         },
         code: {
-          // background: colors.info.lighter,
-          // color: colors.info.dark,
+          background: colors.primary.lighter,
+          color: colors.alpha.black[70],
           borderRadius: 4,
-          padding: 4
+          padding: 2
         },
         '@keyframes pulse': {
           '0%': {
@@ -1011,7 +1009,7 @@ export const BloomreachTheme = createTheme({
           minHeight: 38,
           borderRadius: 6,
           transition: 'color .2s',
-          textTransform: 'capitalize',
+          textTransform: 'none',
 
           '&.MuiButtonBase-root': {
             minWidth: 'auto',
@@ -1191,7 +1189,7 @@ export const BloomreachTheme = createTheme({
           subtitle1: 'div',
           subtitle2: 'div',
           body1: 'div',
-          body2: 'div'
+          body2: 'div',
         }
       },
       styleOverrides: {
@@ -1209,6 +1207,12 @@ export const BloomreachTheme = createTheme({
         groupTransition: {
           paddingLeft: '24px'
         },
+        root: {
+          '.Mui-selected, .Mui-focused, .Mui-selected.Mui-focused': {
+            background: colors.primary.light,
+            color: colors.alpha.white[100],
+          }
+        },
         content: {
           '&.Mui-disabled': {
             color: 'gray',
@@ -1216,8 +1220,12 @@ export const BloomreachTheme = createTheme({
             '& .MuiTreeItem-label': {
               width: 'auto'
             }
+          },
+          '&.Mui-selected, &.Mui-focused, &.Mui-selected.Mui-focused': {
+            background: colors.primary.light,
+            color: colors.alpha.white[100],
           }
-        }
+        },
       }
     },
   },

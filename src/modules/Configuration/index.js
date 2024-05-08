@@ -31,11 +31,10 @@ import {
 import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add'
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
+import { AddIcon, SwapHorizIcon } from 'src/icons'
 
 
-const ConfigurationComponent = () => {
+const ConfigurationModule = () => {
   const query = useSearchParams();
   const { environment, apiKey } = query;
 
@@ -353,4 +352,4 @@ const Environment = ({
   )
 }
 
-export default ConfigurationComponent
+export default ConfigurationModule

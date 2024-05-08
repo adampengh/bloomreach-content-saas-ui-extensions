@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 // Icons
-import CloseIcon from '@mui/icons-material/Close';
+import { CloseIcon } from 'src/icons';
 
 
 export const Loader = ({

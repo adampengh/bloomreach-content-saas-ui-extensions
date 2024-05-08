@@ -25,8 +25,7 @@ import {
 import { LoadingContext } from 'src/contexts'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import LanguageIcon from '@mui/icons-material/Language';
+import { AddIcon, LanguageIcon } from 'src/icons'
 
 
 export const GridTemplateModule = () => {

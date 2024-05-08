@@ -39,7 +39,7 @@
     "@mui/x-data-grid": "^5.17.20",
     "@mui/x-tree-view": "^7.1.1",
     "axios": "^1.2.2",
-    "bloomreach-content-management-apis": "^1.2.1",
+    "bloomreach-content-management-apis": "file:.yalc/bloomreach-content-management-apis",
     "clsx": "1.1.1",
     "context-api": "0.0.2",
     "date-fns": "2.28.0",

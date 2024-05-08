@@ -22,10 +22,12 @@ import {
 } from '@mui/material'
 
 // Icons
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
+import {
+  AddIcon,
+  DeleteIcon,
+  EditIcon,
+  TextFieldsIcon,
+} from 'src/icons'
 
 
 const ChannelParametersTab = ({ channel, environment, xAuthToken }) => {

@@ -14,6 +14,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -126,7 +127,8 @@ export default function CopyContentTypeModal({
         autoComplete='off'
         onSubmit={handleCopyContentTypes}
       >
-        <DialogTitle>Copy Confirmation</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 'bold' }}>Copy Confirmation</DialogTitle>
+        <Divider />
         <DialogContent>
           <p>Content Types to Copy:</p>
           <ul>
