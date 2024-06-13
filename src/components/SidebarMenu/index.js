@@ -139,7 +139,7 @@ export const SidebarMenu = () => {
                 <SidebarMenuLink
                   closeSidebar={closeSidebar}
                   currentRoute={currentRoute}
-                  href='/pages'
+                  href='/pages/copy'
                   icon={<WebIcon />}
                   text='Pages'
                 />

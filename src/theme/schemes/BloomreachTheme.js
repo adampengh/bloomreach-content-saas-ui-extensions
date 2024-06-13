@@ -4,10 +4,10 @@ import '@mui/lab/themeAugmentation';
 export const themeColors = {
   primary: '#002840',
   secondary: '#243B55',
-  success: '#57CA22',
+  success: '#4caf50',
   warning: '#FFA319',
-  error: '#FF1943',
-  info: '#33C2FF',
+  error: '#e53935',
+  info: '#00b0ff',
   black: '#223354',
   white: '#ffffff',
   primaryAlt: '#000C57'

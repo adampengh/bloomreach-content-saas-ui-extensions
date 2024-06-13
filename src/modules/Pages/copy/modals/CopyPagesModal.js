@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 // API
 import {
-
+  getFolder,
+  getPage,
+  putPage,
 } from 'bloomreach-content-management-apis'
 
 // Components
@@ -27,7 +29,9 @@ import { LoadingButton } from '@mui/lab'
 import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import { DevicesOutlinedIcon, SnippetFolderOutlinedIcon, WebIcon } from 'src/icons';
+import { DevicesOutlinedIcon, EastIcon, SnippetFolderOutlinedIcon, WebIcon } from 'src/icons';
+import { useTheme } from '@emotion/react'
+
 
 export default function CopyPagesModal({
   showModal,
@@ -38,152 +42,182 @@ export default function CopyPagesModal({
   setTargetChannels,
   setPagesCopied,
 }) {
+  const theme = useTheme()
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
-  const { environment, xAuthToken } = appConfiguration.environments?.source
+  const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
   const { showSnackbar } = useContext(ErrorContext)
 
   // State
+  const [itemsToCopy, setItemsToCopy] = useState({
+    folders: [],
+    pages: [],
+  });
   const [isProcessing, setIsProcessing] = useState(false)
+
+  useEffect(() => {
+    console.log('selectedPages', selectedPages)
+    const folders = selectedPages?.filter(item => item.includes('folder:'))?.map(item => item.replace('folder:', ''))
+    const pages = selectedPages?.filter(item => !item.includes('folder:'))
+    console.log('folders', folders)
+    console.log('pages', pages)
+    setItemsToCopy({
+      folders: folders,
+      pages: pages,
+    })
+  }, [selectedPages])
+
 
   const handleClose = () => {
     setShowModal(false)
   }
 
+
   const handleCopyPages = async () => {
     await setIsProcessing(true)
-    console.log('Copy Pages')
-
     await copyPages()
-
     await setIsProcessing(false)
   }
 
 
+  // Copy Pages to Target Channel(s)
   const copyPages = async () => {
-    await setPagesCopied({pages: []})
+    console.group('COPY PAGES')
+
+    // Loop through each selected target channel
     for await (const targetChannel of targetChannels) {
-      console.log('targetChannel', targetChannel)
-      for await (const page of selectedPages) {
-        console.log('page', page)
-        if (page.includes('folder:')) {
-          await copyFolder(page.replace('folder:', ''), targetChannel)
-        } else {
-          await copyPage(page, targetChannel)
-        }
+      const folders = itemsToCopy?.folders
+      const pages = itemsToCopy?.pages
+
+      // Copy Folders
+      for await (const folder of folders) {
+        console.log('COPY FOLDER', folder)
+        await copyFolder(folder, targetChannel, true)
       }
+
+      // Copy Pages
+      for await (const page of pages) {
+        console.log('COPY PAGE', page)
+        await copyPage(page, targetChannel)
+      }
+
+      console.groupEnd()
     }
 
     // Remove all checked pages from Source Channel
     await setSelectedPages([])
     await setTargetChannels([])
     await setShowModal(false)
-  }
-
-
-  const copyFolder = async (folder, targetChannel) => {
-    console.group('copyFolder')
-    console.log('folder', folder)
-    console.log('targetChannel', targetChannel)
     console.groupEnd()
   }
 
-  const copyPage = async (page, targetChannel) => {
+
+  const copyFolder = async (folderPath, targetChannel, recursively = false) => {
+    console.group('copyFolder')
+    console.log('folderPath', folderPath)
+    console.log('targetChannel', targetChannel)
+    console.log('recursively', recursively)
+
+    const depth = recursively ? 5 : 1
+
+    // Get the folder from the Source channel
+    const {pages, folders} = await getFolder(environment, xAuthToken, folderPath, depth)
+      .then((response) => {
+        const data = response.data
+        return {
+          pages: data.pages || [],
+          folders: data.folders || [],
+        }
+      })
+      .catch((error) => console.error('getFolder', error))
+
+    // Folders to Copy
+    for await (const folder of folders) {
+      await copyFolder(folder?.path, targetChannel, true)
+    }
+
+    // Pages to Copy
+    for (const page of pages) {
+      await copyPage(page?.path, targetChannel)
+    }
+
+    console.groupEnd()
+  }
+
+
+  const copyPage = async (pagePath, targetChannel) => {
     console.group('copyPage')
-    console.log('page', page)
+    console.log('pagePath', pagePath)
     console.log('targetChannel', targetChannel)
 
+    const regex = /(?:\/content\/documents\/)([a-zA-Z0-9-]*)(?:\/)(pages\/.*)/;
+    const matches = pagePath.match(regex)
+    const channel = matches[1]
+    const path = matches[2]
 
-    // Recursively re-create folder structure from source channel to target channel
-    // await copyFoldersRecursively(path, targetChannel)
-
-    // Get Page from Source Channel
-    // const pageData = await getPage(environment, xAuthToken, sourceChannel.branchOf, path, projectId)
-    //   .then(response => response.data)
-    //   .catch(async (err) => {
-    //     if (err.response.status === 404) {
-    //       return await getPage(environment, xAuthToken, sourceChannel.branchOf, path, 'core')
-    //         .then(response => response.data)
-    //     } else {
-    //       console.error('Get page error', err);
-    //     }
-    //   })
+    // Get the page from the source channel
+    // If the page is not part of the project, get the page data from 'core'
+    const pageData = await getPage(environment, xAuthToken, channel, path, projectId)
+      .then(response => response.data)
+      .catch(async (err) => {
+        if (err.response.status === 404) {
+          return await getPage(environment, xAuthToken, channel, path, 'core')
+            .then(response => response.data)
+        } else {
+          console.error('Get page error', err);
+        }
+      })
 
     // Put Page into Target Channel
-    // if (pageData) {
-    //   await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
-    //     .then(() => {
-    //       setPagesCopied(prevState => ({
-    //         pages: [...prevState.pages, {
-    //           channel: targetChannel,
-    //           page: pageData,
-    //           status: 'new'
-    //         }]
-    //       }))
-    //     })
-    //   .catch(async (err) => {
-    //     if (err.response.status === 409) {
-    //       console.warn('Page already exists in this project. Getting x-resource-version and trying again.')
-    //       await getPage(environment, xAuthToken, targetChannel.branchOf, path, projectId)
-    //         .then(async (response) => {
-    //           const xResourceVersion = response.headers['x-resource-version']
-    //           await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, xResourceVersion)
-    //             .then(() => {
-    //               setPagesCopied(prevState => ({
-    //                 pages: [...prevState.pages, {
-    //                     channel: targetChannel,
-    //                     page: pageData,
-    //                     status: 'updated'
-    //                 }]
-    //               }))
-    //             })
-    //             .catch((err) => {
-    //               console.error('Failed to putPage existing page:', err);
-    //             })
-    //           })
-    //     } else {
-    //       console.error('Failed to putPage:', err.response);
-    //       setPagesCopied(prevState => ({
-    //         pages: [...prevState.pages, {
-    //           channel: targetChannel,
-    //           page: pageData,
-    //           status: 'failed',
-    //           error: err.response.data
-    //         }]
-    //       }))
-    //     }
-    //   })
-    // }
-
-    console.groupEnd()
-  }
-
-
-  const copyFoldersRecursively = async (path, targetChannel) => {
-    console.group('createFoldersRecursively')
-    console.log('path', path)
-
-    // let segments = path.split('/')
-    // console.log('segments', segments)
-    // segments.pop()
-
-    // get the allowed document types and folder types for the existing folder
-    // const [allowedDocumentTypes, allowedFolderTypes] = await getFolder(environment, xAuthToken, path)
-
-    // let folderPath = targetChannel.contentRootPath;
-    // for await (const segment of segments) {
-    //   console.log('segment', segment)
-    //   folderPath += '/' + segment
-    //   console.log('folderPath', folderPath)
-    //   await getFolder(environment, xAuthToken, folderPath)
-    //     .catch(async (error) => {
-    //       if (error.response.status === 404) {
-    //         await createOrUpdateFolder(environment, xAuthToken, 'pageFolder', folderPath, segment)
-    //       } else {
-    //         console.error('Error creating folders recursively: ', error)
-    //       }
-    //     })
-    // }
+    if (pageData) {
+      await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData)
+        .then(() => {
+          setPagesCopied(prevState => ({
+            pages: [{
+              channel: targetChannel,
+              page: pageData,
+              path: path,
+              status: 'new',
+              timestamp: new Date().toISOString(),
+            }, ...prevState.pages]
+          }))
+        })
+      .catch(async (err) => {
+        if (err.response.status === 408) {
+          console.warn('Page already exists in this project. Getting X-Resource-Version and trying again.')
+          await getPage(environment, xAuthToken, targetChannel.branchOf, path, projectId)
+            .then(async (response) => {
+              const xResourceVersion = response.headers['x-resource-version']
+              await putPage(environment, xAuthToken, projectId, targetChannel.branchOf, path, pageData, xResourceVersion)
+                .then(() => {
+                  setPagesCopied(prevState => ({
+                    pages: [{
+                      channel: targetChannel,
+                      page: pageData,
+                      path: path,
+                      status: 'updated',
+                      timestamp: new Date().toISOString(),
+                    }, ...prevState.pages]
+                  }))
+                })
+                .catch((err) => console.error('Failed to putPage existing page:', err))
+              })
+        } else {
+          console.error('Failed to putPage:', err.response);
+          setPagesCopied(prevState => ({
+            pages: [{
+              channel: targetChannel,
+              page: pageData,
+              path: path,
+              status: 'failed',
+              timestamp: new Date().toISOString(),
+              error: err.response.data
+            }, ...prevState.pages]
+          }))
+        }
+      })
+    }
 
     console.groupEnd()
   }
@@ -207,51 +241,70 @@ export default function CopyPagesModal({
         <Divider />
         <DialogContent>
           <Grid container>
-            <Grid item xs={6}>
+            <Grid item xs={5.5}>
 
               {/* Folders */}
-              <Typography variant='h4'>Folders to Copy</Typography>
-              <List dense>
-                {selectedPages.filter(item => item.includes('folder:')).map((page) => {
-                  return (
-                    <ListItem key={page} dense disableGutters>
-                      <ListItemIcon sx={{ minWidth: '36px' }}>
-                        <SnippetFolderOutlinedIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={page.replace('folder:', '')} />
-                    </ListItem>
-                  )}
-                )}
-              </List>
+              {itemsToCopy?.folders && (
+                <>
+                  <Typography variant='h4'>Folders to Copy</Typography>
+                  <List dense>
+                    {itemsToCopy?.folders?.map((folder) => (
+                      <ListItem key={folder} dense disableGutters>
+                        <ListItemIcon sx={{ minWidth: '36px' }}>
+                          <SnippetFolderOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={folder} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
+              )}
 
               {/* Pages */}
               <Typography variant='h4'>Pages to Copy</Typography>
               <List dense>
-                {selectedPages.filter(item => !item.includes('folder:')).map((page) => {
-                  return (
-                    <ListItem key={page} dense disableGutters>
-                      <ListItemIcon sx={{ minWidth: '36px' }}>
-                        <WebIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={page} />
-                    </ListItem>
-                  )}
-                )}
+                {itemsToCopy?.pages?.map((page) => (
+                  <ListItem key={page} dense disableGutters>
+                    <ListItemIcon sx={{ minWidth: '36px' }}>
+                      <WebIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={page} />
+                  </ListItem>
+                ))}
               </List>
             </Grid>
-            <Grid item xs={6}>
+
+            <Grid item
+              xs={1}
+              sx={{
+                '&.MuiGrid-item': {
+                  width: '100%',
+                  paddingTop: '1.5rem',
+                  textAlign: 'center',
+                }
+              }}
+            >
+              <EastIcon sx={{
+                background: theme.colors.primary.main,
+                border: `1px solid ${theme.colors.primary.main}`,
+                borderRadius: '50px',
+                fill: theme.palette.common.white,
+                fontSize: 36,
+                padding: '0.5rem'
+              }} />
+            </Grid>
+
+            <Grid item xs={5.5}>
               <Typography variant='h4'>To Channels</Typography>
               <List dense>
-                {targetChannels.map((channel, index) => {
-                  return (
-                    <ListItem key={index} dense disableGutters>
-                      <ListItemIcon sx={{ minWidth: '36px' }}>
-                        <DevicesOutlinedIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={`${channel.name} (${channel.branch})`} />
-                    </ListItem>
-                  )}
-                )}
+                {targetChannels.map((channel, index) => (
+                  <ListItem key={index} dense disableGutters>
+                    <ListItemIcon sx={{ minWidth: '36px' }}>
+                      <DevicesOutlinedIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={`${channel.name} (${channel.branch})`} />
+                  </ListItem>
+                ))}
               </List>
             </Grid>
           </Grid>

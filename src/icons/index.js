@@ -1,9 +1,13 @@
 import AddIcon from '@mui/icons-material/Add'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AddLinkIcon from '@mui/icons-material/AddLink'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import AltRouteIcon from '@mui/icons-material/AltRoute'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import CheckIcon from '@mui/icons-material/Check'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import CloseIcon from '@mui/icons-material/Close'
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
 import CommentIcon from '@mui/icons-material/Comment'
@@ -17,10 +21,12 @@ import DifferenceIcon from '@mui/icons-material/Difference'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import EastIcon from '@mui/icons-material/East'
 import EditIcon from '@mui/icons-material/Edit'
+import ErrorIcon from '@mui/icons-material/Error'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import FolderIcon from '@mui/icons-material/Folder'
 import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
 import InfoIcon from '@mui/icons-material/Info'
 import LanguageIcon from '@mui/icons-material/Language'
@@ -33,16 +39,22 @@ import SnippetFolderOutlinedIcon from '@mui/icons-material/SnippetFolderOutlined
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
 import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TranslateIcon from '@mui/icons-material/Translate'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import WebIcon from '@mui/icons-material/Web'
 
 
 export {
   AddIcon,
+  AddCircleIcon,
+  AddCircleOutlineOutlinedIcon,
   AddLinkIcon,
   AddTwoToneIcon,
   AltRouteIcon,
   AssignmentIcon,
   CheckIcon,
+  CheckCircleIcon,
+  CheckCircleOutlinedIcon,
   CloseIcon,
   CloseTwoToneIcon,
   CommentIcon,
@@ -56,10 +68,12 @@ export {
   DragHandleIcon,
   EastIcon,
   EditIcon,
+  ErrorIcon,
   ErrorOutlineIcon,
   FolderIcon,
   FolderOpenIcon,
   FormatListBulletedIcon,
+  HelpOutlineIcon,
   ImportExportIcon,
   InfoIcon,
   LanguageIcon,
@@ -72,5 +86,7 @@ export {
   SwapHorizIcon,
   TextFieldsIcon,
   TranslateIcon,
+  Visibility,
+  VisibilityOff,
   WebIcon,
 }

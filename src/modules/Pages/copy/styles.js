@@ -1,7 +1,13 @@
 import styled from '@emotion/styled'
-import { Box, CardContent } from '@mui/material';
+import {
+  Box,
+  CardContent,
+  TableCell,
+  TableRow,
+  tableCellClasses,
+} from '@mui/material';
 
-const StyledPageWrapper = styled(Box)(`
+export const StyledPageWrapper = styled(Box)(`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: minmax(auto, 3fr) minmax(260px, 1fr);
@@ -11,13 +17,27 @@ const StyledPageWrapper = styled(Box)(`
   height: 100%;
 `)
 
-const StyledCardContent = styled(CardContent)(`
-  border: 1px solid green;
+export const StyledCardContent = styled(CardContent)(`
   height: 100%;
   overflow-y: auto;
 `)
 
-export {
-  StyledPageWrapper,
-  StyledCardContent,
-}
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(even)': {
+    backgroundColor: theme.colors.primary.lighter,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));

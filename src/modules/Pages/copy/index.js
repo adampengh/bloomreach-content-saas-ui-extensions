@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 
 // API Methods
 import {
@@ -13,6 +13,7 @@ import {
 } from 'bloomreach-content-management-apis'
 
 // Components
+import { useTheme } from '@emotion/react'
 import {
   Alert,
   Box,
@@ -29,23 +30,35 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import { PagesHierarchicalList } from 'src/components'
 import {
   StyledPageWrapper,
   StyledCardContent,
+  StyledTableCell,
+  StyledTableRow,
 } from './styles'
+import { PagesHierarchicalList } from 'src/components'
 import CopyPagesModal from './modals/CopyPagesModal'
 
 // Contexts
 import { ConfigurationContext, LoadingContext } from 'src/contexts'
 
 // Icons
-import { CheckIcon, ContentCopyIcon, ErrorOutlineIcon } from 'src/icons'
+import { ContentCopyIcon, HelpOutlineIcon } from 'src/icons'
 
 
 const PagesCopyModule = () => {
+  const theme = useTheme();
+
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
@@ -77,10 +90,7 @@ const PagesCopyModule = () => {
       setLoading({ loading: true, message: 'Loading Channels'})
       getAllChannels(environment, xAuthToken)
         .then((response) => {
-          let data = response.data;
-          if (projectId) {
-            data = response.data.filter(channel => channel.branch === projectId)
-          }
+          const data = projectId ? response.data.filter(channel => channel.branch === projectId) : response.data;
           console.log('getAllChannels', data)
           setChannels(data)
           setLoading({ loading: false, message: '' })
@@ -152,15 +162,16 @@ const PagesCopyModule = () => {
         renderError()
       ) : (
         <StyledPageWrapper gap={3}>
+
+          {/* Source Channel */}
           <Card display='flex' sx={{ gridArea: 'topLeft' }}>
             <CardHeader
-              title='Source Channel'
+              title={<Typography variant='h4' component='span'>Source Channel</Typography>}
               subheader={
                 <Typography variant='body2'>Use <code>ctrl/cmd</code> + <code>click</code> or <code>shift</code> + <code>click</code> for multi-select</Typography>
               }
             />
             <Divider />
-
             <StyledCardContent sx={{ maxHeight: 'calc(100% - 84px)' }}>
               <PagesHierarchicalList
                 pageFolders={pageFolders}
@@ -170,6 +181,7 @@ const PagesCopyModule = () => {
             </StyledCardContent>
           </Card>
 
+          {/* Target Channel */}
           <Card sx={{ gridArea: 'topRight' }}>
             <CardHeader title={
               <Grid
@@ -187,7 +199,7 @@ const PagesCopyModule = () => {
                       disabled={!(selectedPages.length && targetChannels.length)}
                       startIcon={<ContentCopyIcon />}
                       onClick={() => setShowCopyModal(true)}
-                    >Copy Page</Button>
+                    >Copy Page{selectedPages.length > 1 && 's'}</Button>
                   </Grid>
               </Grid>
             } />
@@ -227,50 +239,70 @@ const PagesCopyModule = () => {
             </StyledCardContent>
           </Card>
 
+          {/* Copy Log */}
           <Card sx={{ gridArea: 'bottom' }}>
-            <CardHeader title='Copy Log' />
+            <CardHeader title={
+              <Typography variant='h4' component='span'>
+                Copy Log&nbsp;
+                <Tooltip leaveDelay={0} title='Non-persitent log of copy operations'>
+                  <HelpOutlineIcon fontSize='10px' />
+                </Tooltip>
+              </Typography>
+            } />
             <Divider />
-            <StyledCardContent sx={{ maxHeight: 'calc(100% - 62px)' }}>
-              {pagesCopied?.pages?.length > 0 &&
-                <Box sx={{ paddingTop: 3 }}>
-                  <Typography variant='h4' component='h4'>
-                    Pages Copied
-                  </Typography>
-                  <List>
-                    {pagesCopied?.pages?.map((page, index) =>
-                      <ListItem key={index} sx={{padding: 0.5 }}>
-                        {page.status !== 'failed' ?
-                          <>
-                            <ListItemIcon>
-                              <CheckIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                              {page.status === 'new' &&
-                                <>
-                                  <strong>{page?.page?.name}</strong> added to <strong>{page?.channel?.id}</strong>
-                                </>
-                              }
-                              {page.status === 'updated' &&
-                                <>
-                                  <strong>{page?.page?.name}</strong> updated in <strong>{page?.channel?.id}</strong>
-                                </>
-                              }
-                            </ListItemText>
-                          </>
-                          :
-                          <>
-                            <ListItemIcon>
-                              <ErrorOutlineIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                              <strong>{page?.page?.name}</strong> failed in <strong>{page?.channel?.id}</strong> because {page.error}
-                            </ListItemText>
-                          </>
-                        }
-                      </ListItem>
-                    )}
-                  </List>
-                </Box>
+            <StyledCardContent
+              sx={{
+                maxHeight: 'calc(100% - 53px)',
+                padding: 0,
+                paddingBottom: '0 !important',
+              }}>
+              {pagesCopied?.pages?.length === 0
+                ?
+                  <Box padding={2}>
+                    <Typography variant='body2' component='p'>Details of pages copied will appear here</Typography>
+                  </Box>
+                :
+                  <Table sx={{ borderRadius: 0 }} size='small' aria-label='a dense table'>
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell>Status</StyledTableCell>
+                        <StyledTableCell>Timestamp</StyledTableCell>
+                        <StyledTableCell>Channel</StyledTableCell>
+                        <StyledTableCell>Page Name</StyledTableCell>
+                        <StyledTableCell>Page Path</StyledTableCell>
+                        <StyledTableCell>Message</StyledTableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {pagesCopied?.pages?.map((page, index) => {
+                        console.log('page', page)
+                        return (
+                          <StyledTableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                            <StyledTableCell>
+                              {(() => {
+                                switch (page.status) {
+                                  case 'new':
+                                    return <Typography variant='button' sx={{ color: theme.colors.success.main }}>Added</Typography>
+                                  case 'updated':
+                                    return <Typography variant='button' sx={{ color: theme.colors.success.main }}>Updated</Typography>
+                                  case 'failed':
+                                    return <Typography variant='button' sx={{ color: theme.colors.error.main }}>Failed</Typography>
+                                  default:
+                                    return null
+                                }
+                              })()}
+                            </StyledTableCell>
+                            <StyledTableCell>{page?.timestamp}</StyledTableCell>
+                            <StyledTableCell>{page?.channel?.name}</StyledTableCell>
+                            <StyledTableCell>{page?.page?.name}</StyledTableCell>
+                            <StyledTableCell>{page?.path}</StyledTableCell>
+                            <StyledTableCell>{page?.error}</StyledTableCell>
+                          </StyledTableRow>
+                        )
+                      } )}
+
+                    </TableBody>
+                  </Table>
               }
             </StyledCardContent>
           </Card>

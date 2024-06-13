@@ -48,9 +48,6 @@ const PagesFolder = ({ folder }) => {
     displayName = folder.path.split('/').pop()
   }
 
-  const pageFolders = folder.folders
-  const pages = folder.pages
-
   return (
     <TreeItem itemId={`folder:${folder.path}`} label={
       <Typography sx={{ display: 'flex', alignContent: 'center'}}>
@@ -58,10 +55,10 @@ const PagesFolder = ({ folder }) => {
         {displayName}
       </Typography>
     }>
-      {pageFolders && pageFolders.map((pageFolder) =>
+      {folder?.folders?.map((pageFolder) =>
         <PagesFolder key={pageFolder.path} folder={pageFolder} />
       )}
-      {pages && pages.map((page) =>
+      {folder?.pages?.map((page) =>
         <Page key={page.path} page={page} />
       )}
     </TreeItem>

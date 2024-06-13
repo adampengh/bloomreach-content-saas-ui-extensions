@@ -19,8 +19,11 @@ import {
   Divider,
   FormControl,
   Grid,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   Stack,
   TextField,
@@ -31,7 +34,7 @@ import {
 import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import { AddIcon, SwapHorizIcon } from 'src/icons'
+import { AddIcon, SwapHorizIcon, Visibility, VisibilityOff } from 'src/icons'
 
 
 const ConfigurationModule = () => {
@@ -256,6 +259,13 @@ const Environment = ({
   handleProjectClick,
   handleShowModal
 }) => {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Card>
       <CardHeader title={title} />
@@ -281,15 +291,31 @@ const Environment = ({
               value={config?.environment || ''}
               onChange={(e) => setConfig({...config, environment: e.target.value})}
             />
-            <TextField
-              required
-              autoComplete='off'
-              id='xAuthToken'
-              name='xAuthToken'
-              label='Authorization Token'
-              value={config?.xAuthToken || ''}
-              onChange={(e) => setConfig({...config, xAuthToken: e.target.value})}
-            />
+
+            <FormControl variant='outlined' required>
+              <InputLabel htmlFor='xAuthToken'>Authorization Token</InputLabel>
+              <OutlinedInput
+                id='xAuthToken'
+                name='xAuthToken'
+                type={showPassword ? 'text' : 'password'}
+                label='Authorization Token'
+                value={config?.xAuthToken || ''}
+                onChange={(e) => setConfig({...config, xAuthToken: e.target.value})}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton
+                      aria-label='toggle password visibility'
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge='end'
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+
             { environment && xAuthToken &&
               <Grid
                 container
