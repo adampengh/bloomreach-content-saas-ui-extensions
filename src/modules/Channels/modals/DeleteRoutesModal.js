@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Typography,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -95,7 +96,7 @@ export default function DeleteRoutesModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Delete Routes
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Delete Routes</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

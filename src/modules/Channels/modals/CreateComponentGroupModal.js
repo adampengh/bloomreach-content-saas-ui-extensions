@@ -19,6 +19,7 @@ import {
   FormGroup,
   IconButton,
   TextField,
+  Typography,
 } from '@mui/material'
 
 // Context
@@ -100,7 +101,7 @@ export default function CreateComponentGroupModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Create Component Group
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Create Component Group</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

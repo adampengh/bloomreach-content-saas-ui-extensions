@@ -1,15 +1,11 @@
 'use client'
 
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 // API Methods
 import {
-  createOrUpdateFolder,
   getAllChannels,
   getFolder,
-  getPage,
-  getDeveloperProject,
-  putPage,
 } from 'bloomreach-content-management-apis'
 
 // Components
@@ -30,11 +26,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Paper,
   Table,
   TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Tooltip,

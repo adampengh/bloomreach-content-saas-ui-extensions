@@ -3,3 +3,10 @@
   to = "/configuration"
   status = 301
   force = true
+
+## Redirect from old Copy Pages page to new Copy Pages page
+[[redirects]]
+  from = "/pages"
+  to = "/pages/copy"
+  status = 301
+  force = true

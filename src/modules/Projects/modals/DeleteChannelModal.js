@@ -53,6 +53,8 @@ export default function DeleteChannelModal({
     console.group('Remove Channel From Project')
     event.preventDefault()
 
+    await setShowModal(false)
+
     // Remove the channel from the project
     await removeChannel(environment, xAuthToken, channelToDelete)
 
@@ -68,7 +70,6 @@ export default function DeleteChannelModal({
       })
 
     await handleShowSnackbar('success', 'Channel Removed from Project')
-    await setShowModal(false)
     console.groupEnd()
   }
 
@@ -129,8 +130,8 @@ export default function DeleteChannelModal({
         onSubmit={handleRemoveChannelFromProject}
       >
 
-        <DialogTitle sx={{ fontWeight: 'bold' }}>
-          <Typography variant='h3'>Confirm Delete Channel</Typography>
+        <DialogTitle>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Confirm Delete Channel</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

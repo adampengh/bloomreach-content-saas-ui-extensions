@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useContext, useEffect, useState } from 'react'
 import NextLink from 'next/link'
 

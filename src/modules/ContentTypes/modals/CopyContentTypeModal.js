@@ -19,6 +19,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -127,7 +128,9 @@ export default function CopyContentTypeModal({
         autoComplete='off'
         onSubmit={handleCopyContentTypes}
       >
-        <DialogTitle sx={{ fontWeight: 'bold' }}>Copy Confirmation</DialogTitle>
+        <DialogTitle>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Copy Confirmation</Typography>
+        </DialogTitle>
         <Divider />
         <DialogContent>
           <p>Content Types to Copy:</p>

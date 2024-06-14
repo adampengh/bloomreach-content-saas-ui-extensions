@@ -234,8 +234,8 @@ export default function CopyPagesModal({
         sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}
         autoComplete='off'
       >
-        <DialogTitle sx={{ fontWeight: 'bold' }}>
-          <Typography variant='h3'>Copy Confirmation</Typography>
+        <DialogTitle>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Copy Confirmation</Typography>
         </DialogTitle>
         <Divider />
         <DialogContent>

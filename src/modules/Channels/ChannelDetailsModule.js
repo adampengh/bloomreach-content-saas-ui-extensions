@@ -145,7 +145,7 @@ export const ChannelDetailsModule = ({ channelId }) => {
                   <Tab label='Layouts' />
                   <Tab label='Routes' />
                   <Tab label='Menus' />
-                  <Tab label='TEMPLATE' />
+                  {process.env.NODE_ENV === 'development' && <Tab label='TEMPLATE' /> }
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
@@ -169,9 +169,12 @@ export const ChannelDetailsModule = ({ channelId }) => {
               <TabPanel value={value} index={4}>
                 {channel && <MenusTab channel={channel} />}
               </TabPanel>
-              <TabPanel value={value} index={5}>
-              {channel && <NewTab channel={channel} />}
-              </TabPanel>
+
+              {process.env.NODE_ENV === 'development' &&
+                <TabPanel value={value} index={5}>
+                  {channel && <NewTab channel={channel} />}
+                </TabPanel>
+              }
             </CardContent>
           </Card>
         </Grid>

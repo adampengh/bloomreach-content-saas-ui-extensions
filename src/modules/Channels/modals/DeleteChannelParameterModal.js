@@ -16,6 +16,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Typography,
 } from '@mui/material'
 
 // Context
@@ -74,7 +75,7 @@ export default function DeleteChannelParameterModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Delete Channel Property
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Delete Channel Property</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

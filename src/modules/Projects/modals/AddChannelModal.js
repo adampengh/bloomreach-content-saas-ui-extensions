@@ -70,6 +70,7 @@ export default function AddChannelModal({
   const handleAddChannelToProject = async (event) => {
     console.group('Add Channel to Project')
     event.preventDefault()
+    await setShowModal(false)
 
     // Add each checked channel to the project
     for await (const currentChannel of checked) {
@@ -87,7 +88,6 @@ export default function AddChannelModal({
 
     await handleShowSnackbar('success', checked.length > 1 ? 'Channels Added' : 'Channel Added')
     await setChecked([])
-    await setShowModal(false)
     console.groupEnd()
   }
 
@@ -160,8 +160,8 @@ export default function AddChannelModal({
         autoComplete='off'
         onSubmit={handleAddChannelToProject}
       >
-        <DialogTitle sx={{ fontWeight: 'bold' }}>
-          <Typography variant='h3'>Add Channel to Project</Typography>
+        <DialogTitle>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Add Channel to Project</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

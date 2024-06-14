@@ -28,13 +28,14 @@ import {
   Stack,
   TextField,
   Tooltip,
+  Typography,
 } from '@mui/material'
 
 // Contexts
 import { ConfigurationContext, ErrorContext } from 'src/contexts'
 
 // Icons
-import { AddIcon, SwapHorizIcon, Visibility, VisibilityOff } from 'src/icons'
+import { AddIcon, DifferenceIcon, LanguageIcon, SwapHorizIcon, Visibility, VisibilityOff } from 'src/icons'
 
 
 const ConfigurationModule = () => {
@@ -341,14 +342,31 @@ const Environment = ({
                       value={config?.projectId || 'core'}
                       onChange={(e) => setConfig({...config, projectId: e.target.value})}
                     >
-                      <MenuItem value='core'><strong>Core</strong></MenuItem>
+                      <MenuItem value='core'>
+                        <Grid container justifyContent={'space-between'} alignContent={'center'} alignItems={'center'}>
+                          <Grid item display='flex' alignContent={'center'} alignItems={'center'}>
+                            <LanguageIcon fontSize='small' color='info' sx={{ mr: 1 }} />
+                            <Typography variant='body1' fontWeight={700}>Core</Typography>
+                          </Grid>
+                        </Grid>
+                      </MenuItem>
                       <Divider />
-                      {developerProjects.map(project => (
+                      {developerProjects.map(project => {
+                        console.log('project', project)
+                        return (
                         <MenuItem key={project.id} value={project.id} sx={{ justifyContent: 'space-between', fontWeight: 'bold' }}>
-                          {project.name}
-                          <StatusIndicator status={project.state.status} message={project.state.message} />
+                          <Grid container justifyContent={'space-between'} alignContent={'center'} alignItems={'center'}>
+                            <Grid item display='flex' alignContent={'center'} alignItems={'center'}>
+                              <LanguageIcon fontSize='small' sx={{ mr: 1 }} />
+                              <Typography variant='body1' fontWeight={700}>{project.name}</Typography>
+                              {project.includeContentTypes && <DifferenceIcon fontSize='small' sx={{ ml: 1 }} />}
+                            </Grid>
+                            <Grid item>
+                              <StatusIndicator status={project.state.status} message={project.state.message} />
+                            </Grid>
+                          </Grid>
                         </MenuItem>
-                      ))}
+                      )})}
                     </Select>
                   </FormControl>
                 </Grid>

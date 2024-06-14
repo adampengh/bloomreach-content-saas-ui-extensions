@@ -47,26 +47,23 @@ export default function RootLayout({
       <body>
         <AppRouterCacheProvider>
           <ErrorProvider>
-              <ConfigurationProvider>
-                <SidebarProvider>
-                  <ThemeProvider theme={BloomreachTheme}>
-                  <CssBaseline />
-                      <AppWrapper>
-                        <Header />
-                        <Sidebar />
-                    <LoadingProvider>
-                        <PageWrapper
-                          as='main'
-                          sx={{ ml: { xs: 0, lg: config.sidebar.width } }}
-                        >
+            <ConfigurationProvider>
+              <SidebarProvider>
+                <ThemeProvider theme={BloomreachTheme}>
+                <CssBaseline />
+                  <LoadingProvider>
+                    <AppWrapper>
+                      <Header />
+                      <Sidebar />
+                        <PageWrapper as='main' sx={{ ml: { xs: 0, lg: config.sidebar.width } }}>
                           {children}
                         </PageWrapper>
-                    </LoadingProvider>
-                        <Footer />
-                      </AppWrapper>
-                  </ThemeProvider>
-                </SidebarProvider>
-              </ConfigurationProvider>
+                      <Footer />
+                    </AppWrapper>
+                  </LoadingProvider>
+                </ThemeProvider>
+              </SidebarProvider>
+            </ConfigurationProvider>
           </ErrorProvider>
         </AppRouterCacheProvider>
       </body>

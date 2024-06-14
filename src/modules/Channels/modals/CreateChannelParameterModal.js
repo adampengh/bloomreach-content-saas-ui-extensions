@@ -19,6 +19,7 @@ import {
   FormGroup,
   IconButton,
   TextField,
+  Typography,
 } from '@mui/material'
 
 // Constants
@@ -93,7 +94,7 @@ export default function CreateChannelParameterModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Create Channel Property
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Create Channel Property</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

@@ -19,6 +19,7 @@ import {
   FormControlLabel,
   FormGroup,
   TextField,
+  Typography,
 } from '@mui/material'
 
 export default function CreateProjectModal({
@@ -68,7 +69,9 @@ export default function CreateProjectModal({
         autoComplete='off'
         onSubmit={handleCreateNewProject}
       >
-        <DialogTitle>Create New Development Project</DialogTitle>
+        <DialogTitle>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Create New Development Project</Typography>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
             Create a new development project and optionally add ability to edit Content Types

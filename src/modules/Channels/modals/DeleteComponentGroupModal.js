@@ -16,6 +16,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Typography,
 } from '@mui/material'
 
 // Context
@@ -76,7 +77,7 @@ export default function DeleteComponentGroupModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Delete Component Group
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Delete Component Group</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

@@ -15,6 +15,7 @@ import {
   DialogActions,
   DialogContent,
   Divider,
+  Typography,
 } from '@mui/material';
 import {
   LoadingButton
@@ -101,7 +102,9 @@ const DeleteContentTypeModal = ({
         autoComplete='off'
         onSubmit={handleSubmit}
       >
-        <DialogTitle sx={{ fontWeight: 'bold' }}>Confirm Deletion</DialogTitle>
+        <DialogTitle>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Confirm Deletion</Typography>
+        </DialogTitle>
         <Divider />
         <DialogContent sx={{ pb: '64px' }}>
             Delete content types:

@@ -12,6 +12,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Typography,
 } from '@mui/material'
 import {
   LoadingButton
@@ -88,7 +89,7 @@ export default function DeleteProjectModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Delete Project
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Delete Project</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

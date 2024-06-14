@@ -28,6 +28,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -272,7 +273,7 @@ export default function CopyMenusModal({
         onSubmit={handleCopyItems}
       >
         <DialogTitle>
-          Copy Confirmation
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Copy Confirmation</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

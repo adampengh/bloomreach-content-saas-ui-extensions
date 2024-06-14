@@ -103,7 +103,7 @@ const DeleteComponentModal = ({
         onSubmit={handleDeleteComponents}
       >
         <DialogTitle id='alert-dialog-title'>
-          <Typography variant='h3' component='h3'>Confirm Deletion</Typography>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Confirm Deletion</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}

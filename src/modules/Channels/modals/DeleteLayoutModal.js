@@ -15,6 +15,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Typography,
 } from '@mui/material'
 import { LoadingButton } from '@mui/lab'
 
@@ -92,7 +93,7 @@ export default function DeleteLayoutModal({
         onSubmit={handleSubmit}
       >
         <DialogTitle>
-          Delete Layout
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Delete Layout</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}
