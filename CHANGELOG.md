@@ -3,9 +3,18 @@
 
 ## Version 2
 
-### 2.0.0 (March 4, 2024)
+### 2.0.0 (June 14, 2024)
+#### Major Updates
 - Upgraded app to NextJS v14
-- Upgraded to NodeJS 18
+- Upgraded to NodeJS v20
+- Pages Copy Page has been rebuilt
+
+#### New Features
+- Translations: Ability to link existing content documents as translated documents
+- Configuration Drawer added to header
+
+#### Bug Fixes
+- Error when adding multiple channels to a developer project
 
 ---
 
