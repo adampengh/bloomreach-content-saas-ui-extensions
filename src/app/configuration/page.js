@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import ConfigurationModule from 'src/modules/Configuration';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -8,7 +10,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <>
+    <Suspense>
       <PageTitleWrapper>
         <PageTitle
           heading='Configuration'
@@ -16,6 +18,6 @@ export default function Page() {
         />
       </PageTitleWrapper>
       <ConfigurationModule />
-    </>
+    </Suspense>
   )
 }
