@@ -183,7 +183,7 @@ export default function CopyPagesModal({
           }))
         })
       .catch(async (err) => {
-        if (err.response.status === 408) {
+        if (err.response.status === 409) {
           console.warn('Page already exists in this project. Getting X-Resource-Version and trying again.')
           await getPage(environment, xAuthToken, targetChannel.branchOf, path, projectId)
             .then(async (response) => {
