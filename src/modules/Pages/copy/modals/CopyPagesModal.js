@@ -26,7 +26,7 @@ import {
 import { LoadingButton } from '@mui/lab'
 
 // Contexts
-import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
+import { ConfigurationContext } from 'src/contexts'
 
 // Icons
 import { DevicesOutlinedIcon, EastIcon, SnippetFolderOutlinedIcon, WebIcon } from 'src/icons';
@@ -47,7 +47,6 @@ export default function CopyPagesModal({
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken, projectId } = appConfiguration.environments?.source
-  const { showSnackbar } = useContext(ErrorContext)
 
   // State
   const [itemsToCopy, setItemsToCopy] = useState({

@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
   addChannelToProject,
   getAllChannels,
+  getDeveloperProject,
 } from 'bloomreach-content-management-apis'
 
 // Components
@@ -14,23 +15,26 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControlLabel,
   FormGroup,
   IconButton,
+  Typography,
 } from '@mui/material'
 
 // Contexts
-import { ConfigurationContext, ErrorContext } from 'src/contexts'
+import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
 import { CloseIcon } from 'src/icons'
 
+// Utils
+import { pollingPromise } from 'src/lib/utils'
+
 
 export default function AddChannelModal({
-  showAddChannelModal,
-  setShowAddChannelModal,
+  showModal,
+  setShowModal,
   channels,
   setChannels,
   coreChannels,
@@ -39,71 +43,104 @@ export default function AddChannelModal({
 }) {
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
+  const { environment, xAuthToken } = appConfiguration?.environments?.[instance]
   const { handleShowSnackbar } = useContext(ErrorContext)
+  const { setLoading } = useContext(LoadingContext)
 
+  // State
   const [availableChannels, setAvailableChannels] = useState([])
   const [checked, setChecked] = useState([]);
-
-  const {
-    environment,
-    xAuthToken,
-  } = appConfiguration?.environments?.[instance]
-  console.log('environment', environment)
-  console.log('xAuthToken', xAuthToken)
-
-  const handleClose = () => {
-    setShowAddChannelModal(false)
-  };
 
   useEffect(() => {
     // Filter out core channels that have already been added to the project
     if (channels) {
-      const channelsNotInProject = coreChannels?.filter(coreChannel => {
-        return channels?.find(channel => channel.branchOf === coreChannel.name) ? false : true
-      })
-      console.log('availableChannels', channelsNotInProject)
+      const channelsNotInProject = coreChannels?.filter(coreChannel =>
+        channels?.find(channel => channel.branchOf === coreChannel.name) ? false : true
+      )
       setAvailableChannels(channelsNotInProject)
     }
   }, [channels])
 
 
+  const handleClose = () => {
+    setShowModal(false)
+  };
+
+
   const handleAddChannelToProject = async (event) => {
+    console.group('Add Channel to Project')
     event.preventDefault()
-    console.log('checked', checked)
+
+    // Add each checked channel to the project
     for await (const currentChannel of checked) {
-      console.log('currentChannel', currentChannel.name)
       await addChannel(environment, xAuthToken, projectId, currentChannel.name)
     }
 
-    const newChannelsList = await getAllChannels(environment, xAuthToken)
+    // Get all channels for the project after the channels have been added
+    await getAllChannels(environment, xAuthToken)
       .then(response => {
-        console.log('reponse', response.data.filter(channel => channel.branch === projectId))
-        return response.data.filter(channel => channel.branch === projectId)
+        const newChannelsList = response.data.filter(channel => channel.branch === projectId)
+        setChannels(newChannelsList)
       })
-    console.log('newChannelsList', newChannelsList)
-    await setChannels(newChannelsList)
+      .catch(error => console.error('Error Getting Channels', error))
 
-    await handleShowSnackbar('success', 'Channels Added')
+
+    await handleShowSnackbar('success', checked.length > 1 ? 'Channels Added' : 'Channel Added')
     await setChecked([])
-    await setShowAddChannelModal(false)
+    await setShowModal(false)
+    console.groupEnd()
   }
+
 
   const addChannel = async (environment, xAuthToken, projectId, channelName) => {
+    console.group('Adding Channel', channelName)
+    await setLoading({ loading: true, message: `Adding Channel: ${channelName}` })
+
     await addChannelToProject(environment, xAuthToken, projectId, channelName)
-      .then(response => console.log('channel added', response.data))
-      .catch(error => console.error('error adding channel', error))
+      .then(response => console.log('Channel Added:', response.data))
+      .catch(error => console.error('Error Adding Channel to Project', error))
+
+    // Get the status of the project
+    // Poll until the project status is 'IN_PROGRESS'
+    const getProjectStatus = async () => {
+      console.log(new Date(), 'Calling Project API');
+      return await getDeveloperProject(environment, xAuthToken, projectId)
+        .then(response => {
+          return response.data?.state?.status
+        })
+        .catch(err => console.error(err))
+    };
+
+    // Test the project status, it should be 'IN_PROGRESS' before we can try to add another channel
+    let count = 0;
+    const testProjectStatus = (status) => {
+      const MAX_RETRIES = 10;
+      count++
+      console.log(new Date(), 'Testing', status, status === 'IN_PROGRESS' ? 'OK' : 'Not yet...');
+      return count === MAX_RETRIES || status === 'IN_PROGRESS';
+    };
+
+
+    // Poll the project status until it is 'IN_PROGRESS' or until we reach the max retries
+    console.log(new Date(), 'Starting Polling Project');
+    const { promise, stopPolling } = pollingPromise(getProjectStatus, testProjectStatus, 1000);
+    await promise.then(() => console.log(new Date(), 'Channel has been added to project'))
+    console.log(new Date(), 'Canceling Polling Project');
+    await stopPolling();
+    await setLoading({ loading: false, message: '' })
+
+    console.groupEnd()
   }
+
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
-
     if (currentIndex === -1) {
       newChecked.push(value);
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
     setChecked(newChecked);
   };
 
@@ -112,7 +149,7 @@ export default function AddChannelModal({
     <Dialog
       fullWidth={true}
       maxWidth={'sm'}
-      open={showAddChannelModal}
+      open={showModal}
       onClose={handleClose}
     >
       <Box
@@ -123,8 +160,8 @@ export default function AddChannelModal({
         autoComplete='off'
         onSubmit={handleAddChannelToProject}
       >
-        <DialogTitle>
-          Add Channels to Project
+        <DialogTitle sx={{ fontWeight: 'bold' }}>
+          <Typography variant='h3'>Add Channel to Project</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}
@@ -139,25 +176,25 @@ export default function AddChannelModal({
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <FormGroup sx={{ m: 1, width: '100%', marginTop: 3 }}>
-              <strong>Channels:</strong>
-              {availableChannels?.map((channel, index) =>
-                <FormControlLabel
-                  key={index}
-                  onClick={handleToggle ? handleToggle(channel) : null}
-                  control={ <Checkbox checked={checked.indexOf(channel) !== -1} /> }
-                  label={channel.name} />
-              )}
-            </FormGroup>
-          </DialogContentText>
+          <FormGroup sx={{ width: '100%', marginTop: 1 }}>
+            <strong>Available Channels:</strong>
+            {availableChannels?.map((channel, index) =>
+              <FormControlLabel
+                key={index}
+                onClick={handleToggle ? handleToggle(channel) : null}
+                control={ <Checkbox checked={checked.indexOf(channel) !== -1} /> }
+                label={channel.name}
+              />
+            )}
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             variant='contained'
             type='submit'
-          >Add Channels</Button>
+            disabled={checked.length < 1}
+          >{checked.length > 1 ? 'Add Channels' : 'Add Channel'}</Button>
         </DialogActions>
       </Box>
     </Dialog>

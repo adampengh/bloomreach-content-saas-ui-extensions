@@ -83,7 +83,7 @@ export const ProjectsDetailsModule = ({ instance, projectId }) => {
             console.log('projectData', response.data)
             setProjectData(response.data)
           })
-          .catch(err => console.log(err))
+          .catch(err => console.error(err))
 
 
         const promise2 = getAllCoreChannels(environment)
@@ -96,11 +96,10 @@ export const ProjectsDetailsModule = ({ instance, projectId }) => {
 
         Promise.all([promise1, promise2, promise3])
           .then(() => {
-            console.log('All Promises Resolved')
             setLoading({ loading: false, message: '' })
           })
           .catch(err => {
-            console.log(err)
+            console.error(err)
             setLoading({ loading: false, message: '' })
           })
       }
@@ -110,10 +109,9 @@ export const ProjectsDetailsModule = ({ instance, projectId }) => {
   useEffect(() => {
     // Filter out core channels that have already been added to the project
     if (channels) {
-      const channelsNotInProject = coreChannels?.filter(coreChannel => {
-        return channels?.find(channel => channel.branchOf === coreChannel.name) ? false : true
-      })
-      console.log('availableChannels', channelsNotInProject)
+      const channelsNotInProject = coreChannels?.filter(coreChannel =>
+        channels?.find(channel => channel.branchOf === coreChannel.name) ? false : true
+      )
       setAvailableChannels(channelsNotInProject)
     }
   }, [channels])
@@ -320,8 +318,8 @@ export const ProjectsDetailsModule = ({ instance, projectId }) => {
       </Container>
 
       <AddChannelModal
-        showAddChannelModal={showAddChannelModal}
-        setShowAddChannelModal={setShowAddChannelModal}
+        showModal={showAddChannelModal}
+        setShowModal={setShowAddChannelModal}
         channels={channels}
         setChannels={setChannels}
         coreChannels={coreChannels}
@@ -330,12 +328,13 @@ export const ProjectsDetailsModule = ({ instance, projectId }) => {
       />
 
       <DeleteChannelModal
-        showDeleteChannelModal={showDeleteChannelModal}
-        setShowDeleteChannelModal={setShowDeleteChannelModal}
+        showModal={showDeleteChannelModal}
+        setShowModal={setShowDeleteChannelModal}
         channels={channels}
         setChannels={setChannels}
         channelToDelete={channelToDelete}
         instance={instance}
+        projectId={projectId}
       />
 
       <DeleteProjectModal
