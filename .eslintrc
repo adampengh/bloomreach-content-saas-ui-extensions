@@ -1,0 +1,67 @@
+{
+  "env": {
+		"browser": true,
+		"es2021": true,
+		"node": true,
+		"worker": true
+	},
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+			"globalReturn": true,
+			"impliedStrict": true,
+			"jsx": true
+		},
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "prettier",
+    "unused-imports"
+  ],
+  "rules": {
+    // "prettier/prettier": ["error"],
+    "@next/next/no-img-element": "off",
+    "eslint-disable-next-line": "off",
+    "jsx-a11y/alt-text": "off",
+    "jsx-quotes": ["warn", "prefer-single"],
+    "no-undef": "error",
+    "no-unsafe-optional-chaining": "off",
+    "no-unused-expressions": ["error", { "allowTernary": true }],
+		"no-unused-labels": "error",
+		"no-unused-vars": "off",
+    "object-curly-newline": [
+      "error",
+      {
+        "consistent": true,
+        "multiline": true
+      }
+    ],
+    "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+    "react/display-name": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-max-props-per-line": [
+      1,
+      {
+        "maximum": 2,
+        "when": "multiline"
+      }
+    ],
+    "react-hooks/exhaustive-deps": "off",
+    "semi": "off",
+    "unused-imports/no-unused-imports": ["warn"],
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+          "vars": "all",
+          "varsIgnorePattern": "^_",
+          "args": "after-used",
+          "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}

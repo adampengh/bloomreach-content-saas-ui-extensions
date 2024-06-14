@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, createContext, useEffect } from 'react';
 import { ThemeProvider } from '@mui/material';
 import { themeCreator } from './base';

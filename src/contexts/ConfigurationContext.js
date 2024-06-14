@@ -2,7 +2,7 @@ import { useState, createContext, useEffect } from 'react';
 
 export const ConfigurationContext = createContext({});
 
-export function ConfigurationProvider({ children }) {
+export const ConfigurationProvider = ({ children }) => {
   const [appConfiguration, setAppConfiguration] = useState({
     environments: {
       source: {

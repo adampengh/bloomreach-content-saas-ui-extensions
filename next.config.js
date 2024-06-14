@@ -1,10 +1,5 @@
-const withImages = require('next-images');
-const { version } = require('./package.json');
-
 module.exports = {
-  publicRuntimeConfig: {
-    version,
-  },
+  reactStrictMode: false,
   async redirects() {
     return [
       {
