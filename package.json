@@ -46,7 +46,7 @@
     "dependency-graph": "^0.11.0",
     "eslint-config-next": "^14.2.3",
     "gray-matter": "^4.0.3",
-    "next": "^14.1.4",
+    "next": "^14.2.4",
     "next-images": "1.8.4",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
