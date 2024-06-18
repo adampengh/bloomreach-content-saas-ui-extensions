@@ -38,6 +38,7 @@
     "@mui/styles": "5.8.0",
     "@mui/x-data-grid": "^5.17.20",
     "@mui/x-tree-view": "^7.1.1",
+    "@next/third-parties": "^14.2.4",
     "axios": "^1.2.2",
     "bloomreach-content-management-apis": "^1.2.1",
     "clsx": "1.1.1",

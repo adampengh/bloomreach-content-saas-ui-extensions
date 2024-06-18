@@ -30,3 +30,12 @@ export const NAMESPACES = [
   'sapspartacus',
   'vuestorefront'
 ]
+
+// DELIVERY API V2
+export const SECURED_APIS = [
+  'folders',
+  'documents',
+  'images',
+  'assets',
+  'openapi',
+]

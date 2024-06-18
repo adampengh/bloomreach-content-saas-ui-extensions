@@ -1,5 +1,6 @@
 'use client'
 import { BloomreachTheme, config } from 'src/theme/schemes/BloomreachTheme'
+import { GoogleTagManager } from '@next/third-parties/google'
 
 // Components
 import { Box } from '@mui/material'
@@ -66,6 +67,7 @@ export default function RootLayout({
             </ConfigurationProvider>
           </ErrorProvider>
         </AppRouterCacheProvider>
+        <GoogleTagManager gtmId='GTM-TP5HVWR4' />
       </body>
     </html>
   )
