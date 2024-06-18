@@ -175,7 +175,7 @@ export const SidebarMenu = () => {
           </List>
 
           {/* Delivery API Settings */}
-          <List
+          {/* <List
             component='div'
             subheader={<ListSubheader component='div' disableSticky>Delivery API Settings</ListSubheader>}
           >
@@ -190,7 +190,7 @@ export const SidebarMenu = () => {
                 />
               </List>
             </SubMenuWrapper>
-          </List>
+          </List> */}
         </>
       }
     </MenuWrapper>
