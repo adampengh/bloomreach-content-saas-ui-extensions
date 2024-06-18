@@ -19,6 +19,7 @@ import { ConfigurationContext, SidebarContext } from 'src/contexts'
 // Icons
 import {
   AssignmentIcon,
+  ApiIcon,
   FormatListBulletedIcon,
   ImportExportIcon,
   InfoIcon,
@@ -90,9 +91,7 @@ export const SidebarMenu = () => {
           {/* Site Management */}
           <List
             component='div'
-            subheader={
-              <ListSubheader component='div' disableSticky>Project Management</ListSubheader>
-            }
+            subheader={<ListSubheader component='div' disableSticky>Project Management</ListSubheader>}
           >
             <SubMenuWrapper>
               <List component='div'>
@@ -110,9 +109,7 @@ export const SidebarMenu = () => {
           {/* Site Management */}
           <List
             component='div'
-            subheader={
-              <ListSubheader component='div' disableSticky>Site Management</ListSubheader>
-            }
+            subheader={<ListSubheader component='div' disableSticky>Site Management</ListSubheader>}
           >
             <SubMenuWrapper>
               <List component='div'>
@@ -130,9 +127,7 @@ export const SidebarMenu = () => {
           {/* Content Management */}
           <List
             component='div'
-            subheader={
-              <ListSubheader component='div' disableSticky>Content Management</ListSubheader>
-            }
+            subheader={<ListSubheader component='div' disableSticky>Content Management</ListSubheader>}
           >
             <SubMenuWrapper>
               <List component='div'>
@@ -164,9 +159,7 @@ export const SidebarMenu = () => {
           {/* Content Type Management */}
           <List
             component='div'
-            subheader={
-              <ListSubheader component='div' disableSticky>Content Types Management</ListSubheader>
-            }
+            subheader={<ListSubheader component='div' disableSticky>Content Types Management</ListSubheader>}
           >
             <SubMenuWrapper>
               <List component='div'>
@@ -176,6 +169,24 @@ export const SidebarMenu = () => {
                   href='/content-types'
                   icon={<PlagiarismIcon />}
                   text='Content Types'
+                />
+              </List>
+            </SubMenuWrapper>
+          </List>
+
+          {/* Delivery API Settings */}
+          <List
+            component='div'
+            subheader={<ListSubheader component='div' disableSticky>Delivery API Settings</ListSubheader>}
+          >
+            <SubMenuWrapper>
+              <List component='div'>
+                <SidebarMenuLink
+                  closeSidebar={closeSidebar}
+                  currentRoute={currentRoute}
+                  href='/delivery-api-settings'
+                  icon={<ApiIcon />}
+                  text='Delivery API Settings'
                 />
               </List>
             </SubMenuWrapper>
