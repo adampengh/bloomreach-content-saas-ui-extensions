@@ -24,7 +24,39 @@ Change into the cloned project directory:
 Install the dependencies:
 ### `yarn`
 
+
+
+## Project Structure
+The project follows a general structure of Page > Module(s) > Component(s)
+
+```
+- public
+  - static
+    - images
+- src
+  - app
+  - components
+  - contexts
+  - icons
+  - lib
+  - mocks
+  - modules
+  - theme
+
+```
+
+| Folder | Purpose/Use |
+| --- | --- |
+| app | App Router folder for all pages/routes; folders with parentheses are route  |
+| components | Re-Usable Components generally used in Modules |
+| contexts | Global context for Applicaton Configuration, Loading State, Error Handling |
+| icons | All Material Icons used in the project
+| lib | Library of re-usable functions
+| mocks | Mock data for testing
+| modules | Modules used in Pages
+| theme | Theme styling
 ---
+
 
 ## Available scripts
 

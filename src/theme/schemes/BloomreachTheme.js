@@ -1,23 +1,21 @@
-import { alpha, createTheme, lighten, darken } from '@mui/material';
+import { alpha, createTheme, lighten, darken } from '@mui/material/styles';
 import '@mui/lab/themeAugmentation';
 
-// import i18n from 'src/i18n/i18n';
-
-const themeColors = {
+export const themeColors = {
   primary: '#002840',
   secondary: '#243B55',
-  success: '#57CA22',
+  success: '#4caf50',
   warning: '#FFA319',
-  error: '#FF1943',
-  info: '#33C2FF',
+  error: '#e53935',
+  info: '#00b0ff',
   black: '#223354',
   white: '#ffffff',
   primaryAlt: '#000C57'
 };
 
-const colors = {
+export const colors = {
   gradients: {
-    blue1: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)',
+    blue1: `linear-gradient(135deg, ${darken('#33C2FF', 0.4)} 0%, #002840 100%)`,
     blue2: 'linear-gradient(135deg, #ABDCFF 0%, #0396FF 100%)',
     blue3: 'linear-gradient(127.55deg, #141E30 3.73%, #243B55 92.26%)',
     blue4: 'linear-gradient(-20deg, #2b5876 0%, #4e4376 100%)',
@@ -130,6 +128,38 @@ const colors = {
     dark: darken(themeColors.info, 0.2)
   }
 };
+
+export const config = {
+  general: {
+    reactFrameworkColor: '#00D8FF',
+    borderRadiusSm: '6px',
+    borderRadius: '10px',
+    borderRadiusLg: '12px',
+    borderRadiusXl: '16px'
+  },
+  sidebar: {
+    background: colors.layout.sidebar.background,
+    textColor: colors.layout.sidebar.textColor,
+    dividerBg: colors.layout.sidebar.dividerBg,
+    menuItemColor: colors.layout.sidebar.menuItemColor,
+    menuItemColorActive: colors.layout.sidebar.menuItemColorActive,
+    menuItemBg: colors.layout.sidebar.menuItemBg,
+    menuItemBgActive: colors.layout.sidebar.menuItemBgActive,
+    menuItemIconColor: colors.layout.sidebar.menuItemIconColor,
+    menuItemIconColorActive: colors.layout.sidebar.menuItemIconColorActive,
+    menuItemHeadingColor: colors.layout.sidebar.menuItemHeadingColor,
+    width: '260px'
+  },
+  header: {
+    height: '80px',
+    background: colors.alpha.white[100],
+    boxShadow: colors.shadows.cardSm,
+    textColor: colors.secondary.main
+  },
+  footer: {
+    height: '0'
+  }
+}
 
 export const BloomreachTheme = createTheme({
   // direction: i18n.dir(),
@@ -325,29 +355,6 @@ export const BloomreachTheme = createTheme({
     }
   },
   components: {
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          backgroundColor: alpha(darken(themeColors.primaryAlt, 0.4), 0.2),
-          backdropFilter: 'blur(2px)',
-
-          '&.MuiBackdrop-invisible': {
-            backgroundColor: 'transparent',
-            backdropFilter: 'blur(2px)'
-          }
-        }
-      }
-    },
-    MuiFormHelperText: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          marginLeft: 8,
-          marginRight: 8,
-          fontWeight: 'bold'
-        }
-      }
-    },
     MuiCssBaseline: {
       styleOverrides: {
         'html, body': {
@@ -399,10 +406,10 @@ export const BloomreachTheme = createTheme({
           '--swiper-theme-color': colors.primary.main
         },
         code: {
-          // background: colors.info.lighter,
-          // color: colors.info.dark,
+          background: colors.primary.lighter,
+          color: colors.alpha.black[70],
           borderRadius: 4,
-          padding: 4
+          padding: 2
         },
         '@keyframes pulse': {
           '0%': {
@@ -444,76 +451,17 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiSelect: {
+    MuiAlert: {
       styleOverrides: {
-        iconOutlined: {
-          color: colors.alpha.black[50]
+        message: {
+          lineHeight: 1.5,
+          fontSize: 14
         },
-        icon: {
-          top: 'calc(50% - 14px)'
-        }
-      }
-    },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          '& .MuiInputAdornment-positionEnd.MuiInputAdornment-outlined': {
-            paddingRight: 6
-          },
-          '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: colors.alpha.black[50]
-          },
-          '&.Mui-focused:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: colors.primary.main
-          }
-        }
-      }
-    },
-    MuiListSubheader: {
-      styleOverrides: {
-        colorPrimary: {
-          fontWeight: 'bold',
-          lineHeight: '40px',
-          fontSize: 13,
-          background: colors.alpha.black[5],
-          color: colors.alpha.black[70]
-        }
-      }
-    },
-    MuiCardHeader: {
-      styleOverrides: {
+        standardInfo: {
+          color: colors.info.main
+        },
         action: {
-          marginTop: -5,
-          marginBottom: -5
-        },
-        title: {
-          fontSize: 15
-        }
-      }
-    },
-    MuiRadio: {
-      styleOverrides: {
-        root: {
-          borderRadius: '50px'
-        }
-      }
-    },
-    MuiChip: {
-      styleOverrides: {
-        colorSecondary: {
-          background: colors.alpha.black[10],
-          color: colors.alpha.black[100],
-
-          '&:hover': {
-            background: colors.alpha.black[10]
-          }
-        },
-        deleteIcon: {
-          color: colors.error.light,
-
-          '&:hover': {
-            color: colors.error.main
-          }
+          color: colors.alpha.black[70]
         }
       }
     },
@@ -527,6 +475,37 @@ export const BloomreachTheme = createTheme({
           },
           '&::before': {
             display: 'none'
+          }
+        }
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        tag: {
+          margin: 1
+        },
+        root: {
+          '.MuiAutocomplete-inputRoot.MuiOutlinedInput-root .MuiAutocomplete-endAdornment':
+            {
+              right: 14
+            }
+        },
+        clearIndicator: {
+          background: colors.error.lighter,
+          color: colors.error.main,
+          marginRight: 8,
+
+          '&:hover': {
+            background: colors.error.lighter,
+            color: colors.error.dark
+          }
+        },
+        popupIndicator: {
+          color: colors.alpha.black[50],
+
+          '&:hover': {
+            background: colors.primary.lighter,
+            color: colors.primary.main
           }
         }
       }
@@ -561,29 +540,15 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiListItemAvatar: {
+    MuiBackdrop: {
       styleOverrides: {
-        alignItemsFlexStart: {
-          marginTop: 0
-        }
-      }
-    },
-    MuiPaginationItem: {
-      styleOverrides: {
-        page: {
-          fontSize: 13,
-          fontWeight: 'bold',
-          transition: 'all .2s'
-        },
-        textPrimary: {
-          '&.Mui-selected': {
-            boxShadow: colors.shadows.primary
-          },
-          '&.MuiButtonBase-root:hover': {
-            background: colors.alpha.black[5]
-          },
-          '&.Mui-selected.MuiButtonBase-root:hover': {
-            background: colors.primary.main
+        root: {
+          backgroundColor: alpha(darken(themeColors.primaryAlt, 0.4), 0.2),
+          backdropFilter: 'blur(2px)',
+
+          '&.MuiBackdrop-invisible': {
+            backgroundColor: 'transparent',
+            backdropFilter: 'blur(2px)'
           }
         }
       }
@@ -655,50 +620,32 @@ export const BloomreachTheme = createTheme({
         },
       }
     },
-    MuiToggleButton: {
-      defaultProps: {
-        disableRipple: true
-      },
+    MuiCardHeader: {
       styleOverrides: {
-        root: {
-          color: colors.primary.main,
-          background: colors.alpha.white[100],
-          transition: 'all .2s',
-
-          '&:hover, &.Mui-selected, &.Mui-selected:hover': {
-            color: colors.alpha.white[100],
-            background: colors.primary.main
-          }
+        action: {
+          marginTop: -5,
+          marginBottom: -5
+        },
+        title: {
+          fontSize: 15
         }
       }
     },
-    MuiIconButton: {
+    MuiChip: {
       styleOverrides: {
-        root: {
-          borderRadius: 8,
-          padding: 8,
+        colorSecondary: {
+          background: colors.alpha.black[10],
+          color: colors.alpha.black[100],
 
-          '& .MuiTouchRipple-root': {
-            borderRadius: 8
+          '&:hover': {
+            background: colors.alpha.black[10]
           }
         },
-        sizeSmall: {
-          padding: 4
-        }
-      }
-    },
-    MuiListItemText: {
-      styleOverrides: {
-        root: {
-          margin: 0
-        }
-      }
-    },
-    MuiListItemButton: {
-      styleOverrides: {
-        root: {
-          '& .MuiTouchRipple-root': {
-            opacity: 0.3
+        deleteIcon: {
+          color: colors.error.light,
+
+          '&:hover': {
+            color: colors.error.main
           }
         }
       }
@@ -737,31 +684,29 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiPaper: {
+    MuiFormHelperText: {
       styleOverrides: {
         root: {
-          padding: 0
-        },
-        elevation0: {
-          boxShadow: 'none'
-        },
-        elevation: {
-          boxShadow: colors.shadows.card
-        },
-        elevation2: {
-          boxShadow: colors.shadows.cardSm
-        },
-        elevation24: {
-          boxShadow: colors.shadows.cardLg
-        },
-        outlined: {
-          boxShadow: colors.shadows.card
+          textTransform: 'none',
+          marginLeft: 8,
+          marginRight: 8,
+          fontWeight: 'bold'
         }
       }
     },
-    MuiLink: {
-      defaultProps: {
-        underline: 'hover'
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          padding: 8,
+
+          '& .MuiTouchRipple-root': {
+            borderRadius: 8
+          }
+        },
+        sizeSmall: {
+          padding: 4
+        }
       }
     },
     MuiLinearProgress: {
@@ -772,18 +717,9 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiSlider: {
-      styleOverrides: {
-        root: {
-          '& .MuiSlider-valueLabelCircle, .MuiSlider-valueLabelLabel': {
-            transform: 'none'
-          },
-          '& .MuiSlider-valueLabel': {
-            borderRadius: 6,
-            background: colors.alpha.black[100],
-            color: colors.alpha.white[100]
-          }
-        }
+    MuiLink: {
+      defaultProps: {
+        underline: 'hover'
       }
     },
     MuiList: {
@@ -825,52 +761,51 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiTabs: {
+    MuiListItem: {
       styleOverrides: {
         root: {
-          minHeight: 38,
-          overflow: 'visible',
-          '& .Mui-selected': {
-            backgroundColor: colors.alpha.black[10]
-          }
-        },
-        scrollableX: {
-          overflow: 'visible !important'
-        },
-        vertical: {
-          '& .MuiTabs-flexContainer': {
-            minWidth: '200px'
-          },
-          '& .MuiTab-root': {
-            margin: '0',
-            alignItems: 'flex-start',
+          '&.MuiButtonBase-root': {
+            color: colors.secondary.main,
+
+            '&:hover, &:active, &.active, &.Mui-selected': {
+              color: colors.alpha.black[100],
+              background: lighten(colors.primary.lighter, 0.5)
+            }
           }
         }
-      },
+      }
     },
-    MuiTab: {
+    MuiListItemAvatar: {
+      styleOverrides: {
+        alignItemsFlexStart: {
+          marginTop: 0
+        }
+      }
+    },
+    MuiListItemButton: {
       styleOverrides: {
         root: {
-          padding: 0,
-          height: 38,
-          minHeight: 38,
-          borderRadius: 6,
-          transition: 'color .2s',
-          textTransform: 'capitalize',
-
-          '&.MuiButtonBase-root': {
-            minWidth: 'auto',
-            paddingLeft: 20,
-            paddingRight: 20,
-            marginRight: 4
-          },
-          '&.Mui-selected, &.Mui-selected:hover': {
-            // color: colors.alpha.white[100],
-            zIndex: 5
-          },
-          '&:hover': {
-            color: colors.alpha.black[100]
+          '& .MuiTouchRipple-root': {
+            opacity: 0.3
           }
+        }
+      }
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        root: {
+          margin: 0
+        }
+      }
+    },
+    MuiListSubheader: {
+      styleOverrides: {
+        colorPrimary: {
+          fontWeight: 'bold',
+          lineHeight: '40px',
+          fontSize: 13,
+          background: colors.alpha.black[5],
+          color: colors.alpha.black[70]
         }
       }
     },
@@ -917,172 +852,108 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiListItem: {
+    MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          '&.MuiButtonBase-root': {
-            color: colors.secondary.main,
-
-            '&:hover, &:active, &.active, &.Mui-selected': {
-              color: colors.alpha.black[100],
-              background: lighten(colors.primary.lighter, 0.5)
-            }
+          '& .MuiInputAdornment-positionEnd.MuiInputAdornment-outlined': {
+            paddingRight: 6
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: colors.alpha.black[50]
+          },
+          '&.Mui-focused:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: colors.primary.main
           }
         }
       }
     },
-    MuiAutocomplete: {
+    MuiPaginationItem: {
       styleOverrides: {
-        tag: {
-          margin: 1
-        },
-        root: {
-          '.MuiAutocomplete-inputRoot.MuiOutlinedInput-root .MuiAutocomplete-endAdornment':
-            {
-              right: 14
-            }
-        },
-        clearIndicator: {
-          background: colors.error.lighter,
-          color: colors.error.main,
-          marginRight: 8,
-
-          '&:hover': {
-            background: colors.error.lighter,
-            color: colors.error.dark
-          }
-        },
-        popupIndicator: {
-          color: colors.alpha.black[50],
-
-          '&:hover': {
-            background: colors.primary.lighter,
-            color: colors.primary.main
-          }
-        }
-      }
-    },
-    MuiTablePagination: {
-      styleOverrides: {
-        toolbar: {
-          '& .MuiIconButton-root': {
-            padding: 8
-          }
-        },
-        select: {
-          '&:focus': {
-            backgroundColor: 'transparent'
-          }
-        }
-      }
-    },
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          minHeight: '0 !important',
-          padding: '0 !important'
-        }
-      }
-    },
-    MuiTableRow: {
-      styleOverrides: {
-        head: {
-          background: colors.alpha.black[5]
-        },
-        root: {
-          transition: 'background-color .2s',
-
-          '&.MuiTableRow-hover:hover': {
-            backgroundColor: colors.alpha.black[5]
-          }
-        }
-      }
-    },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          borderBottomColor: colors.alpha.black[10],
-          fontSize: 14
-        },
-        head: {
-          textTransform: 'uppercase',
+        page: {
           fontSize: 13,
           fontWeight: 'bold',
-          color: colors.alpha.black[70]
+          transition: 'all .2s'
+        },
+        textPrimary: {
+          '&.Mui-selected': {
+            boxShadow: colors.shadows.primary
+          },
+          '&.MuiButtonBase-root:hover': {
+            background: colors.alpha.black[5]
+          },
+          '&.Mui-selected.MuiButtonBase-root:hover': {
+            background: colors.primary.main
+          }
         }
       }
     },
-    MuiAlert: {
-      styleOverrides: {
-        message: {
-          lineHeight: 1.5,
-          fontSize: 14
-        },
-        standardInfo: {
-          color: colors.info.main
-        },
-        action: {
-          color: colors.alpha.black[70]
-        }
-      }
-    },
-    MuiTimelineDot: {
+    MuiPaper: {
       styleOverrides: {
         root: {
-          margin: 0,
-          zIndex: 5,
-          position: 'absolute',
-          top: '50%',
-          marginTop: -6,
-          left: -6
+          padding: 0
+        },
+        elevation0: {
+          boxShadow: 'none'
+        },
+        elevation: {
+          boxShadow: colors.shadows.card
+        },
+        elevation2: {
+          boxShadow: colors.shadows.cardSm
+        },
+        elevation24: {
+          boxShadow: colors.shadows.cardLg
         },
         outlined: {
-          backgroundColor: colors.alpha.white[100],
-          boxShadow: '0 0 0 6px ' + colors.alpha.white[100]
-        },
-        outlinedPrimary: {
-          backgroundColor: colors.alpha.white[100],
-          boxShadow: '0 0 0 6px ' + colors.alpha.white[100]
+          boxShadow: colors.shadows.card
         }
       }
     },
-    MuiTimelineConnector: {
+    MuiRadio: {
       styleOverrides: {
         root: {
-          position: 'absolute',
-          height: '100%',
-          top: 0,
-          borderRadius: 50,
-          backgroundColor: colors.alpha.black[10]
+          borderRadius: '50px'
         }
       }
     },
-    MuiTimelineItem: {
+    MuiSelect: {
+      styleOverrides: {
+        iconOutlined: {
+          color: colors.alpha.black[50]
+        },
+        icon: {
+          top: 'calc(50% - 14px)'
+        }
+      }
+    },
+    MuiSlider: {
       styleOverrides: {
         root: {
-          minHeight: 0,
-          padding: '8px 0',
-
-          '&:before': {
-            display: 'none'
-          }
-        },
-        missingOppositeContent: {
-          '&:before': {
-            display: 'none'
+          '& .MuiSlider-valueLabelCircle, .MuiSlider-valueLabelLabel': {
+            transform: 'none'
+          },
+          '& .MuiSlider-valueLabel': {
+            borderRadius: 6,
+            background: colors.alpha.black[100],
+            color: colors.alpha.white[100]
           }
         }
       }
     },
-    MuiTooltip: {
+    MuiStepIcon: {
       styleOverrides: {
-        tooltip: {
-          backgroundColor: alpha(colors.alpha.black['100'], 0.95),
-          padding: '8px 16px',
-          fontSize: 13
-        },
-        arrow: {
-          color: alpha(colors.alpha.black['100'], 0.95)
+        root: {
+          '&.MuiStepIcon-completed': {
+            color: colors.success.main
+          }
+        }
+      }
+    },
+    MuiStepper: {
+      styleOverrides: {
+        root: {
+          paddingTop: 20,
+          paddingBottom: 20
         }
       }
     },
@@ -1130,20 +1001,179 @@ export const BloomreachTheme = createTheme({
         }
       }
     },
-    MuiStepper: {
+    MuiTab: {
       styleOverrides: {
         root: {
-          paddingTop: 20,
-          paddingBottom: 20
+          padding: 0,
+          height: 38,
+          minHeight: 38,
+          borderRadius: 6,
+          transition: 'color .2s',
+          textTransform: 'none',
+
+          '&.MuiButtonBase-root': {
+            minWidth: 'auto',
+            paddingLeft: 20,
+            paddingRight: 20,
+            marginRight: 4
+          },
+          '&.Mui-selected, &.Mui-selected:hover': {
+            // color: colors.alpha.white[100],
+            zIndex: 5
+          },
+          '&:hover': {
+            color: colors.alpha.black[100]
+          }
         }
       }
     },
-    MuiStepIcon: {
+    MuiTabs: {
       styleOverrides: {
         root: {
-          '&.MuiStepIcon-completed': {
-            color: colors.success.main
+          minHeight: 38,
+          overflow: 'visible',
+          '& .Mui-selected': {
+            backgroundColor: colors.alpha.black[10]
           }
+        },
+        scrollableX: {
+          overflow: 'visible !important'
+        },
+        vertical: {
+          '& .MuiTabs-flexContainer': {
+            minWidth: '200px'
+          },
+          '& .MuiTab-root': {
+            margin: '0',
+            alignItems: 'flex-start',
+          }
+        }
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottomColor: colors.alpha.black[10],
+          fontSize: 14
+        },
+        head: {
+          textTransform: 'uppercase',
+          fontSize: 13,
+          fontWeight: 'bold',
+          color: colors.alpha.black[70]
+        }
+      }
+    },
+    MuiTablePagination: {
+      styleOverrides: {
+        toolbar: {
+          '& .MuiIconButton-root': {
+            padding: 8
+          }
+        },
+        select: {
+          '&:focus': {
+            backgroundColor: 'transparent'
+          }
+        }
+      }
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        head: {
+          background: colors.alpha.black[5]
+        },
+        root: {
+          transition: 'background-color .2s',
+
+          '&.MuiTableRow-hover:hover': {
+            backgroundColor: colors.alpha.black[5]
+          }
+        }
+      }
+    },
+    MuiTimelineConnector: {
+      styleOverrides: {
+        root: {
+          position: 'absolute',
+          height: '100%',
+          top: 0,
+          borderRadius: 50,
+          backgroundColor: colors.alpha.black[10]
+        }
+      }
+    },
+    MuiTimelineDot: {
+      styleOverrides: {
+        root: {
+          margin: 0,
+          zIndex: 5,
+          position: 'absolute',
+          top: '50%',
+          marginTop: -6,
+          left: -6
+        },
+        outlined: {
+          backgroundColor: colors.alpha.white[100],
+          boxShadow: '0 0 0 6px ' + colors.alpha.white[100]
+        },
+        outlinedPrimary: {
+          backgroundColor: colors.alpha.white[100],
+          boxShadow: '0 0 0 6px ' + colors.alpha.white[100]
+        }
+      }
+    },
+    MuiTimelineItem: {
+      styleOverrides: {
+        root: {
+          minHeight: 0,
+          padding: '8px 0',
+
+          '&:before': {
+            display: 'none'
+          }
+        },
+        missingOppositeContent: {
+          '&:before': {
+            display: 'none'
+          }
+        }
+      }
+    },
+    MuiToggleButton: {
+      defaultProps: {
+        disableRipple: true
+      },
+      styleOverrides: {
+        root: {
+          color: colors.primary.main,
+          background: colors.alpha.white[100],
+          transition: 'all .2s',
+
+          '&:hover, &.Mui-selected, &.Mui-selected:hover': {
+            color: colors.alpha.white[100],
+            background: colors.primary.main
+          }
+        }
+      }
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          minHeight: '0 !important',
+          padding: '0 !important'
+        }
+      }
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: alpha(colors.alpha.black['100'], 0.95),
+          padding: '8px 16px',
+          fontSize: 13
+        },
+        arrow: {
+          color: alpha(colors.alpha.black['100'], 0.95)
         }
       }
     },
@@ -1159,7 +1189,7 @@ export const BloomreachTheme = createTheme({
           subtitle1: 'div',
           subtitle2: 'div',
           body1: 'div',
-          body2: 'div'
+          body2: 'div',
         }
       },
       styleOverrides: {
@@ -1171,7 +1201,33 @@ export const BloomreachTheme = createTheme({
           lineHeight: 1.7
         }
       }
-    }
+    },
+    MuiTreeItem: {
+      styleOverrides: {
+        groupTransition: {
+          paddingLeft: '24px'
+        },
+        root: {
+          '.Mui-selected, .Mui-focused, .Mui-selected.Mui-focused': {
+            background: colors.primary.light,
+            color: colors.alpha.white[100],
+          }
+        },
+        content: {
+          '&.Mui-disabled': {
+            color: 'gray',
+            cursor: 'not-allowed',
+            '& .MuiTreeItem-label': {
+              width: 'auto'
+            }
+          },
+          '&.Mui-selected, &.Mui-focused, &.Mui-selected.Mui-focused': {
+            background: colors.primary.light,
+            color: colors.alpha.white[100],
+          }
+        },
+      }
+    },
   },
   shape: {
     borderRadius: 10
