@@ -1,11 +1,10 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React, { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 
 // Components
 import {
-  Alert,
   Box,
   Card,
   CardContent,
@@ -18,9 +17,6 @@ import { TabPanel } from '@/components';
 import { DeliverApiSettingsV1 } from './DeliveryApiSettingsV1'
 import { DeliverApiSettingsV2 } from './DeliveryApiSettingsV2'
 
-// Contexts
-import { ConfigurationContext, LoadingContext } from 'src/contexts';
-
 const TABS = [
   'Delivery API V1',
   'Delivery API V2',
@@ -29,18 +25,9 @@ const TABS = [
 export const DeliveryApiSettingsModule = () => {
   const router = useRouter();
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const { tab } = searchParams;
 
   // State
   const [value, setValue] = useState(0);
-  const [error, setError] = useState(null)
-  const [channel, setChannel] = useState(null)
-
-  // Context
-  const { appConfiguration } = useContext(ConfigurationContext)
-  const { environment, xAuthToken } = appConfiguration.environments?.source
-  const { setLoading } = useContext(LoadingContext)
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);

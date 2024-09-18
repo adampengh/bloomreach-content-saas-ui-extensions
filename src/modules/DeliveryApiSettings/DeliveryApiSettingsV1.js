@@ -14,10 +14,6 @@ import {
   Badge,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
   FormControl,
   Grid,
   InputLabel,
@@ -31,10 +27,6 @@ import {
 
 // Contexts
 import { ConfigurationContext } from '@/contexts'
-
-import { mockDeliveryV1Page } from '@/modules/DeliveryApiSettings/mock-data/v1/page'
-import { mockDeliveryV1Document } from '@/modules/DeliveryApiSettings/mock-data/v1/document'
-import { set } from 'nprogress'
 import { updateV1DeliveryApiSettings } from 'bloomreach-content-management-apis'
 
 export const DeliverApiSettingsV1 = () => {
