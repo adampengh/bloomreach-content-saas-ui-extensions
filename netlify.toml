@@ -10,3 +10,9 @@
   to = "/pages/copy"
   status = 301
   force = true
+
+
+[dev]
+  command = "yarn dev:server"
+  port = 8888
+  targetPort = 3000

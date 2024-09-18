@@ -26,6 +26,7 @@ import {
   PlagiarismIcon,
   SettingsIcon,
   TranslateIcon,
+  WebhookIcon,
   WebIcon,
 } from 'src/icons';
 
@@ -175,7 +176,7 @@ export const SidebarMenu = () => {
           </List>
 
           {/* Delivery API Settings */}
-          {/* <List
+          <List
             component='div'
             subheader={<ListSubheader component='div' disableSticky>Delivery API Settings</ListSubheader>}
           >
@@ -190,7 +191,25 @@ export const SidebarMenu = () => {
                 />
               </List>
             </SubMenuWrapper>
-          </List> */}
+          </List>
+
+          {/* Webhooks */}
+          <List
+            component='div'
+            subheader={<ListSubheader component='div' disableSticky>Webhooks</ListSubheader>}
+          >
+            <SubMenuWrapper>
+              <List component='div'>
+                <SidebarMenuLink
+                  closeSidebar={closeSidebar}
+                  currentRoute={currentRoute}
+                  href='/webhooks'
+                  icon={<WebhookIcon />}
+                  text='Webhooks'
+                />
+              </List>
+            </SubMenuWrapper>
+          </List>
         </>
       }
     </MenuWrapper>

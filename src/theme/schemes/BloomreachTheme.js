@@ -405,12 +405,12 @@ export const BloomreachTheme = createTheme({
         ':root': {
           '--swiper-theme-color': colors.primary.main
         },
-        code: {
-          background: colors.primary.lighter,
-          color: colors.alpha.black[70],
-          borderRadius: 4,
-          padding: 2
-        },
+        // code: {
+        //   background: colors.primary.lighter,
+        //   color: colors.alpha.black[70],
+        //   borderRadius: 4,
+        //   padding: 2
+        // },
         '@keyframes pulse': {
           '0%': {
             transform: 'scale(.75)'

@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 // Components
 import {
+  Badge,
   Box,
   Button,
   Card,
@@ -81,8 +82,85 @@ export const DeliverApiSettingsV2 = () => {
                 value={data.enabled}
                 onChange={(e) => setData({...data, enabled: e.target.value})}
               >
-                <MenuItem value={true}>Enabled</MenuItem>
-                <MenuItem value={false}>Disabled</MenuItem>
+                <MenuItem value={true}>
+                  <Badge
+                    badgeContent=''
+                    color={'success'}
+                    variant='dot'
+                    anchorOrigin={{
+                      horizontal: 'left',
+                      vertical: 'top'
+                    }}
+                    sx={{
+                      top: '50%',
+                      transform: 'translateY(-50%)'
+                    }}
+                  />
+                  <Typography variant='p' component='span' sx={{ pl: 1 }}>Enabled</Typography>
+                </MenuItem>
+                <MenuItem value={false}>
+                  <Badge
+                    badgeContent=''
+                    color={'error'}
+                    variant='dot'
+                    anchorOrigin={{
+                      horizontal: 'left',
+                      vertical: 'top'
+                    }}
+                    sx={{
+                      top: '50%',
+                      transform: 'translateY(-50%)'
+                    }}
+                  />
+                  <Typography variant='p' component='span' sx={{ pl: 1 }}>Disabled</Typography>
+                </MenuItem>
+              </Select>
+            </FormControl>
+
+            <FormControl
+              fullWidth
+              variant='outlined'
+            >
+              <InputLabel id='v2SkipTranslations'>Skip Translations</InputLabel>
+              <Select
+                id='v2SkipTranslations'
+                labelId='v2SkipTranslations'
+                label={'Skip Translations'}
+                value={data.skipTranslations}
+                onChange={(e) => setData({...data, skipTranslations: e.target.value})}
+              >
+                <MenuItem value={true}>
+                  <Badge
+                    badgeContent=''
+                    color={'success'}
+                    variant='dot'
+                    anchorOrigin={{
+                      horizontal: 'left',
+                      vertical: 'top'
+                    }}
+                    sx={{
+                      top: '50%',
+                      transform: 'translateY(-50%)'
+                    }}
+                  />
+                  <Typography variant='p' component='span' sx={{ pl: 1 }}>Enabled</Typography>
+                </MenuItem>
+                <MenuItem value={false}>
+                  <Badge
+                    badgeContent=''
+                    color={'error'}
+                    variant='dot'
+                    anchorOrigin={{
+                      horizontal: 'left',
+                      vertical: 'top'
+                    }}
+                    sx={{
+                      top: '50%',
+                      transform: 'translateY(-50%)'
+                    }}
+                  />
+                  <Typography variant='p' component='span' sx={{ pl: 1 }}>Disabled</Typography>
+                </MenuItem>
               </Select>
             </FormControl>
 
@@ -100,23 +178,6 @@ export const DeliverApiSettingsV2 = () => {
               >
                 <MenuItem value={'flattened'}>Flattened</MenuItem>
                 <MenuItem value={'inline'}>Inline</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl
-              fullWidth
-              variant='outlined'
-            >
-              <InputLabel id='v2SkipTranslations'>Skip Translations</InputLabel>
-              <Select
-                id='v2SkipTranslations'
-                labelId='v2SkipTranslations'
-                label={'Skip Translations'}
-                value={data.skipTranslations}
-                onChange={(e) => setData({...data, skipTranslations: e.target.value})}
-              >
-                <MenuItem value={true}>Enabled</MenuItem>
-                <MenuItem value={false}>Disabled</MenuItem>
               </Select>
             </FormControl>
 

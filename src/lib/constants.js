@@ -39,3 +39,25 @@ export const SECURED_APIS = [
   'assets',
   'openapi',
 ]
+
+// WEBHOOK TRIGGERS
+export const WEBHOOK_TRIGGERS = [
+  'document:publish',
+  'document:unpublish',
+  'page:publish',
+  'page:unpublish',
+]
+
+export const DEFAULT_WEBHOOK_CONFIGURATION_VALUES = {
+  name: '',
+  enabled: true,
+  url: '',
+  method: 'POST',
+  headers: [
+    {
+      name: 'Content-Type',
+      value: 'application/json',
+      secret: false
+    }
+  ]
+}

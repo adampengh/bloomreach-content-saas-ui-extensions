@@ -91,7 +91,7 @@ export const ChannelDetailsModule = ({ channelId }) => {
 
   if (error) {
     return (
-      <Container maxWidth='xl'>
+      <Container maxWidth={false}>
         <Grid
           container
           direction='row'

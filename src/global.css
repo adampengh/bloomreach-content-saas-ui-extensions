@@ -1,8 +1,7 @@
 @font-face {
     font-family: "Bloomreach Sans";
     src:
-        url(https://www.bloomreach.com/css/fonts/BloomreachSans-Regular.woff2)format("woff2"),
-        url(https://www.bloomreach.com/css/fonts/BloomreachSans-Regular.woff)format("woff");
+        url('/static/fonts/BloomreachSans-Regular.woff2')format("woff2");
     font-weight: 400;
     font-style: normal;
     font-display: block
@@ -11,8 +10,7 @@
 @font-face {
     font-family: "Bloomreach Sans";
     src:
-        url(https://www.bloomreach.com/css/fonts/BloomreachSans-Medium.woff2)format("woff2"),
-        url(https://www.bloomreach.com/css/fonts/BloomreachSans-Medium.woff)format("woff");
+        url('/static/fonts/BloomreachSans-Medium.woff2')format("woff2");
     font-weight: 700;
     font-style: normal;
     font-display: block

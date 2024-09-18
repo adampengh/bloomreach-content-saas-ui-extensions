@@ -3,6 +3,11 @@
 
 ## Version 2
 
+### 2.1.0 (September 12, 2024)
+#### Major Updates
+- Added Webhooks support
+- Added Delivery API Settings support
+
 ### 2.0.0 (June 14, 2024)
 #### Major Updates
 - Upgraded app to NextJS v14

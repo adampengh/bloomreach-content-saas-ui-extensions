@@ -42,6 +42,7 @@ import TextFieldsIcon from '@mui/icons-material/TextFields'
 import TranslateIcon from '@mui/icons-material/Translate'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import WebhookIcon from '@mui/icons-material/Webhook';
 import WebIcon from '@mui/icons-material/Web'
 
 
@@ -90,5 +91,6 @@ export {
   TranslateIcon,
   Visibility,
   VisibilityOff,
+  WebhookIcon,
   WebIcon,
 }
