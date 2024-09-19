@@ -11,6 +11,11 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "/api/webhooks"
+  to = "/.netlify/functions/webhooks"
+  status = 200
+  force = true
 
 [dev]
   command = "yarn dev"
