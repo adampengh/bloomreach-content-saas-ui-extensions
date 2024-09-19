@@ -13,12 +13,6 @@
 
 
 [dev]
-  command = "yarn dev:server"
+  command = "yarn dev"
   port = 8888
   targetPort = 3000
-
-# Branch Deploy context: all deploys that are not from
-# a pull/merge request or from the Production branch
-# will inherit these settings.
-[context.branch-deploy]
-  command = "yarn build && node server.js"

@@ -13,10 +13,9 @@
   "private": false,
   "scripts": {
     "dev": "next dev",
-    "dev:server": "nodemon ./server.js localhost 3000",
     "dev:https": "next dev --experimental-https",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "next start",
     "export": "next export",
     "lint": "next lint",
     "lint-fix": "next lint --fix",
@@ -48,7 +47,6 @@
     "date-fns": "2.28.0",
     "dependency-graph": "^0.11.0",
     "eslint-config-next": "^14.2.3",
-    "express": "^4.19.2",
     "gray-matter": "^4.0.3",
     "next": "^14.2.4",
     "next-images": "1.8.4",
@@ -63,7 +61,6 @@
     "remark": "^14.0.2",
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.2",
-    "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5"
   },
   "devDependencies": {

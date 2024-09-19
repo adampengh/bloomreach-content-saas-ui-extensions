@@ -12,8 +12,7 @@ import {
 } from 'bloomreach-content-management-apis';
 
 // Web Socket
-import io from 'socket.io-client';
-const socket = io();
+import { socket } from '@/socket'
 
 // Components
 import {

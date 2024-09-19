@@ -1,10 +1,8 @@
 import io from 'socket.io-client';
 
 export default function handler(req, res) {
-  const protocol = process.env.NEXT_PUBLIC_PROTOCOL || 'https';
-  const hostname = process.env.NEXT_PUBLIC_HOSTNAME || 'localhost';
-  const port = process.env.NEXT_PUBLIC_PORT || 3000;
-  const socket = io(`${protocol}://${hostname}:${port}`);
+  const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'http://localhost:3001';
+  const socket = io(socketUrl);
 
   // Process a POST request
   if (req.method === 'POST') {
