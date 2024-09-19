@@ -1,3 +1,5 @@
+export const NEXT_PUBLIC_WEBSOCKET_URL = process.env.NEXT_PUBLIC_WEBSOCKET_URL ?? '';
+
 export const DATA_GRID_HEIGHT = '302px';
 export const DATA_GRID_HEIGHT_CHANNELS_TABS = '492px';
 

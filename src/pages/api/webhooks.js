@@ -1,7 +1,14 @@
 import io from 'socket.io-client';
+import { NEXT_PUBLIC_WEBSOCKET_URL } from './lib/constants';
 
 export default function handler(req, res) {
-  const socketUrl = process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'http://localhost:3001';
+  const socketUrl = NEXT_PUBLIC_WEBSOCKET_URL;
+
+  if (!socketUrl) {
+    res.status(500).json({ status: 500, error: 'Websocket URL is null', socketUrl });
+    return;
+  }
+
   const socket = io(socketUrl);
 
   // Process a POST request
