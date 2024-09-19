@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import { NEXT_PUBLIC_WEBSOCKET_URL } from './lib/constants';
+import { NEXT_PUBLIC_WEBSOCKET_URL } from '../../lib/constants';
 
 export default function handler(req, res) {
   const socketUrl = NEXT_PUBLIC_WEBSOCKET_URL;
