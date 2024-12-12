@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import NextLink from 'next/link'
 import axios from 'axios'
 
@@ -38,7 +38,7 @@ import {
 import { CreateWebhookModal } from './modals/CreateWebhookModal'
 
 export const WebhooksListingModule = () => {
-  console.group('WebhooksModule')
+  console.group('WebhooksListingModule')
 
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
@@ -51,6 +51,7 @@ export const WebhooksListingModule = () => {
 
   useEffect(() => {
     if (environment && xAuthToken) {
+      console.log('useEffect', environment, xAuthToken)
       setLoading({ loading: true, message: 'Loading webhook configurations...'})
       // Get source projects
       getAllWebhookConfigurations(environment, xAuthToken)
@@ -64,7 +65,7 @@ export const WebhooksListingModule = () => {
           setLoading({ loading: false, message: '' })
         })
     }
-  }, [appConfiguration])
+  }, [environment, xAuthToken])
 
   console.groupEnd()
 
@@ -76,9 +77,9 @@ export const WebhooksListingModule = () => {
       headers: { 'x-auth-token': xAuthToken },
       params: { environment, webhookConfigurationId }
     })
-      .then(response => {
+      .then(async (response) => {
         console.log('response', response)
-        getAllWebhookConfigurations(environment, xAuthToken)
+        await getAllWebhookConfigurations(environment, xAuthToken)
           .then((response) => {
             let webhookConfigurations = response.data
             console.log('webhookConfigurations', webhookConfigurations)

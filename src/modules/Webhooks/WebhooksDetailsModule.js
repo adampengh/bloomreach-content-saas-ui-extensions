@@ -465,6 +465,7 @@ const WebhookRequests = () => {
                   wrapLines={true}
                   showLineNumbers={true}
                   codeBlock
+                  theme={bloomreachTheme}
                 />
                 </Box>
             </ListItem>

@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 // Components
 import {
@@ -14,8 +14,8 @@ import {
   Tab,
 } from '@mui/material';
 import { TabPanel } from '@/components';
-import { DeliverApiSettingsV1 } from './DeliveryApiSettingsV1'
-import { DeliverApiSettingsV2 } from './DeliveryApiSettingsV2'
+import { DeliverApiSettingsV1 } from './tabs/DeliveryApiSettingsV1'
+import { DeliverApiSettingsV2 } from './tabs/DeliveryApiSettingsV2'
 
 const TABS = [
   'Delivery API V1',
@@ -25,9 +25,15 @@ const TABS = [
 export const DeliveryApiSettingsModule = () => {
   const router = useRouter();
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const tab = searchParams.get('tab') || TABS[0];
 
   // State
   const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (tab && TABS.indexOf(tab) != -1) setValue(TABS.indexOf(tab));
+  }, [tab])
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);

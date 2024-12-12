@@ -44,7 +44,7 @@ export const ChannelDetailsModule = ({ channelId }) => {
   const router = useRouter();
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { tab } = searchParams;
+  const tab = searchParams.get('tab') || TABS[0];
 
   // State
   const [value, setValue] = useState(0);
@@ -57,7 +57,7 @@ export const ChannelDetailsModule = ({ channelId }) => {
   const { setLoading } = useContext(LoadingContext)
 
   useEffect(() => {
-    if (tab) setValue(TABS.indexOf(tab));
+    if (tab && TABS.indexOf(tab) != -1) setValue(TABS.indexOf(tab));
 
     if (environment && xAuthToken && channelId) {
       setLoading({ loading: true, message: 'Loading Channel'})
