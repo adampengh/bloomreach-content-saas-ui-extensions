@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 // API
 import {
-  deleteChannelBranch,
+  addChannelToProject,
   getAllChannels,
   getDeveloperProject,
 } from 'bloomreach-content-management-apis'
@@ -11,11 +11,13 @@ import {
 import {
   Box,
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
   IconButton,
   Typography,
 } from '@mui/material'
@@ -30,13 +32,15 @@ import { CloseIcon } from 'src/icons'
 import { pollingPromise } from 'src/lib/utils'
 
 
-export default function DeleteChannelModal({
+export default function AddChannelModal({
   showModal,
   setShowModal,
+  channels,
   setChannels,
-  channelToDelete,
+  coreChannels,
   instance,
   projectId,
+  setProjectData,
 }) {
   // Context
   const { appConfiguration } = useContext(ConfigurationContext)
@@ -44,19 +48,35 @@ export default function DeleteChannelModal({
   const { handleShowSnackbar } = useContext(ErrorContext)
   const { setLoading } = useContext(LoadingContext)
 
+  // State
+  const [availableChannels, setAvailableChannels] = useState([])
+  const [checked, setChecked] = useState([]);
+
+  useEffect(() => {
+    // Filter out core channels that have already been added to the project
+    if (channels) {
+      const channelsNotInProject = coreChannels?.filter(coreChannel =>
+        channels?.find(channel => channel.branchOf === coreChannel.name) ? false : true
+      )
+      setAvailableChannels(channelsNotInProject)
+    }
+  }, [channels])
+
+
   const handleClose = () => {
     setShowModal(false)
   };
 
 
-  const handleRemoveChannelFromProject = async (event) => {
-    console.group('Remove Channel From Project')
+  const handleAddChannelToProject = async (event) => {
+    console.group('Add Channel to Project')
     event.preventDefault()
-
     await setShowModal(false)
 
-    // Remove the channel from the project
-    await removeChannel(environment, xAuthToken, channelToDelete)
+    // Add each checked channel to the project
+    for await (const currentChannel of checked) {
+      await addChannel(environment, xAuthToken, projectId, currentChannel.name)
+    }
 
     // Get all channels for the project after the channels have been added
     await getAllChannels(environment, xAuthToken)
@@ -64,23 +84,22 @@ export default function DeleteChannelModal({
         const newChannelsList = response.data.filter(channel => channel.branch === projectId)
         setChannels(newChannelsList)
       })
-      .catch(error => {
-        console.error('Error Getting Channels', error)
-        handleShowSnackbar('error', 'Error Removing Channel from Project')
-      })
+      .catch(error => console.error('Error Getting Channels', error))
 
-    await handleShowSnackbar('success', 'Channel Removed from Project')
+
+    await handleShowSnackbar('success', checked.length > 1 ? 'Channels Added' : 'Channel Added')
+    await setChecked([])
     console.groupEnd()
   }
 
 
-  const removeChannel = async (environment, xAuthToken, channelToDelete) => {
-    console.group('Removing Channel', channelToDelete)
-    await setLoading({ loading: true, message: `Removing Channel: ${channelToDelete}` })
+  const addChannel = async (environment, xAuthToken, projectId, channelName) => {
+    console.group('Adding Channel', channelName)
+    await setLoading({ loading: true, message: `Adding Channel: ${channelName}` })
 
-    await deleteChannelBranch(environment, xAuthToken, channelToDelete)
-      .then(response => console.log('Channel Removed:', response.data))
-      .catch(error => console.error('Error Removing Channel from Project', error))
+    await addChannelToProject(environment, xAuthToken, projectId, channelName)
+      .then(response => console.log('Channel Added:', response.data))
+      .catch(error => console.error('Error Adding Channel to Project', error))
 
     // Get the status of the project
     // Poll until the project status is 'IN_PROGRESS'
@@ -106,13 +125,34 @@ export default function DeleteChannelModal({
     // Poll the project status until it is 'IN_PROGRESS' or until we reach the max retries
     console.log(new Date(), 'Starting Polling Project');
     const { promise, stopPolling } = pollingPromise(getProjectStatus, testProjectStatus, 1000);
-    await promise.then(() => console.log(new Date(), 'Channel has been removed from project'))
+    await promise.then(() => {
+      console.log(new Date(), 'Channel has been added to project')
+      getDeveloperProject(environment, xAuthToken, projectId, true)
+        .then(response => {
+          console.log('Update Developer Project Data', response.data)
+          setProjectData(response.data)
+        })
+        .catch(err => console.error(err))
+    })
     console.log(new Date(), 'Canceling Polling Project');
     await stopPolling();
     await setLoading({ loading: false, message: '' })
 
     console.groupEnd()
   }
+
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setChecked(newChecked);
+  };
+
 
   return (
     <Dialog
@@ -127,11 +167,10 @@ export default function DeleteChannelModal({
           '& .MuiTextField-root': { m: 1, width: '100%' }
         }}
         autoComplete='off'
-        onSubmit={handleRemoveChannelFromProject}
+        onSubmit={handleAddChannelToProject}
       >
-
         <DialogTitle>
-          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Confirm Delete Channel</Typography>
+          <Typography variant='h3' sx={{ fontWeight: 'bold' }}>Add Channel to Project</Typography>
           <IconButton
             aria-label='close'
             onClick={handleClose}
@@ -146,16 +185,25 @@ export default function DeleteChannelModal({
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure you want to remove developer channel: <strong>{channelToDelete}</strong>?
-          </DialogContentText>
+          <FormGroup sx={{ width: '100%', marginTop: 1 }}>
+            <strong>Available Channels:</strong>
+            {availableChannels?.map((channel, index) =>
+              <FormControlLabel
+                key={index}
+                onClick={handleToggle ? handleToggle(channel) : null}
+                control={ <Checkbox checked={checked.indexOf(channel) !== -1} /> }
+                label={channel.name}
+              />
+            )}
+          </FormGroup>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             variant='contained'
             type='submit'
-          >Delete Channel</Button>
+            disabled={checked.length < 1}
+          >{checked.length > 1 ? 'Add Channels' : 'Add Channel'}</Button>
         </DialogActions>
       </Box>
     </Dialog>

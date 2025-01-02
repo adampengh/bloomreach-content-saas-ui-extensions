@@ -1,22 +1,27 @@
 import { Chip } from '@mui/material';
 
 export const StatusIndicator = ({ message, status, size = 'small' }) => {
-    const styling = { textTransform: 'capitalize', fontWeight: '400', marginLeft: '0.5rem', width: '100px' }
+    const styling = { textTransform: 'capitalize', fontWeight: '700', marginLeft: '0.5rem', width: '100px' }
 
     let color, variant
     switch (status) {
         case 'IN_PROGRESS':
-            color = 'primary'; break
+            color = 'info'
+            break
         case 'IN_REVIEW':
-            color = 'warning'; break
+            color = 'warning'
+            break
         case 'APPROVED':
-            color = 'success'; break
+            color = 'success'
+            break
         case 'REBASE_ERROR':
-            color = 'error'; break
+            color = 'error'
+            break
         case 'MERGE_ERROR':
-            color = 'error'; break
+            color = 'error'
+            break
         case 'MERGED':
-            color = 'default'
+            color = 'success'
             variant = 'outlined'
             break
         default:

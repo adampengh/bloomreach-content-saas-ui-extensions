@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import AddLinkIcon from '@mui/icons-material/AddLink'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import AltRouteIcon from '@mui/icons-material/AltRoute'
@@ -8,7 +8,7 @@ import ApiIcon from '@mui/icons-material/Api'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import CheckIcon from '@mui/icons-material/Check'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
 import CommentIcon from '@mui/icons-material/Comment'
@@ -29,8 +29,10 @@ import FolderOpenIcon from '@mui/icons-material/FolderOpen'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import InfoIcon from '@mui/icons-material/Info'
 import LanguageIcon from '@mui/icons-material/Language'
+import ListAltIcon from '@mui/icons-material/ListAlt'
 import LinkOffIcon from '@mui/icons-material/LinkOff'
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -83,7 +85,6 @@ export {
   LinkOffIcon,
   MenuTwoToneIcon,
   MoreVertIcon,
-  PlagiarismIcon,
   SettingsIcon,
   SnippetFolderOutlinedIcon,
   SwapHorizIcon,
@@ -93,4 +94,8 @@ export {
   VisibilityOff,
   WebhookIcon,
   WebIcon,
+
+  PlagiarismIcon as ContentTypeIcon,
+  InsertDriveFileIcon as DocumentIcon,
+  ListAltIcon as ResourceBundleIcon,
 }

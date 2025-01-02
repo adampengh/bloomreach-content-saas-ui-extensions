@@ -3,10 +3,14 @@
 
 ## Version 2
 
-### 2.1.0 (September 12, 2024)
+### 2.2.0 (January 2, 2024)
 #### Major Updates
 - Added Webhooks support
 - Added Delivery API Settings support
+
+### 2.1.0 (January 2, 2025)
+#### New Features
+- Added ability to copy a Project between environments, except for channel configuration changes and content type changes
 
 ### 2.0.0 (June 14, 2024)
 #### Major Updates

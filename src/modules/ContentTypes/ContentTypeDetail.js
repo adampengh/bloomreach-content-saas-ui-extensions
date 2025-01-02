@@ -78,7 +78,7 @@ const ContentTypeDetailModule = ({ contentTypeName }) => {
         >
           <Grid item xs={12}>
             <Card>
-              <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
+              <CardContent sx={{ fontWeight: 'bold' }}>
                 {contentType &&
                   <CopyBlock
                     text={JSON.stringify(contentType, null, 4)}

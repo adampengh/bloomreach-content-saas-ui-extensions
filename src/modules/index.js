@@ -5,10 +5,6 @@ export * from './Translations'
 export * from './Channels/ChannelListModule'
 export * from './Channels/ChannelDetailsModule'
 
-// PROJECTS
-export * from './Projects/ProjectsDetails'
-export * from './Projects/ProjectsList'
-
 // DELIVERY API SETTINGS
 export * from './DeliveryApiSettings'
 
