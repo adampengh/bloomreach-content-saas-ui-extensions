@@ -1,2254 +1,2254 @@
 export const locales = [
   {
     locale: 'af',
-    displayName: 'Afrikaans'
+    label: 'Afrikaans'
   },
   {
     locale: 'af_NA',
-    displayName: 'Afrikaans (Namibia)'
+    label: 'Afrikaans (Namibia)'
   },
   {
     locale: 'af_ZA',
-    displayName: 'Afrikaans (South Africa)'
+    label: 'Afrikaans (South Africa)'
   },
   {
     locale: 'ak',
-    displayName: 'Akan'
+    label: 'Akan'
   },
   {
     locale: 'ak_GH',
-    displayName: 'Akan (Ghana)'
+    label: 'Akan (Ghana)'
   },
   {
     locale: 'sq',
-    displayName: 'Albanian'
+    label: 'Albanian'
   },
   {
     locale: 'sq_AL',
-    displayName: 'Albanian (Albania)'
+    label: 'Albanian (Albania)'
   },
   {
     locale: 'sq_XK',
-    displayName: 'Albanian (Kosovo)'
+    label: 'Albanian (Kosovo)'
   },
   {
     locale: 'sq_MK',
-    displayName: 'Albanian (Macedonia)'
+    label: 'Albanian (Macedonia)'
   },
   {
     locale: 'am',
-    displayName: 'Amharic'
+    label: 'Amharic'
   },
   {
     locale: 'am_ET',
-    displayName: 'Amharic (Ethiopia)'
+    label: 'Amharic (Ethiopia)'
   },
   {
     locale: 'ar',
-    displayName: 'Arabic'
+    label: 'Arabic'
   },
   {
     locale: 'ar_DZ',
-    displayName: 'Arabic (Algeria)'
+    label: 'Arabic (Algeria)'
   },
   {
     locale: 'ar_BH',
-    displayName: 'Arabic (Bahrain)'
+    label: 'Arabic (Bahrain)'
   },
   {
     locale: 'ar_TD',
-    displayName: 'Arabic (Chad)'
+    label: 'Arabic (Chad)'
   },
   {
     locale: 'ar_KM',
-    displayName: 'Arabic (Comoros)'
+    label: 'Arabic (Comoros)'
   },
   {
     locale: 'ar_DJ',
-    displayName: 'Arabic (Djibouti)'
+    label: 'Arabic (Djibouti)'
   },
   {
     locale: 'ar_EG',
-    displayName: 'Arabic (Egypt)'
+    label: 'Arabic (Egypt)'
   },
   {
     locale: 'ar_ER',
-    displayName: 'Arabic (Eritrea)'
+    label: 'Arabic (Eritrea)'
   },
   {
     locale: 'ar_IQ',
-    displayName: 'Arabic (Iraq)'
+    label: 'Arabic (Iraq)'
   },
   {
     locale: 'ar_IL',
-    displayName: 'Arabic (Israel)'
+    label: 'Arabic (Israel)'
   },
   {
     locale: 'ar_JO',
-    displayName: 'Arabic (Jordan)'
+    label: 'Arabic (Jordan)'
   },
   {
     locale: 'ar_KW',
-    displayName: 'Arabic (Kuwait)'
+    label: 'Arabic (Kuwait)'
   },
   {
     locale: 'ar_LB',
-    displayName: 'Arabic (Lebanon)'
+    label: 'Arabic (Lebanon)'
   },
   {
     locale: 'ar_LY',
-    displayName: 'Arabic (Libya)'
+    label: 'Arabic (Libya)'
   },
   {
     locale: 'ar_MR',
-    displayName: 'Arabic (Mauritania)'
+    label: 'Arabic (Mauritania)'
   },
   {
     locale: 'ar_MA',
-    displayName: 'Arabic (Morocco)'
+    label: 'Arabic (Morocco)'
   },
   {
     locale: 'ar_OM',
-    displayName: 'Arabic (Oman)'
+    label: 'Arabic (Oman)'
   },
   {
     locale: 'ar_PS',
-    displayName: 'Arabic (Palestinian Territories)'
+    label: 'Arabic (Palestinian Territories)'
   },
   {
     locale: 'ar_QA',
-    displayName: 'Arabic (Qatar)'
+    label: 'Arabic (Qatar)'
   },
   {
     locale: 'ar_SA',
-    displayName: 'Arabic (Saudi Arabia)'
+    label: 'Arabic (Saudi Arabia)'
   },
   {
     locale: 'ar_SO',
-    displayName: 'Arabic (Somalia)'
+    label: 'Arabic (Somalia)'
   },
   {
     locale: 'ar_SS',
-    displayName: 'Arabic (South Sudan)'
+    label: 'Arabic (South Sudan)'
   },
   {
     locale: 'ar_SD',
-    displayName: 'Arabic (Sudan)'
+    label: 'Arabic (Sudan)'
   },
   {
     locale: 'ar_SY',
-    displayName: 'Arabic (Syria)'
+    label: 'Arabic (Syria)'
   },
   {
     locale: 'ar_TN',
-    displayName: 'Arabic (Tunisia)'
+    label: 'Arabic (Tunisia)'
   },
   {
     locale: 'ar_AE',
-    displayName: 'Arabic (United Arab Emirates)'
+    label: 'Arabic (United Arab Emirates)'
   },
   {
     locale: 'ar_EH',
-    displayName: 'Arabic (Western Sahara)'
+    label: 'Arabic (Western Sahara)'
   },
   {
     locale: 'ar_YE',
-    displayName: 'Arabic (Yemen)'
+    label: 'Arabic (Yemen)'
   },
   {
     locale: 'hy',
-    displayName: 'Armenian'
+    label: 'Armenian'
   },
   {
     locale: 'hy_AM',
-    displayName: 'Armenian (Armenia)'
+    label: 'Armenian (Armenia)'
   },
   {
     locale: 'as',
-    displayName: 'Assamese'
+    label: 'Assamese'
   },
   {
     locale: 'as_IN',
-    displayName: 'Assamese (India)'
+    label: 'Assamese (India)'
   },
   {
     locale: 'az',
-    displayName: 'Azerbaijani'
+    label: 'Azerbaijani'
   },
   {
     locale: 'az_AZ',
-    displayName: 'Azerbaijani (Azerbaijan)'
+    label: 'Azerbaijani (Azerbaijan)'
   },
   {
     locale: 'az_Cyrl_AZ',
-    displayName: 'Azerbaijani (Cyrillic, Azerbaijan)'
+    label: 'Azerbaijani (Cyrillic, Azerbaijan)'
   },
   {
     locale: 'az_Cyrl',
-    displayName: 'Azerbaijani (Cyrillic)'
+    label: 'Azerbaijani (Cyrillic)'
   },
   {
     locale: 'az_Latn_AZ',
-    displayName: 'Azerbaijani (Latin, Azerbaijan)'
+    label: 'Azerbaijani (Latin, Azerbaijan)'
   },
   {
     locale: 'az_Latn',
-    displayName: 'Azerbaijani (Latin)'
+    label: 'Azerbaijani (Latin)'
   },
   {
     locale: 'bm',
-    displayName: 'Bambara'
+    label: 'Bambara'
   },
   {
     locale: 'bm_Latn_ML',
-    displayName: 'Bambara (Latin, Mali)'
+    label: 'Bambara (Latin, Mali)'
   },
   {
     locale: 'bm_Latn',
-    displayName: 'Bambara (Latin)'
+    label: 'Bambara (Latin)'
   },
   {
     locale: 'eu',
-    displayName: 'Basque'
+    label: 'Basque'
   },
   {
     locale: 'eu_ES',
-    displayName: 'Basque (Spain)'
+    label: 'Basque (Spain)'
   },
   {
     locale: 'be',
-    displayName: 'Belarusian'
+    label: 'Belarusian'
   },
   {
     locale: 'be_BY',
-    displayName: 'Belarusian (Belarus)'
+    label: 'Belarusian (Belarus)'
   },
   {
     locale: 'bn',
-    displayName: 'Bengali'
+    label: 'Bengali'
   },
   {
     locale: 'bn_BD',
-    displayName: 'Bengali (Bangladesh)'
+    label: 'Bengali (Bangladesh)'
   },
   {
     locale: 'bn_IN',
-    displayName: 'Bengali (India)'
+    label: 'Bengali (India)'
   },
   {
     locale: 'bs',
-    displayName: 'Bosnian'
+    label: 'Bosnian'
   },
   {
     locale: 'bs_BA',
-    displayName: 'Bosnian (Bosnia & Herzegovina)'
+    label: 'Bosnian (Bosnia & Herzegovina)'
   },
   {
     locale: 'bs_Cyrl_BA',
-    displayName: 'Bosnian (Cyrillic, Bosnia & Herzegovina)'
+    label: 'Bosnian (Cyrillic, Bosnia & Herzegovina)'
   },
   {
     locale: 'bs_Cyrl',
-    displayName: 'Bosnian (Cyrillic)'
+    label: 'Bosnian (Cyrillic)'
   },
   {
     locale: 'bs_Latn_BA',
-    displayName: 'Bosnian (Latin, Bosnia & Herzegovina)'
+    label: 'Bosnian (Latin, Bosnia & Herzegovina)'
   },
   {
     locale: 'bs_Latn',
-    displayName: 'Bosnian (Latin)'
+    label: 'Bosnian (Latin)'
   },
   {
     locale: 'br',
-    displayName: 'Breton'
+    label: 'Breton'
   },
   {
     locale: 'br_FR',
-    displayName: 'Breton (France)'
+    label: 'Breton (France)'
   },
   {
     locale: 'bg',
-    displayName: 'Bulgarian'
+    label: 'Bulgarian'
   },
   {
     locale: 'bg_BG',
-    displayName: 'Bulgarian (Bulgaria)'
+    label: 'Bulgarian (Bulgaria)'
   },
   {
     locale: 'my',
-    displayName: 'Burmese'
+    label: 'Burmese'
   },
   {
     locale: 'my_MM',
-    displayName: 'Burmese (Myanmar (Burma))'
+    label: 'Burmese (Myanmar (Burma))'
   },
   {
     locale: 'ca',
-    displayName: 'Catalan'
+    label: 'Catalan'
   },
   {
     locale: 'ca_AD',
-    displayName: 'Catalan (Andorra)'
+    label: 'Catalan (Andorra)'
   },
   {
     locale: 'ca_FR',
-    displayName: 'Catalan (France)'
+    label: 'Catalan (France)'
   },
   {
     locale: 'ca_IT',
-    displayName: 'Catalan (Italy)'
+    label: 'Catalan (Italy)'
   },
   {
     locale: 'ca_ES',
-    displayName: 'Catalan (Spain)'
+    label: 'Catalan (Spain)'
   },
   {
     locale: 'zh',
-    displayName: 'Chinese'
+    label: 'Chinese'
   },
   {
     locale: 'zh_CN',
-    displayName: 'Chinese (China)'
+    label: 'Chinese (China)'
   },
   {
     locale: 'zh_HK',
-    displayName: 'Chinese (Hong Kong SAR China)'
+    label: 'Chinese (Hong Kong SAR China)'
   },
   {
     locale: 'zh_MO',
-    displayName: 'Chinese (Macau SAR China)'
+    label: 'Chinese (Macau SAR China)'
   },
   {
     locale: 'zh_Hans_CN',
-    displayName: 'Chinese (Simplified, China)'
+    label: 'Chinese (Simplified, China)'
   },
   {
     locale: 'zh_Hans_HK',
-    displayName: 'Chinese (Simplified, Hong Kong SAR China)'
+    label: 'Chinese (Simplified, Hong Kong SAR China)'
   },
   {
     locale: 'zh_Hans_MO',
-    displayName: 'Chinese (Simplified, Macau SAR China)'
+    label: 'Chinese (Simplified, Macau SAR China)'
   },
   {
     locale: 'zh_Hans_SG',
-    displayName: 'Chinese (Simplified, Singapore)'
+    label: 'Chinese (Simplified, Singapore)'
   },
   {
     locale: 'zh_Hans',
-    displayName: 'Chinese (Simplified)'
+    label: 'Chinese (Simplified)'
   },
   {
     locale: 'zh_SG',
-    displayName: 'Chinese (Singapore)'
+    label: 'Chinese (Singapore)'
   },
   {
     locale: 'zh_TW',
-    displayName: 'Chinese (Taiwan)'
+    label: 'Chinese (Taiwan)'
   },
   {
     locale: 'zh_Hant_HK',
-    displayName: 'Chinese (Traditional, Hong Kong SAR China)'
+    label: 'Chinese (Traditional, Hong Kong SAR China)'
   },
   {
     locale: 'zh_Hant_MO',
-    displayName: 'Chinese (Traditional, Macau SAR China)'
+    label: 'Chinese (Traditional, Macau SAR China)'
   },
   {
     locale: 'zh_Hant_TW',
-    displayName: 'Chinese (Traditional, Taiwan)'
+    label: 'Chinese (Traditional, Taiwan)'
   },
   {
     locale: 'zh_Hant',
-    displayName: 'Chinese (Traditional)'
+    label: 'Chinese (Traditional)'
   },
   {
     locale: 'kw',
-    displayName: 'Cornish'
+    label: 'Cornish'
   },
   {
     locale: 'kw_GB',
-    displayName: 'Cornish (United Kingdom)'
+    label: 'Cornish (United Kingdom)'
   },
   {
     locale: 'hr',
-    displayName: 'Croatian'
+    label: 'Croatian'
   },
   {
     locale: 'hr_BA',
-    displayName: 'Croatian (Bosnia & Herzegovina)'
+    label: 'Croatian (Bosnia & Herzegovina)'
   },
   {
     locale: 'hr_HR',
-    displayName: 'Croatian (Croatia)'
+    label: 'Croatian (Croatia)'
   },
   {
     locale: 'cs',
-    displayName: 'Czech'
+    label: 'Czech'
   },
   {
     locale: 'cs_CZ',
-    displayName: 'Czech (Czech Republic)'
+    label: 'Czech (Czech Republic)'
   },
   {
     locale: 'da',
-    displayName: 'Danish'
+    label: 'Danish'
   },
   {
     locale: 'da_DK',
-    displayName: 'Danish (Denmark)'
+    label: 'Danish (Denmark)'
   },
   {
     locale: 'da_GL',
-    displayName: 'Danish (Greenland)'
+    label: 'Danish (Greenland)'
   },
   {
     locale: 'nl',
-    displayName: 'Dutch'
+    label: 'Dutch'
   },
   {
     locale: 'nl_AW',
-    displayName: 'Dutch (Aruba)'
+    label: 'Dutch (Aruba)'
   },
   {
     locale: 'nl_BE',
-    displayName: 'Dutch (Belgium)'
+    label: 'Dutch (Belgium)'
   },
   {
     locale: 'nl_BQ',
-    displayName: 'Dutch (Caribbean Netherlands)'
+    label: 'Dutch (Caribbean Netherlands)'
   },
   {
     locale: 'nl_CW',
-    displayName: 'Dutch (Cura\u00e7ao)'
+    label: 'Dutch (Cura\u00e7ao)'
   },
   {
     locale: 'nl_NL',
-    displayName: 'Dutch (Netherlands)'
+    label: 'Dutch (Netherlands)'
   },
   {
     locale: 'nl_SX',
-    displayName: 'Dutch (Sint Maarten)'
+    label: 'Dutch (Sint Maarten)'
   },
   {
     locale: 'nl_SR',
-    displayName: 'Dutch (Suriname)'
+    label: 'Dutch (Suriname)'
   },
   {
     locale: 'dz',
-    displayName: 'Dzongkha'
+    label: 'Dzongkha'
   },
   {
     locale: 'dz_BT',
-    displayName: 'Dzongkha (Bhutan)'
+    label: 'Dzongkha (Bhutan)'
   },
   {
     locale: 'en',
-    displayName: 'English'
+    label: 'English'
   },
   {
     locale: 'en_AS',
-    displayName: 'English (American Samoa)'
+    label: 'English (American Samoa)'
   },
   {
     locale: 'en_AI',
-    displayName: 'English (Anguilla)'
+    label: 'English (Anguilla)'
   },
   {
     locale: 'en_AG',
-    displayName: 'English (Antigua & Barbuda)'
+    label: 'English (Antigua & Barbuda)'
   },
   {
     locale: 'en_AU',
-    displayName: 'English (Australia)'
+    label: 'English (Australia)'
   },
   {
     locale: 'en_BS',
-    displayName: 'English (Bahamas)'
+    label: 'English (Bahamas)'
   },
   {
     locale: 'en_BB',
-    displayName: 'English (Barbados)'
+    label: 'English (Barbados)'
   },
   {
     locale: 'en_BE',
-    displayName: 'English (Belgium)'
+    label: 'English (Belgium)'
   },
   {
     locale: 'en_BZ',
-    displayName: 'English (Belize)'
+    label: 'English (Belize)'
   },
   {
     locale: 'en_BM',
-    displayName: 'English (Bermuda)'
+    label: 'English (Bermuda)'
   },
   {
     locale: 'en_BW',
-    displayName: 'English (Botswana)'
+    label: 'English (Botswana)'
   },
   {
     locale: 'en_IO',
-    displayName: 'English (British Indian Ocean Territory)'
+    label: 'English (British Indian Ocean Territory)'
   },
   {
     locale: 'en_VG',
-    displayName: 'English (British Virgin Islands)'
+    label: 'English (British Virgin Islands)'
   },
   {
     locale: 'en_CM',
-    displayName: 'English (Cameroon)'
+    label: 'English (Cameroon)'
   },
   {
     locale: 'en_CA',
-    displayName: 'English (Canada)'
+    label: 'English (Canada)'
   },
   {
     locale: 'en_KY',
-    displayName: 'English (Cayman Islands)'
+    label: 'English (Cayman Islands)'
   },
   {
     locale: 'en_CX',
-    displayName: 'English (Christmas Island)'
+    label: 'English (Christmas Island)'
   },
   {
     locale: 'en_CC',
-    displayName: 'English (Cocos (Keeling) Islands)'
+    label: 'English (Cocos (Keeling) Islands)'
   },
   {
     locale: 'en_CK',
-    displayName: 'English (Cook Islands)'
+    label: 'English (Cook Islands)'
   },
   {
     locale: 'en_DG',
-    displayName: 'English (Diego Garcia)'
+    label: 'English (Diego Garcia)'
   },
   {
     locale: 'en_DM',
-    displayName: 'English (Dominica)'
+    label: 'English (Dominica)'
   },
   {
     locale: 'en_ER',
-    displayName: 'English (Eritrea)'
+    label: 'English (Eritrea)'
   },
   {
     locale: 'en_FK',
-    displayName: 'English (Falkland Islands)'
+    label: 'English (Falkland Islands)'
   },
   {
     locale: 'en_FJ',
-    displayName: 'English (Fiji)'
+    label: 'English (Fiji)'
   },
   {
     locale: 'en_GM',
-    displayName: 'English (Gambia)'
+    label: 'English (Gambia)'
   },
   {
     locale: 'en_GH',
-    displayName: 'English (Ghana)'
+    label: 'English (Ghana)'
   },
   {
     locale: 'en_GI',
-    displayName: 'English (Gibraltar)'
+    label: 'English (Gibraltar)'
   },
   {
     locale: 'en_GD',
-    displayName: 'English (Grenada)'
+    label: 'English (Grenada)'
   },
   {
     locale: 'en_GU',
-    displayName: 'English (Guam)'
+    label: 'English (Guam)'
   },
   {
     locale: 'en_GG',
-    displayName: 'English (Guernsey)'
+    label: 'English (Guernsey)'
   },
   {
     locale: 'en_GY',
-    displayName: 'English (Guyana)'
+    label: 'English (Guyana)'
   },
   {
     locale: 'en_HK',
-    displayName: 'English (Hong Kong SAR China)'
+    label: 'English (Hong Kong SAR China)'
   },
   {
     locale: 'en_IN',
-    displayName: 'English (India)'
+    label: 'English (India)'
   },
   {
     locale: 'en_IE',
-    displayName: 'English (Ireland)'
+    label: 'English (Ireland)'
   },
   {
     locale: 'en_IM',
-    displayName: 'English (Isle of Man)'
+    label: 'English (Isle of Man)'
   },
   {
     locale: 'en_JM',
-    displayName: 'English (Jamaica)'
+    label: 'English (Jamaica)'
   },
   {
     locale: 'en_JE',
-    displayName: 'English (Jersey)'
+    label: 'English (Jersey)'
   },
   {
     locale: 'en_KE',
-    displayName: 'English (Kenya)'
+    label: 'English (Kenya)'
   },
   {
     locale: 'en_KI',
-    displayName: 'English (Kiribati)'
+    label: 'English (Kiribati)'
   },
   {
     locale: 'en_LS',
-    displayName: 'English (Lesotho)'
+    label: 'English (Lesotho)'
   },
   {
     locale: 'en_LR',
-    displayName: 'English (Liberia)'
+    label: 'English (Liberia)'
   },
   {
     locale: 'en_MO',
-    displayName: 'English (Macau SAR China)'
+    label: 'English (Macau SAR China)'
   },
   {
     locale: 'en_MG',
-    displayName: 'English (Madagascar)'
+    label: 'English (Madagascar)'
   },
   {
     locale: 'en_MW',
-    displayName: 'English (Malawi)'
+    label: 'English (Malawi)'
   },
   {
     locale: 'en_MY',
-    displayName: 'English (Malaysia)'
+    label: 'English (Malaysia)'
   },
   {
     locale: 'en_MT',
-    displayName: 'English (Malta)'
+    label: 'English (Malta)'
   },
   {
     locale: 'en_MH',
-    displayName: 'English (Marshall Islands)'
+    label: 'English (Marshall Islands)'
   },
   {
     locale: 'en_MU',
-    displayName: 'English (Mauritius)'
+    label: 'English (Mauritius)'
   },
   {
     locale: 'en_FM',
-    displayName: 'English (Micronesia)'
+    label: 'English (Micronesia)'
   },
   {
     locale: 'en_MS',
-    displayName: 'English (Montserrat)'
+    label: 'English (Montserrat)'
   },
   {
     locale: 'en_NA',
-    displayName: 'English (Namibia)'
+    label: 'English (Namibia)'
   },
   {
     locale: 'en_NR',
-    displayName: 'English (Nauru)'
+    label: 'English (Nauru)'
   },
   {
     locale: 'en_NZ',
-    displayName: 'English (New Zealand)'
+    label: 'English (New Zealand)'
   },
   {
     locale: 'en_NG',
-    displayName: 'English (Nigeria)'
+    label: 'English (Nigeria)'
   },
   {
     locale: 'en_NU',
-    displayName: 'English (Niue)'
+    label: 'English (Niue)'
   },
   {
     locale: 'en_NF',
-    displayName: 'English (Norfolk Island)'
+    label: 'English (Norfolk Island)'
   },
   {
     locale: 'en_MP',
-    displayName: 'English (Northern Mariana Islands)'
+    label: 'English (Northern Mariana Islands)'
   },
   {
     locale: 'en_PK',
-    displayName: 'English (Pakistan)'
+    label: 'English (Pakistan)'
   },
   {
     locale: 'en_PW',
-    displayName: 'English (Palau)'
+    label: 'English (Palau)'
   },
   {
     locale: 'en_PG',
-    displayName: 'English (Papua New Guinea)'
+    label: 'English (Papua New Guinea)'
   },
   {
     locale: 'en_PH',
-    displayName: 'English (Philippines)'
+    label: 'English (Philippines)'
   },
   {
     locale: 'en_PN',
-    displayName: 'English (Pitcairn Islands)'
+    label: 'English (Pitcairn Islands)'
   },
   {
     locale: 'en_PR',
-    displayName: 'English (Puerto Rico)'
+    label: 'English (Puerto Rico)'
   },
   {
     locale: 'en_RW',
-    displayName: 'English (Rwanda)'
+    label: 'English (Rwanda)'
   },
   {
     locale: 'en_WS',
-    displayName: 'English (Samoa)'
+    label: 'English (Samoa)'
   },
   {
     locale: 'en_SC',
-    displayName: 'English (Seychelles)'
+    label: 'English (Seychelles)'
   },
   {
     locale: 'en_SL',
-    displayName: 'English (Sierra Leone)'
+    label: 'English (Sierra Leone)'
   },
   {
     locale: 'en_SG',
-    displayName: 'English (Singapore)'
+    label: 'English (Singapore)'
   },
   {
     locale: 'en_SX',
-    displayName: 'English (Sint Maarten)'
+    label: 'English (Sint Maarten)'
   },
   {
     locale: 'en_SB',
-    displayName: 'English (Solomon Islands)'
+    label: 'English (Solomon Islands)'
   },
   {
     locale: 'en_ZA',
-    displayName: 'English (South Africa)'
+    label: 'English (South Africa)'
   },
   {
     locale: 'en_SS',
-    displayName: 'English (South Sudan)'
+    label: 'English (South Sudan)'
   },
   {
     locale: 'en_SH',
-    displayName: 'English (St. Helena)'
+    label: 'English (St. Helena)'
   },
   {
     locale: 'en_KN',
-    displayName: 'English (St. Kitts & Nevis)'
+    label: 'English (St. Kitts & Nevis)'
   },
   {
     locale: 'en_LC',
-    displayName: 'English (St. Lucia)'
+    label: 'English (St. Lucia)'
   },
   {
     locale: 'en_VC',
-    displayName: 'English (St. Vincent & Grenadines)'
+    label: 'English (St. Vincent & Grenadines)'
   },
   {
     locale: 'en_SD',
-    displayName: 'English (Sudan)'
+    label: 'English (Sudan)'
   },
   {
     locale: 'en_SZ',
-    displayName: 'English (Swaziland)'
+    label: 'English (Swaziland)'
   },
   {
     locale: 'en_TZ',
-    displayName: 'English (Tanzania)'
+    label: 'English (Tanzania)'
   },
   {
     locale: 'en_TK',
-    displayName: 'English (Tokelau)'
+    label: 'English (Tokelau)'
   },
   {
     locale: 'en_TO',
-    displayName: 'English (Tonga)'
+    label: 'English (Tonga)'
   },
   {
     locale: 'en_TT',
-    displayName: 'English (Trinidad & Tobago)'
+    label: 'English (Trinidad & Tobago)'
   },
   {
     locale: 'en_TC',
-    displayName: 'English (Turks & Caicos Islands)'
+    label: 'English (Turks & Caicos Islands)'
   },
   {
     locale: 'en_TV',
-    displayName: 'English (Tuvalu)'
+    label: 'English (Tuvalu)'
   },
   {
     locale: 'en_UM',
-    displayName: 'English (U.S. Outlying Islands)'
+    label: 'English (U.S. Outlying Islands)'
   },
   {
     locale: 'en_VI',
-    displayName: 'English (U.S. Virgin Islands)'
+    label: 'English (U.S. Virgin Islands)'
   },
   {
     locale: 'en_UG',
-    displayName: 'English (Uganda)'
+    label: 'English (Uganda)'
   },
   {
     locale: 'en_GB',
-    displayName: 'English (United Kingdom)'
+    label: 'English (United Kingdom)'
   },
   {
     locale: 'en_US',
-    displayName: 'English (United States)'
+    label: 'English (United States)'
   },
   {
     locale: 'en_VU',
-    displayName: 'English (Vanuatu)'
+    label: 'English (Vanuatu)'
   },
   {
     locale: 'en_ZM',
-    displayName: 'English (Zambia)'
+    label: 'English (Zambia)'
   },
   {
     locale: 'en_ZW',
-    displayName: 'English (Zimbabwe)'
+    label: 'English (Zimbabwe)'
   },
   {
     locale: 'eo',
-    displayName: 'Esperanto'
+    label: 'Esperanto'
   },
   {
     locale: 'et',
-    displayName: 'Estonian'
+    label: 'Estonian'
   },
   {
     locale: 'et_EE',
-    displayName: 'Estonian (Estonia)'
+    label: 'Estonian (Estonia)'
   },
   {
     locale: 'ee',
-    displayName: 'Ewe'
+    label: 'Ewe'
   },
   {
     locale: 'ee_GH',
-    displayName: 'Ewe (Ghana)'
+    label: 'Ewe (Ghana)'
   },
   {
     locale: 'ee_TG',
-    displayName: 'Ewe (Togo)'
+    label: 'Ewe (Togo)'
   },
   {
     locale: 'fo',
-    displayName: 'Faroese'
+    label: 'Faroese'
   },
   {
     locale: 'fo_FO',
-    displayName: 'Faroese (Faroe Islands)'
+    label: 'Faroese (Faroe Islands)'
   },
   {
     locale: 'fi',
-    displayName: 'Finnish'
+    label: 'Finnish'
   },
   {
     locale: 'fi_FI',
-    displayName: 'Finnish (Finland)'
+    label: 'Finnish (Finland)'
   },
   {
     locale: 'fr',
-    displayName: 'French'
+    label: 'French'
   },
   {
     locale: 'fr_DZ',
-    displayName: 'French (Algeria)'
+    label: 'French (Algeria)'
   },
   {
     locale: 'fr_BE',
-    displayName: 'French (Belgium)'
+    label: 'French (Belgium)'
   },
   {
     locale: 'fr_BJ',
-    displayName: 'French (Benin)'
+    label: 'French (Benin)'
   },
   {
     locale: 'fr_BF',
-    displayName: 'French (Burkina Faso)'
+    label: 'French (Burkina Faso)'
   },
   {
     locale: 'fr_BI',
-    displayName: 'French (Burundi)'
+    label: 'French (Burundi)'
   },
   {
     locale: 'fr_CM',
-    displayName: 'French (Cameroon)'
+    label: 'French (Cameroon)'
   },
   {
     locale: 'fr_CA',
-    displayName: 'French (Canada)'
+    label: 'French (Canada)'
   },
   {
     locale: 'fr_CF',
-    displayName: 'French (Central African Republic)'
+    label: 'French (Central African Republic)'
   },
   {
     locale: 'fr_TD',
-    displayName: 'French (Chad)'
+    label: 'French (Chad)'
   },
   {
     locale: 'fr_KM',
-    displayName: 'French (Comoros)'
+    label: 'French (Comoros)'
   },
   {
     locale: 'fr_CG',
-    displayName: 'French (Congo - Brazzaville)'
+    label: 'French (Congo - Brazzaville)'
   },
   {
     locale: 'fr_CD',
-    displayName: 'French (Congo - Kinshasa)'
+    label: 'French (Congo - Kinshasa)'
   },
   {
     locale: 'fr_CI',
-    displayName: 'French (C\u00f4te d\u2019Ivoire)'
+    label: 'French (C\u00f4te d\u2019Ivoire)'
   },
   {
     locale: 'fr_DJ',
-    displayName: 'French (Djibouti)'
+    label: 'French (Djibouti)'
   },
   {
     locale: 'fr_GQ',
-    displayName: 'French (Equatorial Guinea)'
+    label: 'French (Equatorial Guinea)'
   },
   {
     locale: 'fr_FR',
-    displayName: 'French (France)'
+    label: 'French (France)'
   },
   {
     locale: 'fr_GF',
-    displayName: 'French (French Guiana)'
+    label: 'French (French Guiana)'
   },
   {
     locale: 'fr_PF',
-    displayName: 'French (French Polynesia)'
+    label: 'French (French Polynesia)'
   },
   {
     locale: 'fr_GA',
-    displayName: 'French (Gabon)'
+    label: 'French (Gabon)'
   },
   {
     locale: 'fr_GP',
-    displayName: 'French (Guadeloupe)'
+    label: 'French (Guadeloupe)'
   },
   {
     locale: 'fr_GN',
-    displayName: 'French (Guinea)'
+    label: 'French (Guinea)'
   },
   {
     locale: 'fr_HT',
-    displayName: 'French (Haiti)'
+    label: 'French (Haiti)'
   },
   {
     locale: 'fr_LU',
-    displayName: 'French (Luxembourg)'
+    label: 'French (Luxembourg)'
   },
   {
     locale: 'fr_MG',
-    displayName: 'French (Madagascar)'
+    label: 'French (Madagascar)'
   },
   {
     locale: 'fr_ML',
-    displayName: 'French (Mali)'
+    label: 'French (Mali)'
   },
   {
     locale: 'fr_MQ',
-    displayName: 'French (Martinique)'
+    label: 'French (Martinique)'
   },
   {
     locale: 'fr_MR',
-    displayName: 'French (Mauritania)'
+    label: 'French (Mauritania)'
   },
   {
     locale: 'fr_MU',
-    displayName: 'French (Mauritius)'
+    label: 'French (Mauritius)'
   },
   {
     locale: 'fr_YT',
-    displayName: 'French (Mayotte)'
+    label: 'French (Mayotte)'
   },
   {
     locale: 'fr_MC',
-    displayName: 'French (Monaco)'
+    label: 'French (Monaco)'
   },
   {
     locale: 'fr_MA',
-    displayName: 'French (Morocco)'
+    label: 'French (Morocco)'
   },
   {
     locale: 'fr_NC',
-    displayName: 'French (New Caledonia)'
+    label: 'French (New Caledonia)'
   },
   {
     locale: 'fr_NE',
-    displayName: 'French (Niger)'
+    label: 'French (Niger)'
   },
   {
     locale: 'fr_RE',
-    displayName: 'French (R\u00e9union)'
+    label: 'French (R\u00e9union)'
   },
   {
     locale: 'fr_RW',
-    displayName: 'French (Rwanda)'
+    label: 'French (Rwanda)'
   },
   {
     locale: 'fr_SN',
-    displayName: 'French (Senegal)'
+    label: 'French (Senegal)'
   },
   {
     locale: 'fr_SC',
-    displayName: 'French (Seychelles)'
+    label: 'French (Seychelles)'
   },
   {
     locale: 'fr_BL',
-    displayName: 'French (St. Barth\u00e9lemy)'
+    label: 'French (St. Barth\u00e9lemy)'
   },
   {
     locale: 'fr_MF',
-    displayName: 'French (St. Martin)'
+    label: 'French (St. Martin)'
   },
   {
     locale: 'fr_PM',
-    displayName: 'French (St. Pierre & Miquelon)'
+    label: 'French (St. Pierre & Miquelon)'
   },
   {
     locale: 'fr_CH',
-    displayName: 'French (Switzerland)'
+    label: 'French (Switzerland)'
   },
   {
     locale: 'fr_SY',
-    displayName: 'French (Syria)'
+    label: 'French (Syria)'
   },
   {
     locale: 'fr_TG',
-    displayName: 'French (Togo)'
+    label: 'French (Togo)'
   },
   {
     locale: 'fr_TN',
-    displayName: 'French (Tunisia)'
+    label: 'French (Tunisia)'
   },
   {
     locale: 'fr_VU',
-    displayName: 'French (Vanuatu)'
+    label: 'French (Vanuatu)'
   },
   {
     locale: 'fr_WF',
-    displayName: 'French (Wallis & Futuna)'
+    label: 'French (Wallis & Futuna)'
   },
   {
     locale: 'ff',
-    displayName: 'Fulah'
+    label: 'Fulah'
   },
   {
     locale: 'ff_CM',
-    displayName: 'Fulah (Cameroon)'
+    label: 'Fulah (Cameroon)'
   },
   {
     locale: 'ff_GN',
-    displayName: 'Fulah (Guinea)'
+    label: 'Fulah (Guinea)'
   },
   {
     locale: 'ff_MR',
-    displayName: 'Fulah (Mauritania)'
+    label: 'Fulah (Mauritania)'
   },
   {
     locale: 'ff_SN',
-    displayName: 'Fulah (Senegal)'
+    label: 'Fulah (Senegal)'
   },
   {
     locale: 'gl',
-    displayName: 'Galician'
+    label: 'Galician'
   },
   {
     locale: 'gl_ES',
-    displayName: 'Galician (Spain)'
+    label: 'Galician (Spain)'
   },
   {
     locale: 'lg',
-    displayName: 'Ganda'
+    label: 'Ganda'
   },
   {
     locale: 'lg_UG',
-    displayName: 'Ganda (Uganda)'
+    label: 'Ganda (Uganda)'
   },
   {
     locale: 'ka',
-    displayName: 'Georgian'
+    label: 'Georgian'
   },
   {
     locale: 'ka_GE',
-    displayName: 'Georgian (Georgia)'
+    label: 'Georgian (Georgia)'
   },
   {
     locale: 'de',
-    displayName: 'German'
+    label: 'German'
   },
   {
     locale: 'de_AT',
-    displayName: 'German (Austria)'
+    label: 'German (Austria)'
   },
   {
     locale: 'de_BE',
-    displayName: 'German (Belgium)'
+    label: 'German (Belgium)'
   },
   {
     locale: 'de_DE',
-    displayName: 'German (Germany)'
+    label: 'German (Germany)'
   },
   {
     locale: 'de_LI',
-    displayName: 'German (Liechtenstein)'
+    label: 'German (Liechtenstein)'
   },
   {
     locale: 'de_LU',
-    displayName: 'German (Luxembourg)'
+    label: 'German (Luxembourg)'
   },
   {
     locale: 'de_CH',
-    displayName: 'German (Switzerland)'
+    label: 'German (Switzerland)'
   },
   {
     locale: 'el',
-    displayName: 'Greek'
+    label: 'Greek'
   },
   {
     locale: 'el_CY',
-    displayName: 'Greek (Cyprus)'
+    label: 'Greek (Cyprus)'
   },
   {
     locale: 'el_GR',
-    displayName: 'Greek (Greece)'
+    label: 'Greek (Greece)'
   },
   {
     locale: 'gu',
-    displayName: 'Gujarati'
+    label: 'Gujarati'
   },
   {
     locale: 'gu_IN',
-    displayName: 'Gujarati (India)'
+    label: 'Gujarati (India)'
   },
   {
     locale: 'ha',
-    displayName: 'Hausa'
+    label: 'Hausa'
   },
   {
     locale: 'ha_GH',
-    displayName: 'Hausa (Ghana)'
+    label: 'Hausa (Ghana)'
   },
   {
     locale: 'ha_Latn_GH',
-    displayName: 'Hausa (Latin, Ghana)'
+    label: 'Hausa (Latin, Ghana)'
   },
   {
     locale: 'ha_Latn_NE',
-    displayName: 'Hausa (Latin, Niger)'
+    label: 'Hausa (Latin, Niger)'
   },
   {
     locale: 'ha_Latn_NG',
-    displayName: 'Hausa (Latin, Nigeria)'
+    label: 'Hausa (Latin, Nigeria)'
   },
   {
     locale: 'ha_Latn',
-    displayName: 'Hausa (Latin)'
+    label: 'Hausa (Latin)'
   },
   {
     locale: 'ha_NE',
-    displayName: 'Hausa (Niger)'
+    label: 'Hausa (Niger)'
   },
   {
     locale: 'ha_NG',
-    displayName: 'Hausa (Nigeria)'
+    label: 'Hausa (Nigeria)'
   },
   {
     locale: 'he',
-    displayName: 'Hebrew'
+    label: 'Hebrew'
   },
   {
     locale: 'he_IL',
-    displayName: 'Hebrew (Israel)'
+    label: 'Hebrew (Israel)'
   },
   {
     locale: 'hi',
-    displayName: 'Hindi'
+    label: 'Hindi'
   },
   {
     locale: 'hi_IN',
-    displayName: 'Hindi (India)'
+    label: 'Hindi (India)'
   },
   {
     locale: 'hu',
-    displayName: 'Hungarian'
+    label: 'Hungarian'
   },
   {
     locale: 'hu_HU',
-    displayName: 'Hungarian (Hungary)'
+    label: 'Hungarian (Hungary)'
   },
   {
     locale: 'is',
-    displayName: 'Icelandic'
+    label: 'Icelandic'
   },
   {
     locale: 'is_IS',
-    displayName: 'Icelandic (Iceland)'
+    label: 'Icelandic (Iceland)'
   },
   {
     locale: 'ig',
-    displayName: 'Igbo'
+    label: 'Igbo'
   },
   {
     locale: 'ig_NG',
-    displayName: 'Igbo (Nigeria)'
+    label: 'Igbo (Nigeria)'
   },
   {
     locale: 'id',
-    displayName: 'Indonesian'
+    label: 'Indonesian'
   },
   {
     locale: 'id_ID',
-    displayName: 'Indonesian (Indonesia)'
+    label: 'Indonesian (Indonesia)'
   },
   {
     locale: 'ga',
-    displayName: 'Irish'
+    label: 'Irish'
   },
   {
     locale: 'ga_IE',
-    displayName: 'Irish (Ireland)'
+    label: 'Irish (Ireland)'
   },
   {
     locale: 'it',
-    displayName: 'Italian'
+    label: 'Italian'
   },
   {
     locale: 'it_IT',
-    displayName: 'Italian (Italy)'
+    label: 'Italian (Italy)'
   },
   {
     locale: 'it_SM',
-    displayName: 'Italian (San Marino)'
+    label: 'Italian (San Marino)'
   },
   {
     locale: 'it_CH',
-    displayName: 'Italian (Switzerland)'
+    label: 'Italian (Switzerland)'
   },
   {
     locale: 'ja',
-    displayName: 'Japanese'
+    label: 'Japanese'
   },
   {
     locale: 'ja_JP',
-    displayName: 'Japanese (Japan)'
+    label: 'Japanese (Japan)'
   },
   {
     locale: 'kl',
-    displayName: 'Kalaallisut'
+    label: 'Kalaallisut'
   },
   {
     locale: 'kl_GL',
-    displayName: 'Kalaallisut (Greenland)'
+    label: 'Kalaallisut (Greenland)'
   },
   {
     locale: 'kn',
-    displayName: 'Kannada'
+    label: 'Kannada'
   },
   {
     locale: 'kn_IN',
-    displayName: 'Kannada (India)'
+    label: 'Kannada (India)'
   },
   {
     locale: 'ks',
-    displayName: 'Kashmiri'
+    label: 'Kashmiri'
   },
   {
     locale: 'ks_Arab_IN',
-    displayName: 'Kashmiri (Arabic, India)'
+    label: 'Kashmiri (Arabic, India)'
   },
   {
     locale: 'ks_Arab',
-    displayName: 'Kashmiri (Arabic)'
+    label: 'Kashmiri (Arabic)'
   },
   {
     locale: 'ks_IN',
-    displayName: 'Kashmiri (India)'
+    label: 'Kashmiri (India)'
   },
   {
     locale: 'kk',
-    displayName: 'Kazakh'
+    label: 'Kazakh'
   },
   {
     locale: 'kk_Cyrl_KZ',
-    displayName: 'Kazakh (Cyrillic, Kazakhstan)'
+    label: 'Kazakh (Cyrillic, Kazakhstan)'
   },
   {
     locale: 'kk_Cyrl',
-    displayName: 'Kazakh (Cyrillic)'
+    label: 'Kazakh (Cyrillic)'
   },
   {
     locale: 'kk_KZ',
-    displayName: 'Kazakh (Kazakhstan)'
+    label: 'Kazakh (Kazakhstan)'
   },
   {
     locale: 'km',
-    displayName: 'Khmer'
+    label: 'Khmer'
   },
   {
     locale: 'km_KH',
-    displayName: 'Khmer (Cambodia)'
+    label: 'Khmer (Cambodia)'
   },
   {
     locale: 'ki',
-    displayName: 'Kikuyu'
+    label: 'Kikuyu'
   },
   {
     locale: 'ki_KE',
-    displayName: 'Kikuyu (Kenya)'
+    label: 'Kikuyu (Kenya)'
   },
   {
     locale: 'rw',
-    displayName: 'Kinyarwanda'
+    label: 'Kinyarwanda'
   },
   {
     locale: 'rw_RW',
-    displayName: 'Kinyarwanda (Rwanda)'
+    label: 'Kinyarwanda (Rwanda)'
   },
   {
     locale: 'ko',
-    displayName: 'Korean'
+    label: 'Korean'
   },
   {
     locale: 'ko_KP',
-    displayName: 'Korean (North Korea)'
+    label: 'Korean (North Korea)'
   },
   {
     locale: 'ko_KR',
-    displayName: 'Korean (South Korea)'
+    label: 'Korean (South Korea)'
   },
   {
     locale: 'ky',
-    displayName: 'Kyrgyz'
+    label: 'Kyrgyz'
   },
   {
     locale: 'ky_Cyrl_KG',
-    displayName: 'Kyrgyz (Cyrillic, Kyrgyzstan)'
+    label: 'Kyrgyz (Cyrillic, Kyrgyzstan)'
   },
   {
     locale: 'ky_Cyrl',
-    displayName: 'Kyrgyz (Cyrillic)'
+    label: 'Kyrgyz (Cyrillic)'
   },
   {
     locale: 'ky_KG',
-    displayName: 'Kyrgyz (Kyrgyzstan)'
+    label: 'Kyrgyz (Kyrgyzstan)'
   },
   {
     locale: 'lo',
-    displayName: 'Lao'
+    label: 'Lao'
   },
   {
     locale: 'lo_LA',
-    displayName: 'Lao (Laos)'
+    label: 'Lao (Laos)'
   },
   {
     locale: 'lv',
-    displayName: 'Latvian'
+    label: 'Latvian'
   },
   {
     locale: 'lv_LV',
-    displayName: 'Latvian (Latvia)'
+    label: 'Latvian (Latvia)'
   },
   {
     locale: 'ln',
-    displayName: 'Lingala'
+    label: 'Lingala'
   },
   {
     locale: 'ln_AO',
-    displayName: 'Lingala (Angola)'
+    label: 'Lingala (Angola)'
   },
   {
     locale: 'ln_CF',
-    displayName: 'Lingala (Central African Republic)'
+    label: 'Lingala (Central African Republic)'
   },
   {
     locale: 'ln_CG',
-    displayName: 'Lingala (Congo - Brazzaville)'
+    label: 'Lingala (Congo - Brazzaville)'
   },
   {
     locale: 'ln_CD',
-    displayName: 'Lingala (Congo - Kinshasa)'
+    label: 'Lingala (Congo - Kinshasa)'
   },
   {
     locale: 'lt',
-    displayName: 'Lithuanian'
+    label: 'Lithuanian'
   },
   {
     locale: 'lt_LT',
-    displayName: 'Lithuanian (Lithuania)'
+    label: 'Lithuanian (Lithuania)'
   },
   {
     locale: 'lu',
-    displayName: 'Luba-Katanga'
+    label: 'Luba-Katanga'
   },
   {
     locale: 'lu_CD',
-    displayName: 'Luba-Katanga (Congo - Kinshasa)'
+    label: 'Luba-Katanga (Congo - Kinshasa)'
   },
   {
     locale: 'lb',
-    displayName: 'Luxembourgish'
+    label: 'Luxembourgish'
   },
   {
     locale: 'lb_LU',
-    displayName: 'Luxembourgish (Luxembourg)'
+    label: 'Luxembourgish (Luxembourg)'
   },
   {
     locale: 'mk',
-    displayName: 'Macedonian'
+    label: 'Macedonian'
   },
   {
     locale: 'mk_MK',
-    displayName: 'Macedonian (Macedonia)'
+    label: 'Macedonian (Macedonia)'
   },
   {
     locale: 'mg',
-    displayName: 'Malagasy'
+    label: 'Malagasy'
   },
   {
     locale: 'mg_MG',
-    displayName: 'Malagasy (Madagascar)'
+    label: 'Malagasy (Madagascar)'
   },
   {
     locale: 'ms',
-    displayName: 'Malay'
+    label: 'Malay'
   },
   {
     locale: 'ms_BN',
-    displayName: 'Malay (Brunei)'
+    label: 'Malay (Brunei)'
   },
   {
     locale: 'ms_Latn_BN',
-    displayName: 'Malay (Latin, Brunei)'
+    label: 'Malay (Latin, Brunei)'
   },
   {
     locale: 'ms_Latn_MY',
-    displayName: 'Malay (Latin, Malaysia)'
+    label: 'Malay (Latin, Malaysia)'
   },
   {
     locale: 'ms_Latn_SG',
-    displayName: 'Malay (Latin, Singapore)'
+    label: 'Malay (Latin, Singapore)'
   },
   {
     locale: 'ms_Latn',
-    displayName: 'Malay (Latin)'
+    label: 'Malay (Latin)'
   },
   {
     locale: 'ms_MY',
-    displayName: 'Malay (Malaysia)'
+    label: 'Malay (Malaysia)'
   },
   {
     locale: 'ms_SG',
-    displayName: 'Malay (Singapore)'
+    label: 'Malay (Singapore)'
   },
   {
     locale: 'ml',
-    displayName: 'Malayalam'
+    label: 'Malayalam'
   },
   {
     locale: 'ml_IN',
-    displayName: 'Malayalam (India)'
+    label: 'Malayalam (India)'
   },
   {
     locale: 'mt',
-    displayName: 'Maltese'
+    label: 'Maltese'
   },
   {
     locale: 'mt_MT',
-    displayName: 'Maltese (Malta)'
+    label: 'Maltese (Malta)'
   },
   {
     locale: 'gv',
-    displayName: 'Manx'
+    label: 'Manx'
   },
   {
     locale: 'gv_IM',
-    displayName: 'Manx (Isle of Man)'
+    label: 'Manx (Isle of Man)'
   },
   {
     locale: 'mr',
-    displayName: 'Marathi'
+    label: 'Marathi'
   },
   {
     locale: 'mr_IN',
-    displayName: 'Marathi (India)'
+    label: 'Marathi (India)'
   },
   {
     locale: 'mn',
-    displayName: 'Mongolian'
+    label: 'Mongolian'
   },
   {
     locale: 'mn_Cyrl_MN',
-    displayName: 'Mongolian (Cyrillic, Mongolia)'
+    label: 'Mongolian (Cyrillic, Mongolia)'
   },
   {
     locale: 'mn_Cyrl',
-    displayName: 'Mongolian (Cyrillic)'
+    label: 'Mongolian (Cyrillic)'
   },
   {
     locale: 'mn_MN',
-    displayName: 'Mongolian (Mongolia)'
+    label: 'Mongolian (Mongolia)'
   },
   {
     locale: 'ne',
-    displayName: 'Nepali'
+    label: 'Nepali'
   },
   {
     locale: 'ne_IN',
-    displayName: 'Nepali (India)'
+    label: 'Nepali (India)'
   },
   {
     locale: 'ne_NP',
-    displayName: 'Nepali (Nepal)'
+    label: 'Nepali (Nepal)'
   },
   {
     locale: 'nd',
-    displayName: 'North Ndebele'
+    label: 'North Ndebele'
   },
   {
     locale: 'nd_ZW',
-    displayName: 'North Ndebele (Zimbabwe)'
+    label: 'North Ndebele (Zimbabwe)'
   },
   {
     locale: 'se',
-    displayName: 'Northern Sami'
+    label: 'Northern Sami'
   },
   {
     locale: 'se_FI',
-    displayName: 'Northern Sami (Finland)'
+    label: 'Northern Sami (Finland)'
   },
   {
     locale: 'se_NO',
-    displayName: 'Northern Sami (Norway)'
+    label: 'Northern Sami (Norway)'
   },
   {
     locale: 'se_SE',
-    displayName: 'Northern Sami (Sweden)'
+    label: 'Northern Sami (Sweden)'
   },
   {
     locale: 'no',
-    displayName: 'Norwegian'
+    label: 'Norwegian'
   },
   {
     locale: 'no_NO',
-    displayName: 'Norwegian (Norway)'
+    label: 'Norwegian (Norway)'
   },
   {
     locale: 'nb',
-    displayName: 'Norwegian Bokm\u00e5l'
+    label: 'Norwegian Bokm\u00e5l'
   },
   {
     locale: 'nb_NO',
-    displayName: 'Norwegian Bokm\u00e5l (Norway)'
+    label: 'Norwegian Bokm\u00e5l (Norway)'
   },
   {
     locale: 'nb_SJ',
-    displayName: 'Norwegian Bokm\u00e5l (Svalbard & Jan Mayen)'
+    label: 'Norwegian Bokm\u00e5l (Svalbard & Jan Mayen)'
   },
   {
     locale: 'nn',
-    displayName: 'Norwegian Nynorsk'
+    label: 'Norwegian Nynorsk'
   },
   {
     locale: 'nn_NO',
-    displayName: 'Norwegian Nynorsk (Norway)'
+    label: 'Norwegian Nynorsk (Norway)'
   },
   {
     locale: 'or',
-    displayName: 'Oriya'
+    label: 'Oriya'
   },
   {
     locale: 'or_IN',
-    displayName: 'Oriya (India)'
+    label: 'Oriya (India)'
   },
   {
     locale: 'om',
-    displayName: 'Oromo'
+    label: 'Oromo'
   },
   {
     locale: 'om_ET',
-    displayName: 'Oromo (Ethiopia)'
+    label: 'Oromo (Ethiopia)'
   },
   {
     locale: 'om_KE',
-    displayName: 'Oromo (Kenya)'
+    label: 'Oromo (Kenya)'
   },
   {
     locale: 'os',
-    displayName: 'Ossetic'
+    label: 'Ossetic'
   },
   {
     locale: 'os_GE',
-    displayName: 'Ossetic (Georgia)'
+    label: 'Ossetic (Georgia)'
   },
   {
     locale: 'os_RU',
-    displayName: 'Ossetic (Russia)'
+    label: 'Ossetic (Russia)'
   },
   {
     locale: 'ps',
-    displayName: 'Pashto'
+    label: 'Pashto'
   },
   {
     locale: 'ps_AF',
-    displayName: 'Pashto (Afghanistan)'
+    label: 'Pashto (Afghanistan)'
   },
   {
     locale: 'fa',
-    displayName: 'Persian'
+    label: 'Persian'
   },
   {
     locale: 'fa_AF',
-    displayName: 'Persian (Afghanistan)'
+    label: 'Persian (Afghanistan)'
   },
   {
     locale: 'fa_IR',
-    displayName: 'Persian (Iran)'
+    label: 'Persian (Iran)'
   },
   {
     locale: 'pl',
-    displayName: 'Polish'
+    label: 'Polish'
   },
   {
     locale: 'pl_PL',
-    displayName: 'Polish (Poland)'
+    label: 'Polish (Poland)'
   },
   {
     locale: 'pt',
-    displayName: 'Portuguese'
+    label: 'Portuguese'
   },
   {
     locale: 'pt_AO',
-    displayName: 'Portuguese (Angola)'
+    label: 'Portuguese (Angola)'
   },
   {
     locale: 'pt_BR',
-    displayName: 'Portuguese (Brazil)'
+    label: 'Portuguese (Brazil)'
   },
   {
     locale: 'pt_CV',
-    displayName: 'Portuguese (Cape Verde)'
+    label: 'Portuguese (Cape Verde)'
   },
   {
     locale: 'pt_GW',
-    displayName: 'Portuguese (Guinea-Bissau)'
+    label: 'Portuguese (Guinea-Bissau)'
   },
   {
     locale: 'pt_MO',
-    displayName: 'Portuguese (Macau SAR China)'
+    label: 'Portuguese (Macau SAR China)'
   },
   {
     locale: 'pt_MZ',
-    displayName: 'Portuguese (Mozambique)'
+    label: 'Portuguese (Mozambique)'
   },
   {
     locale: 'pt_PT',
-    displayName: 'Portuguese (Portugal)'
+    label: 'Portuguese (Portugal)'
   },
   {
     locale: 'pt_ST',
-    displayName: 'Portuguese (S\u00e3o Tom\u00e9 & Pr\u00edncipe)'
+    label: 'Portuguese (S\u00e3o Tom\u00e9 & Pr\u00edncipe)'
   },
   {
     locale: 'pt_TL',
-    displayName: 'Portuguese (Timor-Leste)'
+    label: 'Portuguese (Timor-Leste)'
   },
   {
     locale: 'pa',
-    displayName: 'Punjabi'
+    label: 'Punjabi'
   },
   {
     locale: 'pa_Arab_PK',
-    displayName: 'Punjabi (Arabic, Pakistan)'
+    label: 'Punjabi (Arabic, Pakistan)'
   },
   {
     locale: 'pa_Arab',
-    displayName: 'Punjabi (Arabic)'
+    label: 'Punjabi (Arabic)'
   },
   {
     locale: 'pa_Guru_IN',
-    displayName: 'Punjabi (Gurmukhi, India)'
+    label: 'Punjabi (Gurmukhi, India)'
   },
   {
     locale: 'pa_Guru',
-    displayName: 'Punjabi (Gurmukhi)'
+    label: 'Punjabi (Gurmukhi)'
   },
   {
     locale: 'pa_IN',
-    displayName: 'Punjabi (India)'
+    label: 'Punjabi (India)'
   },
   {
     locale: 'pa_PK',
-    displayName: 'Punjabi (Pakistan)'
+    label: 'Punjabi (Pakistan)'
   },
   {
     locale: 'qu',
-    displayName: 'Quechua'
+    label: 'Quechua'
   },
   {
     locale: 'qu_BO',
-    displayName: 'Quechua (Bolivia)'
+    label: 'Quechua (Bolivia)'
   },
   {
     locale: 'qu_EC',
-    displayName: 'Quechua (Ecuador)'
+    label: 'Quechua (Ecuador)'
   },
   {
     locale: 'qu_PE',
-    displayName: 'Quechua (Peru)'
+    label: 'Quechua (Peru)'
   },
   {
     locale: 'ro',
-    displayName: 'Romanian'
+    label: 'Romanian'
   },
   {
     locale: 'ro_MD',
-    displayName: 'Romanian (Moldova)'
+    label: 'Romanian (Moldova)'
   },
   {
     locale: 'ro_RO',
-    displayName: 'Romanian (Romania)'
+    label: 'Romanian (Romania)'
   },
   {
     locale: 'rm',
-    displayName: 'Romansh'
+    label: 'Romansh'
   },
   {
     locale: 'rm_CH',
-    displayName: 'Romansh (Switzerland)'
+    label: 'Romansh (Switzerland)'
   },
   {
     locale: 'rn',
-    displayName: 'Rundi'
+    label: 'Rundi'
   },
   {
     locale: 'rn_BI',
-    displayName: 'Rundi (Burundi)'
+    label: 'Rundi (Burundi)'
   },
   {
     locale: 'ru',
-    displayName: 'Russian'
+    label: 'Russian'
   },
   {
     locale: 'ru_BY',
-    displayName: 'Russian (Belarus)'
+    label: 'Russian (Belarus)'
   },
   {
     locale: 'ru_KZ',
-    displayName: 'Russian (Kazakhstan)'
+    label: 'Russian (Kazakhstan)'
   },
   {
     locale: 'ru_KG',
-    displayName: 'Russian (Kyrgyzstan)'
+    label: 'Russian (Kyrgyzstan)'
   },
   {
     locale: 'ru_MD',
-    displayName: 'Russian (Moldova)'
+    label: 'Russian (Moldova)'
   },
   {
     locale: 'ru_RU',
-    displayName: 'Russian (Russia)'
+    label: 'Russian (Russia)'
   },
   {
     locale: 'ru_UA',
-    displayName: 'Russian (Ukraine)'
+    label: 'Russian (Ukraine)'
   },
   {
     locale: 'sg',
-    displayName: 'Sango'
+    label: 'Sango'
   },
   {
     locale: 'sg_CF',
-    displayName: 'Sango (Central African Republic)'
+    label: 'Sango (Central African Republic)'
   },
   {
     locale: 'gd',
-    displayName: 'Scottish Gaelic'
+    label: 'Scottish Gaelic'
   },
   {
     locale: 'gd_GB',
-    displayName: 'Scottish Gaelic (United Kingdom)'
+    label: 'Scottish Gaelic (United Kingdom)'
   },
   {
     locale: 'sr',
-    displayName: 'Serbian'
+    label: 'Serbian'
   },
   {
     locale: 'sr_BA',
-    displayName: 'Serbian (Bosnia & Herzegovina)'
+    label: 'Serbian (Bosnia & Herzegovina)'
   },
   {
     locale: 'sr_Cyrl_BA',
-    displayName: 'Serbian (Cyrillic, Bosnia & Herzegovina)'
+    label: 'Serbian (Cyrillic, Bosnia & Herzegovina)'
   },
   {
     locale: 'sr_Cyrl_XK',
-    displayName: 'Serbian (Cyrillic, Kosovo)'
+    label: 'Serbian (Cyrillic, Kosovo)'
   },
   {
     locale: 'sr_Cyrl_ME',
-    displayName: 'Serbian (Cyrillic, Montenegro)'
+    label: 'Serbian (Cyrillic, Montenegro)'
   },
   {
     locale: 'sr_Cyrl_RS',
-    displayName: 'Serbian (Cyrillic, Serbia)'
+    label: 'Serbian (Cyrillic, Serbia)'
   },
   {
     locale: 'sr_Cyrl',
-    displayName: 'Serbian (Cyrillic)'
+    label: 'Serbian (Cyrillic)'
   },
   {
     locale: 'sr_XK',
-    displayName: 'Serbian (Kosovo)'
+    label: 'Serbian (Kosovo)'
   },
   {
     locale: 'sr_Latn_BA',
-    displayName: 'Serbian (Latin, Bosnia & Herzegovina)'
+    label: 'Serbian (Latin, Bosnia & Herzegovina)'
   },
   {
     locale: 'sr_Latn_XK',
-    displayName: 'Serbian (Latin, Kosovo)'
+    label: 'Serbian (Latin, Kosovo)'
   },
   {
     locale: 'sr_Latn_ME',
-    displayName: 'Serbian (Latin, Montenegro)'
+    label: 'Serbian (Latin, Montenegro)'
   },
   {
     locale: 'sr_Latn_RS',
-    displayName: 'Serbian (Latin, Serbia)'
+    label: 'Serbian (Latin, Serbia)'
   },
   {
     locale: 'sr_Latn',
-    displayName: 'Serbian (Latin)'
+    label: 'Serbian (Latin)'
   },
   {
     locale: 'sr_ME',
-    displayName: 'Serbian (Montenegro)'
+    label: 'Serbian (Montenegro)'
   },
   {
     locale: 'sr_RS',
-    displayName: 'Serbian (Serbia)'
+    label: 'Serbian (Serbia)'
   },
   {
     locale: 'sh',
-    displayName: 'Serbo-Croatian'
+    label: 'Serbo-Croatian'
   },
   {
     locale: 'sh_BA',
-    displayName: 'Serbo-Croatian (Bosnia & Herzegovina)'
+    label: 'Serbo-Croatian (Bosnia & Herzegovina)'
   },
   {
     locale: 'sn',
-    displayName: 'Shona'
+    label: 'Shona'
   },
   {
     locale: 'sn_ZW',
-    displayName: 'Shona (Zimbabwe)'
+    label: 'Shona (Zimbabwe)'
   },
   {
     locale: 'ii',
-    displayName: 'Sichuan Yi'
+    label: 'Sichuan Yi'
   },
   {
     locale: 'ii_CN',
-    displayName: 'Sichuan Yi (China)'
+    label: 'Sichuan Yi (China)'
   },
   {
     locale: 'si',
-    displayName: 'Sinhala'
+    label: 'Sinhala'
   },
   {
     locale: 'si_LK',
-    displayName: 'Sinhala (Sri Lanka)'
+    label: 'Sinhala (Sri Lanka)'
   },
   {
     locale: 'sk',
-    displayName: 'Slovak'
+    label: 'Slovak'
   },
   {
     locale: 'sk_SK',
-    displayName: 'Slovak (Slovakia)'
+    label: 'Slovak (Slovakia)'
   },
   {
     locale: 'sl',
-    displayName: 'Slovenian'
+    label: 'Slovenian'
   },
   {
     locale: 'sl_SI',
-    displayName: 'Slovenian (Slovenia)'
+    label: 'Slovenian (Slovenia)'
   },
   {
     locale: 'so',
-    displayName: 'Somali'
+    label: 'Somali'
   },
   {
     locale: 'so_DJ',
-    displayName: 'Somali (Djibouti)'
+    label: 'Somali (Djibouti)'
   },
   {
     locale: 'so_ET',
-    displayName: 'Somali (Ethiopia)'
+    label: 'Somali (Ethiopia)'
   },
   {
     locale: 'so_KE',
-    displayName: 'Somali (Kenya)'
+    label: 'Somali (Kenya)'
   },
   {
     locale: 'so_SO',
-    displayName: 'Somali (Somalia)'
+    label: 'Somali (Somalia)'
   },
   {
     locale: 'es',
-    displayName: 'Spanish'
+    label: 'Spanish'
   },
   {
     locale: 'es_AR',
-    displayName: 'Spanish (Argentina)'
+    label: 'Spanish (Argentina)'
   },
   {
     locale: 'es_BO',
-    displayName: 'Spanish (Bolivia)'
+    label: 'Spanish (Bolivia)'
   },
   {
     locale: 'es_IC',
-    displayName: 'Spanish (Canary Islands)'
+    label: 'Spanish (Canary Islands)'
   },
   {
     locale: 'es_EA',
-    displayName: 'Spanish (Ceuta & Melilla)'
+    label: 'Spanish (Ceuta & Melilla)'
   },
   {
     locale: 'es_CL',
-    displayName: 'Spanish (Chile)'
+    label: 'Spanish (Chile)'
   },
   {
     locale: 'es_CO',
-    displayName: 'Spanish (Colombia)'
+    label: 'Spanish (Colombia)'
   },
   {
     locale: 'es_CR',
-    displayName: 'Spanish (Costa Rica)'
+    label: 'Spanish (Costa Rica)'
   },
   {
     locale: 'es_CU',
-    displayName: 'Spanish (Cuba)'
+    label: 'Spanish (Cuba)'
   },
   {
     locale: 'es_DO',
-    displayName: 'Spanish (Dominican Republic)'
+    label: 'Spanish (Dominican Republic)'
   },
   {
     locale: 'es_EC',
-    displayName: 'Spanish (Ecuador)'
+    label: 'Spanish (Ecuador)'
   },
   {
     locale: 'es_SV',
-    displayName: 'Spanish (El Salvador)'
+    label: 'Spanish (El Salvador)'
   },
   {
     locale: 'es_GQ',
-    displayName: 'Spanish (Equatorial Guinea)'
+    label: 'Spanish (Equatorial Guinea)'
   },
   {
     locale: 'es_GT',
-    displayName: 'Spanish (Guatemala)'
+    label: 'Spanish (Guatemala)'
   },
   {
     locale: 'es_HN',
-    displayName: 'Spanish (Honduras)'
+    label: 'Spanish (Honduras)'
   },
   {
     locale: 'es_MX',
-    displayName: 'Spanish (Mexico)'
+    label: 'Spanish (Mexico)'
   },
   {
     locale: 'es_NI',
-    displayName: 'Spanish (Nicaragua)'
+    label: 'Spanish (Nicaragua)'
   },
   {
     locale: 'es_PA',
-    displayName: 'Spanish (Panama)'
+    label: 'Spanish (Panama)'
   },
   {
     locale: 'es_PY',
-    displayName: 'Spanish (Paraguay)'
+    label: 'Spanish (Paraguay)'
   },
   {
     locale: 'es_PE',
-    displayName: 'Spanish (Peru)'
+    label: 'Spanish (Peru)'
   },
   {
     locale: 'es_PH',
-    displayName: 'Spanish (Philippines)'
+    label: 'Spanish (Philippines)'
   },
   {
     locale: 'es_PR',
-    displayName: 'Spanish (Puerto Rico)'
+    label: 'Spanish (Puerto Rico)'
   },
   {
     locale: 'es_ES',
-    displayName: 'Spanish (Spain)'
+    label: 'Spanish (Spain)'
   },
   {
     locale: 'es_US',
-    displayName: 'Spanish (United States)'
+    label: 'Spanish (United States)'
   },
   {
     locale: 'es_UY',
-    displayName: 'Spanish (Uruguay)'
+    label: 'Spanish (Uruguay)'
   },
   {
     locale: 'es_VE',
-    displayName: 'Spanish (Venezuela)'
+    label: 'Spanish (Venezuela)'
   },
   {
     locale: 'sw',
-    displayName: 'Swahili'
+    label: 'Swahili'
   },
   {
     locale: 'sw_KE',
-    displayName: 'Swahili (Kenya)'
+    label: 'Swahili (Kenya)'
   },
   {
     locale: 'sw_TZ',
-    displayName: 'Swahili (Tanzania)'
+    label: 'Swahili (Tanzania)'
   },
   {
     locale: 'sw_UG',
-    displayName: 'Swahili (Uganda)'
+    label: 'Swahili (Uganda)'
   },
   {
     locale: 'sv',
-    displayName: 'Swedish'
+    label: 'Swedish'
   },
   {
     locale: 'sv_AX',
-    displayName: 'Swedish (\u00c5land Islands)'
+    label: 'Swedish (\u00c5land Islands)'
   },
   {
     locale: 'sv_FI',
-    displayName: 'Swedish (Finland)'
+    label: 'Swedish (Finland)'
   },
   {
     locale: 'sv_SE',
-    displayName: 'Swedish (Sweden)'
+    label: 'Swedish (Sweden)'
   },
   {
     locale: 'tl',
-    displayName: 'Tagalog'
+    label: 'Tagalog'
   },
   {
     locale: 'tl_PH',
-    displayName: 'Tagalog (Philippines)'
+    label: 'Tagalog (Philippines)'
   },
   {
     locale: 'ta',
-    displayName: 'Tamil'
+    label: 'Tamil'
   },
   {
     locale: 'ta_IN',
-    displayName: 'Tamil (India)'
+    label: 'Tamil (India)'
   },
   {
     locale: 'ta_MY',
-    displayName: 'Tamil (Malaysia)'
+    label: 'Tamil (Malaysia)'
   },
   {
     locale: 'ta_SG',
-    displayName: 'Tamil (Singapore)'
+    label: 'Tamil (Singapore)'
   },
   {
     locale: 'ta_LK',
-    displayName: 'Tamil (Sri Lanka)'
+    label: 'Tamil (Sri Lanka)'
   },
   {
     locale: 'te',
-    displayName: 'Telugu'
+    label: 'Telugu'
   },
   {
     locale: 'te_IN',
-    displayName: 'Telugu (India)'
+    label: 'Telugu (India)'
   },
   {
     locale: 'th',
-    displayName: 'Thai'
+    label: 'Thai'
   },
   {
     locale: 'th_TH',
-    displayName: 'Thai (Thailand)'
+    label: 'Thai (Thailand)'
   },
   {
     locale: 'bo',
-    displayName: 'Tibetan'
+    label: 'Tibetan'
   },
   {
     locale: 'bo_CN',
-    displayName: 'Tibetan (China)'
+    label: 'Tibetan (China)'
   },
   {
     locale: 'bo_IN',
-    displayName: 'Tibetan (India)'
+    label: 'Tibetan (India)'
   },
   {
     locale: 'ti',
-    displayName: 'Tigrinya'
+    label: 'Tigrinya'
   },
   {
     locale: 'ti_ER',
-    displayName: 'Tigrinya (Eritrea)'
+    label: 'Tigrinya (Eritrea)'
   },
   {
     locale: 'ti_ET',
-    displayName: 'Tigrinya (Ethiopia)'
+    label: 'Tigrinya (Ethiopia)'
   },
   {
     locale: 'to',
-    displayName: 'Tongan'
+    label: 'Tongan'
   },
   {
     locale: 'to_TO',
-    displayName: 'Tongan (Tonga)'
+    label: 'Tongan (Tonga)'
   },
   {
     locale: 'tr',
-    displayName: 'Turkish'
+    label: 'Turkish'
   },
   {
     locale: 'tr_CY',
-    displayName: 'Turkish (Cyprus)'
+    label: 'Turkish (Cyprus)'
   },
   {
     locale: 'tr_TR',
-    displayName: 'Turkish (Turkey)'
+    label: 'Turkish (Turkey)'
   },
   {
     locale: 'uk',
-    displayName: 'Ukrainian'
+    label: 'Ukrainian'
   },
   {
     locale: 'uk_UA',
-    displayName: 'Ukrainian (Ukraine)'
+    label: 'Ukrainian (Ukraine)'
   },
   {
     locale: 'ur',
-    displayName: 'Urdu'
+    label: 'Urdu'
   },
   {
     locale: 'ur_IN',
-    displayName: 'Urdu (India)'
+    label: 'Urdu (India)'
   },
   {
     locale: 'ur_PK',
-    displayName: 'Urdu (Pakistan)'
+    label: 'Urdu (Pakistan)'
   },
   {
     locale: 'ug',
-    displayName: 'Uyghur'
+    label: 'Uyghur'
   },
   {
     locale: 'ug_Arab_CN',
-    displayName: 'Uyghur (Arabic, China)'
+    label: 'Uyghur (Arabic, China)'
   },
   {
     locale: 'ug_Arab',
-    displayName: 'Uyghur (Arabic)'
+    label: 'Uyghur (Arabic)'
   },
   {
     locale: 'ug_CN',
-    displayName: 'Uyghur (China)'
+    label: 'Uyghur (China)'
   },
   {
     locale: 'uz',
-    displayName: 'Uzbek'
+    label: 'Uzbek'
   },
   {
     locale: 'uz_AF',
-    displayName: 'Uzbek (Afghanistan)'
+    label: 'Uzbek (Afghanistan)'
   },
   {
     locale: 'uz_Arab_AF',
-    displayName: 'Uzbek (Arabic, Afghanistan)'
+    label: 'Uzbek (Arabic, Afghanistan)'
   },
   {
     locale: 'uz_Arab',
-    displayName: 'Uzbek (Arabic)'
+    label: 'Uzbek (Arabic)'
   },
   {
     locale: 'uz_Cyrl_UZ',
-    displayName: 'Uzbek (Cyrillic, Uzbekistan)'
+    label: 'Uzbek (Cyrillic, Uzbekistan)'
   },
   {
     locale: 'uz_Cyrl',
-    displayName: 'Uzbek (Cyrillic)'
+    label: 'Uzbek (Cyrillic)'
   },
   {
     locale: 'uz_Latn_UZ',
-    displayName: 'Uzbek (Latin, Uzbekistan)'
+    label: 'Uzbek (Latin, Uzbekistan)'
   },
   {
     locale: 'uz_Latn',
-    displayName: 'Uzbek (Latin)'
+    label: 'Uzbek (Latin)'
   },
   {
     locale: 'uz_UZ',
-    displayName: 'Uzbek (Uzbekistan)'
+    label: 'Uzbek (Uzbekistan)'
   },
   {
     locale: 'vi',
-    displayName: 'Vietnamese'
+    label: 'Vietnamese'
   },
   {
     locale: 'vi_VN',
-    displayName: 'Vietnamese (Vietnam)'
+    label: 'Vietnamese (Vietnam)'
   },
   {
     locale: 'cy',
-    displayName: 'Welsh'
+    label: 'Welsh'
   },
   {
     locale: 'cy_GB',
-    displayName: 'Welsh (United Kingdom)'
+    label: 'Welsh (United Kingdom)'
   },
   {
     locale: 'fy',
-    displayName: 'Western Frisian'
+    label: 'Western Frisian'
   },
   {
     locale: 'fy_NL',
-    displayName: 'Western Frisian (Netherlands)'
+    label: 'Western Frisian (Netherlands)'
   },
   {
     locale: 'yi',
-    displayName: 'Yiddish'
+    label: 'Yiddish'
   },
   {
     locale: 'yo',
-    displayName: 'Yoruba'
+    label: 'Yoruba'
   },
   {
     locale: 'yo_BJ',
-    displayName: 'Yoruba (Benin)'
+    label: 'Yoruba (Benin)'
   },
   {
     locale: 'yo_NG',
-    displayName: 'Yoruba (Nigeria)'
+    label: 'Yoruba (Nigeria)'
   },
   {
     locale: 'zu',
-    displayName: 'Zulu'
+    label: 'Zulu'
   },
   {
     locale: 'zu_ZA',
-    displayName: 'Zulu (South Africa)'
+    label: 'Zulu (South Africa)'
   }
 ]

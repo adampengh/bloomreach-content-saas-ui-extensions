@@ -3,6 +3,10 @@
 
 ## Version 2
 
+### 2.1.0 (January 2, 2025)
+#### New Features
+- Added ability to copy a Project between environments, except for channel configuration changes and content type changes
+
 ### 2.0.0 (June 14, 2024)
 #### Major Updates
 - Upgraded app to NextJS v14

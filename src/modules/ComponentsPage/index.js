@@ -87,7 +87,7 @@ const ComponentsPage = ({ channelId, componentGroup, componentName }) => {
       >
         <Grid item xs={12}>
           <Card>
-            <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
+            <CardContent sx={{ fontWeight: 'bold' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={tab} onChange={handleTabChange} aria-label='basic tabs example'>
                   <Tab label='Configuration' />

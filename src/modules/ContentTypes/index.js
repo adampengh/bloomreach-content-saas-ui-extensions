@@ -32,7 +32,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { DATA_GRID_HEIGHT, NAMESPACES } from 'src/lib/constants'
 
 // Contexts
-import { ConfigurationContext, LoadingContext } from 'src/contexts'
+import { ConfigurationContext, ErrorContext, LoadingContext } from 'src/contexts'
 
 // Icons
 import { AddIcon, ContentCopyIcon, DeleteOutlineIcon, EditIcon } from 'src/icons'
@@ -43,6 +43,7 @@ const ContentTypesModule = () => {
   const { appConfiguration } = useContext(ConfigurationContext)
   const { environment, xAuthToken } = appConfiguration.environments?.source
   const { setLoading } = useContext(LoadingContext)
+  const { handleShowSnackbar } = useContext(ErrorContext)
 
   // State
   const [contentTypes, setContentTypes] = useState([])
@@ -81,7 +82,9 @@ const ContentTypesModule = () => {
           setRows(rows)
           setLoading({ loading: false, message: '' })
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error(error)
+          handleShowSnackbar('error', 'Error fetching Content Types')
           setLoading({ loading: false, message: '' })
         })
     }

@@ -8,7 +8,7 @@ import { getAllProjects } from 'bloomreach-content-management-apis';
 
 // Components
 import { StatusIndicator } from 'src/components';
-import CreateProjectModal from 'src/modules/Projects/modals/CreateProjectModal';
+import CreateProjectModal from 'src/app/projects/components/modals/CreateProjectModal';
 import {
   Button,
   Card,
