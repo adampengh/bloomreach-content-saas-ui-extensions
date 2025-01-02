@@ -163,6 +163,7 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
                 }}
               />
               <Autocomplete
+                freeSolo
                 disablePortal
                 id='locale'
                 name='locale'
@@ -172,7 +173,7 @@ const ChannelDetailsTab = ({ channel, environment, xAuthToken }) => {
                 renderInput={(params) => <TextField {...params} label='Locale' />}
                 renderOption={(props, option) => (
                   <Box component='li' sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                    {option.displayName} - {option.locale}
+                    {option.label} - {option.locale}
                   </Box>
                 )}
                 onChange={(event, value) => {

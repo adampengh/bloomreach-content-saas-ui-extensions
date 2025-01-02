@@ -1,7 +1,7 @@
 
 import PageTitle from 'src/components/PageTitle'
 import PageTitleWrapper from 'src/components/PageTitleWrapper'
-import { ProjectsListModule } from 'src/modules'
+import { ProjectsListModule } from './ProjectsListModule'
 
 export const metadata = {
   title: 'Projects'

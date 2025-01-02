@@ -19,11 +19,10 @@ import { ConfigurationContext, SidebarContext } from 'src/contexts'
 // Icons
 import {
   AssignmentIcon,
-  ApiIcon,
+  ContentTypeIcon,
   FormatListBulletedIcon,
   ImportExportIcon,
   InfoIcon,
-  PlagiarismIcon,
   SettingsIcon,
   TranslateIcon,
   WebIcon,
@@ -138,6 +137,13 @@ export const SidebarMenu = () => {
                   icon={<WebIcon />}
                   text='Pages'
                 />
+                {/* <SidebarMenuLink
+                  closeSidebar={closeSidebar}
+                  currentRoute={currentRoute}
+                  href='/documents/copy'
+                  icon={<DocumentIcon />}
+                  text='Documents'
+                /> */}
                 <SidebarMenuLink
                   closeSidebar={closeSidebar}
                   currentRoute={currentRoute}
@@ -167,7 +173,7 @@ export const SidebarMenu = () => {
                   closeSidebar={closeSidebar}
                   currentRoute={currentRoute}
                   href='/content-types'
-                  icon={<PlagiarismIcon />}
+                  icon={<ContentTypeIcon />}
                   text='Content Types'
                 />
               </List>

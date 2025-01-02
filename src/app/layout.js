@@ -1,4 +1,5 @@
 'use client'
+
 import { BloomreachTheme, config } from 'src/theme/schemes/BloomreachTheme'
 import { GoogleTagManager } from '@next/third-parties/google'
 
@@ -17,12 +18,19 @@ import {
   SidebarProvider,
 } from 'src/contexts'
 
+// Fonts
+import { Nunito } from 'next/font/google'
+const fontPrimary = Nunito({
+  subsets: ['latin'],
+  display: 'swap',
+  weight:['400', '500', '600', '700'],
+  variable: '--font-primary',
+})
+
 // Modules
 import Header from 'src/modules/Header'
 import Footer from 'src/modules/Footer'
 import Sidebar from 'src/modules/Sidebar'
-
-import '../global.css'
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -45,7 +53,7 @@ export default function RootLayout({
 
   return (
     <html lang='en'>
-      <body>
+      <body className={fontPrimary.className}>
         <AppRouterCacheProvider>
           <ErrorProvider>
             <ConfigurationProvider>
@@ -67,7 +75,8 @@ export default function RootLayout({
             </ConfigurationProvider>
           </ErrorProvider>
         </AppRouterCacheProvider>
-        <GoogleTagManager gtmId='GTM-TP5HVWR4' />
+
+        {process.env.NODE_ENV === 'production' && <GoogleTagManager gtmId='GTM-TP5HVWR4' />}
       </body>
     </html>
   )

@@ -1,6 +1,6 @@
 {
   "name": "bloomreach-content-saas-ui-extensions",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "title": "Bloomreach Content SaaS UI Extensions",
   "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes",
   "author": {
@@ -22,7 +22,9 @@
     "jest": "jest",
     "test": "node -r dotenv/config $(which jest)",
     "test:watch": "node -r dotenv/config $(which jest) --watchAll",
-    "yalcAdd": "yalc add bloomreach-content-management-apis"
+    "yalcAdd": "yalc add bloomreach-content-management-apis",
+    "netlify:dev": "netlify dev",
+    "netlify:dev:live": "netlify dev --live"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",

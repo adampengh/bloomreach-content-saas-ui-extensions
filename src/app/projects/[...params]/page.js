@@ -1,4 +1,4 @@
-import { ProjectsDetailsModule } from 'src/modules'
+import { ProjectsDetailsModule } from './ProjectsDetailsModule'
 
 export const metadata = {
   title: 'Project Details'
