@@ -66,7 +66,7 @@ export const DetailTemplateModule = () => {
       >
         <Grid item xs={12}>
           <Card>
-            <CardContent sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}>
+            <CardContent sx={{ fontWeight: 'bold' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label='basic tabs example'>
                   <Tab label='Item One' />

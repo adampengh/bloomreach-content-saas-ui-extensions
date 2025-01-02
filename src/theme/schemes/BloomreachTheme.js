@@ -795,6 +795,9 @@ export const BloomreachTheme = createTheme({
       styleOverrides: {
         root: {
           margin: 0
+        },
+        primary: {
+          fontWeight: 'bold'
         }
       }
     },
@@ -1018,10 +1021,16 @@ export const BloomreachTheme = createTheme({
             marginRight: 4
           },
           '&.Mui-selected, &.Mui-selected:hover': {
-            // color: colors.alpha.white[100],
+            backgroundColor: colors.primary.main,
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: 0,
+            color: colors.alpha.white[100],
             zIndex: 5
           },
           '&:hover': {
+            backgroundColor: colors.primary.lighter,
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: 0,
             color: colors.alpha.black[100]
           }
         }
@@ -1032,9 +1041,7 @@ export const BloomreachTheme = createTheme({
         root: {
           minHeight: 38,
           overflow: 'visible',
-          '& .Mui-selected': {
-            backgroundColor: colors.alpha.black[10]
-          }
+
         },
         scrollableX: {
           overflow: 'visible !important'
@@ -1046,6 +1053,27 @@ export const BloomreachTheme = createTheme({
           '& .MuiTab-root': {
             margin: '0',
             alignItems: 'flex-start',
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: '6px',
+            borderTopRightRadius: 0,
+            '&:hover': {
+              borderBottomRightRadius: 0,
+              borderBottomLeftRadius: '6px',
+              borderTopRightRadius: 0,
+            }
+          },
+          '& .Mui-selected': {
+            backgroundColor: colors.primary.main,
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: '6px',
+            borderTopRightRadius: 0,
+          },
+          '& .MuiTab-root&:hover': {
+            backgroundColor: colors.primary.lighter,
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: '6px',
+            borderTopRightRadius: 0,
+            color: colors.alpha.black[100]
           }
         }
       },
@@ -1234,7 +1262,7 @@ export const BloomreachTheme = createTheme({
   },
   typography: {
     fontFamily:
-      '"Bloomreach Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+      `var(--font-primary), "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"`,
     h1: {
       fontWeight: 700,
       fontSize: 35

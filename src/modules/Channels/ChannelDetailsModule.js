@@ -44,7 +44,7 @@ export const ChannelDetailsModule = ({ channelId }) => {
   const router = useRouter();
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { tab } = searchParams;
+  const tab = searchParams.get('tab');
 
   // State
   const [value, setValue] = useState(0);
