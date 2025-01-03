@@ -4,17 +4,17 @@
 
 | Link                            | URL                                                                 |
 | ------------------------------- | ------------------------------------------------------------------- |
-| GitHub Repo                     | https://github.com/adampengh/bloomreach-content-saas-ui-extensions  |
-| Production Application          | https://bloomreach-content-ui-extension.netlify.app/                |
+| GitHub Repo                     | https://github.com/bloomreach-content-marketplace/ContentSync.git  |
+| Production Application          | https://content-tools-devapp.bloomreach.works/                |
 | Test Application                | https://test-bloomreach-content-ui-extension.netlify.app/           |
 
 
 ## Installation
 Clone the project from GitHub repository:
-### `git clone https://github.com/adampengh/bloomreach-content-saas-ui-extensions`
+### `git clone https://github.com/bloomreach-content-marketplace/ContentSync.git`
 
 Change into the cloned project directory:
-### `cd bloomreach-content-saas-ui-extensions`
+### `cd ContentSync`
 
 Install the dependencies:
 ### `yarn`
@@ -69,5 +69,5 @@ The application is hosted at [Netlify](https://www.netlify.com/). The applicatio
 
 | Branch   | Deploys to                                                          |
 | -------- | ------------------------------------------------------------------- |
-| main     | https://bloomreach-content-ui-extension.netlify.app/                |
+| main     | https://content-tools-devapp.bloomreach.works/                      |
 | develop  | https://test-bloomreach-content-ui-extension.netlify.app/           |

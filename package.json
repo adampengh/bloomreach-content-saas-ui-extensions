@@ -1,7 +1,7 @@
 {
-  "name": "bloomreach-content-saas-ui-extensions",
+  "name": "ContentSync",
   "version": "2.1.0",
-  "title": "Bloomreach Content SaaS UI Extensions",
+  "title": "Bloomreach ContentSync",
   "description": "High performance React template built with lots of powerful MUI (Material-UI) components across multiple product niches for fast & perfect apps development processes",
   "author": {
     "name": "Bloomreach",
