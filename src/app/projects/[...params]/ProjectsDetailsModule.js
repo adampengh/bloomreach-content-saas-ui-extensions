@@ -244,7 +244,11 @@ export const ProjectsDetailsModule = ({ instance, projectId }) => {
 
   const handleShowCopyProjectModal = async () => {
     await getAllProjects(appConfiguration?.environments?.target?.environment, appConfiguration?.environments?.target?.xAuthToken)
-      .then(response => setTargetProjects(response.data))
+      .then(response => {
+        const projects = response.data?.filter(project => project.state.status === 'IN_PROGRESS')
+        console.log('projects', projects)
+        setTargetProjects(projects)
+      })
       .catch(err => console.log(err))
 
     setShowModal(true)
