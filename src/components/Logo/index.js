@@ -13,7 +13,7 @@ import {
 export const Logo = () => {
   return (
     <StyledLogoTooltipWrapper
-      title='Bloomreach UI Extension'
+      title='Bloomreach ContentSync'
       arrow
     >
       <>

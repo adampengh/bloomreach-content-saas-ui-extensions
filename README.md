@@ -1,4 +1,4 @@
-# Bloomreach Content SaaS UI Extension
+# Bloomreach ContentSync
 
 This application was built to facilitate development tasks for Bloomreach Content SaaS. Specifically, this application aids in copying configuration and content between the Test and Production CMS environments.
 
@@ -9,17 +9,17 @@ This application was built to facilitate development tasks for Bloomreach Conten
 
 | Link                            | URL                                                                 |
 | ------------------------------- | ------------------------------------------------------------------- |
-| GitHub Repo                     | https://github.com/adampengh/bloomreach-content-saas-ui-extensions  |
+| GitHub Repo                     | https://github.com/bloomreach-content-marketplace/ContentSync  |
 | Production Application          | https://bloomreach-content-ui-extension.netlify.app/                |
 | Test Application                | https://test-bloomreach-content-ui-extension.netlify.app/           |
 
 
 ## Installation
 Clone the project from GitHub repository:
-### `git clone https://github.com/adampengh/bloomreach-content-saas-ui-extensions`
+### `git clone https://github.com/bloomreach-content-marketplace/ContentSync.git`
 
 Change into the cloned project directory:
-### `cd bloomreach-content-saas-ui-extensions`
+### `cd ContentSync`
 
 Install the dependencies:
 ### `yarn`
